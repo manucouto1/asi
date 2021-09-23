@@ -1,0 +1,51 @@
+//Colors
+@import "./colors.scss";
+
+// html{
+//   margin: 0 auto;
+//   padding: 0;
+// }
+// body {
+//   font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
+//     'Arial', sans-serif;
+//   margin: 0 auto;
+// }
+
+//Pages
+@import "../pages/index.module.scss";
+@import "../pages/account.module.scss";
+@import "../pages/zen/product_type.module.scss";
+@import "../pages/wishlist.module.scss";
+@import "../pages/search.module.scss";
+@import "../pages/cart.module.scss";
+@import "../pages/orders.module.scss";
+
+//Layout
+@import "../layouts/BasicLayout/BasicLayout.module.scss";
+@import "../components/Header/Header.module.scss";
+@import "../components/Header/TopBar/TopBar.module.scss";
+@import "../components/Header/Menu/Menu.module.scss";
+@import "../components/Modal/BasicModal/BasicModal.module.scss";
+@import "../components/Auth/LoginForm/LoginForm.module.scss";
+@import "../components/Account/ChangeNameForm/ChangeNameForm.model.scss";
+@import "../components/Account/ChangeEmailForm/ChangeEmailForm.model.scss";
+@import "../components/Account/ChangePasswordForm/ChangePasswordForm.module.scss";
+@import "../components/Account/AddressForm/AddressForm.module.scss";
+@import "../components/Account/ListAddress/ListAddress.module.scss";
+@import "../components/ListGoods/ListGoods.module.scss";
+@import "../components/Pagination/Pagination.module.scss";
+@import "../components/Good/HeaderGood/HeaderGood.module.scss";
+@import "../components/Good/TabsGood/TabGood.module.scss";
+@import "../components/Good/InfoGood/InfoGood.module.scss";
+@import "../components/Good/CarouselScreenShots/CarouselScreenShots.module.scss";
+@import "../components/Cart/SummartCart/SummaryCart.module.scss";
+@import "../components/Cart/AddressShipping/AddressShipping.module.scss";
+@import "../components/Cart/Payment/Payment.module.scss";
+@import "../components/Cart/Payment/FormPayment/FormPayment.module.scss";
+@import "../components/Order/Order.module.scss";
+
+
+// h1{
+//   margin-top: 0;
+//   color: $primary;
+// }
