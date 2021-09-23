@@ -7,7 +7,6 @@ import Auth from "../../Auth";
 import useAuth from "../../../hooks/useAuth";
 import useCart from "../../../hooks/useCart";
 import { getMeApi } from "../../../api/user";
-import { getProductTypeApi } from "../../../api/product_type";
 
 export default function MenuWeb() {
   const [productTypes, setProductTypes] = useState([]);
@@ -22,13 +21,6 @@ export default function MenuWeb() {
       setUser(response);
     })();
   }, [auth]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getProductTypeApi();
-      setProductTypes(response || []);
-    })();
-  }, []);
 
   const onShowModal = () => setShowModal(true);
   const onCloseModal = () => setShowModal(false);
