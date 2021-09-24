@@ -34,36 +34,36 @@ export default function RegisterForm(props) {
 
   return (
     <Form className="login-form" onSubmit={formik.handleSubmit}>
-      <h1>Registro de alumnos</h1>
-      <p>Introduzca los datos del nuevo alumno</p>
+      <h1>Formulario de creación de cursos</h1>
+      <p>Introduzca los datos del curso</p>
       <hr></hr>
       <Form.Group>
         <Form.Input
           label="Nombre:"
-          name="name"
+          name="nombre"
           type="text"
           placeholder="Nombre"
           onChange={formik.handleChange}
-          error={formik.errors.name}
+          error={formik.errors.nombre}
           width={8}
         />
         
         <Form.Input
-          label="Primer apellido:"
-          name="apellido1"
+          label="Idioma:"
+          name="idioma"
           type="text"
-          placeholder="Primer apellido"
+          placeholder="Idioma"
           onChange={formik.handleChange}
-          error={formik.errors.apellido1}
+          error={formik.errors.idioma}
           width={4}
         />
          <Form.Input
-          label="Segundo apellido:"
-          name="apellido2"
+          label="Nivel:"
+          name="nivel"
           type="text"
-          placeholder="Segundo apellido"
+          placeholder="Nivel"
           onChange={formik.handleChange}
-          error={formik.errors.apellido2}
+          error={formik.errors.nivel}
           width={4}
         />
         
@@ -71,47 +71,28 @@ export default function RegisterForm(props) {
       <Form.Group>
         
         <Form.Input
-          label="Correo electrónico:"
-          name="email"
-          type="text"
-          placeholder="Correo electrónico"
-          onChange={formik.handleChange}
-          error={formik.errors.email}
-          width={6}
-        />
-        <Form.Input
-          label="Edad:"
-          name="edad"
+          label="Minimo de alumnos:"
+          name="minimo"
           type="number"
-          placeholder="Edad"
+          placeholder="Minimo de alumnos"
           onChange={formik.handleChange}
-          error={formik.errors.edad}
-          width={2}
+          error={formik.errors.minimo}
+          width={8}
         />
         <Form.Input
-          label="Dirección:"
-          name="direccion"
-          type="text"
-          placeholder="Dirección"
+          label="Maximo de alumnos:"
+          name="maximo"
+          type="number"
+          placeholder="Máximo de alumnos"
           onChange={formik.handleChange}
-          error={formik.errors.edad}
+          error={formik.errors.maximo}
           width={8}
         />
       </Form.Group>
-      <Form.Group widths='equal'>
-        
-        <Form.Field label="Cursos:" name="curso" placeholder='Cursos' control='select'  
-          onChange={formik.handleChange} error={formik.errors.role}>
-            {map(options, ({text, value}) => {
-              return <option value={value}>{text}</option>
-            })}
-        </Form.Field>
-    
-      </Form.Group>
-      
+     
       <div className="actions">
         <Button type="submit" className="submit" loading={loading}>
-          Registrar
+          Crear
         </Button>
       </div>
     </Form>
@@ -121,22 +102,19 @@ export default function RegisterForm(props) {
 function initialValues() {
   return {
     nombre: "", 
-    edad: undefined,
-    apellido1: "",
-    apellido2: "",
-    email: "",
-    curso: "",
+    idioma: "",
+    nivel: "",
+    minimo: undefined,
+    maximo: undefined,
   };
 }
 
 function validationSchema() {
   return {
-    name: Yup.string().required(true),
-    apellido1: Yup.string().required(true),
-    apellido2: Yup.string().required(true),
-    edad: Yup.number().required(true),
-    email: Yup.string().email(true).required(true),
-    curso: Yup.string().required(true)
-      
+    nombre: Yup.string().required(true),
+    idioma: Yup.string().required(true),
+    nivel: Yup.string().required(true),
+    minimo: Yup.number().required(true),
+    maximo: Yup.number().required(true),
   };
 }

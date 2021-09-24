@@ -81,37 +81,24 @@ function MenuOptions(props) {
     <Menu>
       {user ? (
         <>
-          <Link href="/orders">
-            <Menu.Item as="a">
-              <Icon name="game" />
-              Mis pedidos
-            </Menu.Item>
-          </Link>
-          <Link href="/wishlist">
-            <Menu.Item as="a">
-              <Icon name="heart outline" />
-              wish list
-            </Menu.Item>
-          </Link>
-          <Link href="/account">
+          <Link href="/">
             <Menu.Item as="a">
               <Icon name="user outline" />
-              {user.name} {user.lastname}
+              {user.username}
             </Menu.Item>
           </Link>
-          <Link href="/cart">
-            <Menu.Item as="a" className="m-0">
-              <Icon name="cart" />
-              
-                {productsCart > 0 && (
-                  <Label color="red" floating circular>
-                    {productsCart}
-                  </Label>
-                )}
-              
+          <Link href="/gestion/crear_curso">
+            <Menu.Item as="a">
+              <Icon name="book" />
+              Cursos
             </Menu.Item>
           </Link>
-
+          <Link href="/gestion/registro_alumnos">
+            <Menu.Item as="a" >
+              <Icon name="address book" />
+              Alumnos
+            </Menu.Item>
+          </Link>
           <Menu.Item onClick={logout}>
             <Icon name="power off" />
           </Menu.Item>
