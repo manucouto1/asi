@@ -26,6 +26,22 @@ El contenedor está configurado en 2 archivos:
 1. El **docker-compose.yaml** -> Este es el archivo más importante, se configura un servicio que va a ejecutar una imagen *mongo:latest* con unas variables de entorno. Montará 2 volumenes, del sistema de archivos del vuestro ordenador dentro del contenedor y expondra un rango de puertos para que os podáis conectar.
 2. El **mongo-inig.js** -> Este archivo se ejecuta al construir el contenedor. Se carga dentro del contenedor al arrancarlo y configura la base de datos creando un usuario y una contraseña, que será con la que accederéis a la base de datos.
 
+### El comando construye el contenedor y lo pone en ejecución en modo daemon 
+```
+docker-compose up --build -d
+```
+### Si por algún motivo queréis entrar dentro del contenedor 
+Listariais los contenedores en ejecución para ver el container **<containerId>**
+```
+docker ps 
+
+```
+Ejecutariais bash en modo iterativo dentro del contenedor
+
+```
+docker exec -it <containerId> bash
+```
+
 ## Ahora que ya está corriendo el mongodb levantamos el p1-server
 ```
 cd ..
