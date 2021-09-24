@@ -25,7 +25,7 @@ function Logo(){
     return (
         <Link href="/">
             <a>
-                <Image src="/brand/Zen-Chef20.svg" alt="Zen-Chef" />
+                <Image src="/images/brand3/facebook_cover_photo_1.png" alt="Biblio udc" />
             </a>
         </Link>
     )
