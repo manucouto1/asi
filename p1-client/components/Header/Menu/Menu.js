@@ -4,6 +4,7 @@ import Link from "next/link";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
 import Auth from "../../Auth";
+import LoginForm from "../../Auth/LoginForm";
 import useAuth from "../../../hooks/useAuth";
 import useCart from "../../../hooks/useCart";
 import { getMeApi } from "../../../api/user";
@@ -49,7 +50,9 @@ export default function MenuWeb() {
         title={titleModal}
         size="small"
       >
-        <Auth onCloseModal={onCloseModal} setTitleModal={setTitleModal} />
+        {/* <Auth onCloseModal={onCloseModal} setTitleModal={setTitleModal} /> */}
+        <LoginForm  onCloseModal={onCloseModal}/>
+        
       </BasicModal>
     </div>
   );

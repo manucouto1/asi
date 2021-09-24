@@ -7,7 +7,7 @@ import useAuth from "../../../hooks/useAuth";
 import { loginApi, resetPasswordApi } from "../../../api/user";
 
 export default function LoginForm(props) {
-  const { showRegisterForm, onCloseModal } = props;
+  const { onCloseModal } = props;
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
@@ -57,9 +57,6 @@ export default function LoginForm(props) {
       />
 
       <div className="actions">
-        <Button type="button" basic onClick={showRegisterForm}>
-          Registrarse
-        </Button>
         <div>
           <Button className="submit" type="submit" loading={loading}>
             Entrar
