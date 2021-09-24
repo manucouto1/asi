@@ -1,0 +1,8 @@
+*
+!p1-client
+!p1-client/**/*
+!p1-server
+!p1-server/**/*
+!.gitignore
+!docker-compose.yaml
+!mongo-init.js
