@@ -31,7 +31,7 @@ El contenedor está configurado en 2 archivos:
 docker-compose up --build -d
 ```
 ### Si por algún motivo queréis entrar dentro del contenedor 
-Listaríais los contenedores en ejecución para ver el container **<containerId>**
+Listaríais los contenedores en ejecución para ver el container **containerId**
 ```
 docker ps 
 
