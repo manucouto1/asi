@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "grupos",
+  "info": {
+    "name": "grupo"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "idioma": {
+      "model": "idioma"
+    }
+  }
+}

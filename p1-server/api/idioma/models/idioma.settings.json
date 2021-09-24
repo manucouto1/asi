@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "idiomas",
+  "info": {
+    "name": "Idioma",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "siglas": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "nivel": {
+      "model": "nivel"
+    }
+  }
+}

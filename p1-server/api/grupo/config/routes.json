@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/grupos",
+      "handler": "grupo.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/grupos/count",
+      "handler": "grupo.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/grupos/:id",
+      "handler": "grupo.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/grupos",
+      "handler": "grupo.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/grupos/:id",
+      "handler": "grupo.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/grupos/:id",
+      "handler": "grupo.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
