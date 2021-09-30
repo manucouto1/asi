@@ -12,6 +12,6 @@ export default function Seo(props) {
 }
 
 Seo.defaultProps = {
-    title: "Zen-Chef - Tu sitio de comida vegana, saludable y deliciosa",
-    description: "Recestas saludables, tuppers para que no tengas que cocinar y los productos veganos de mejor calidad por si te ateves con alguna de nuestras recetas."
+    title: "School of languages",
+    description: "Academia de idiomas para todos los niveles y edades."
 }
