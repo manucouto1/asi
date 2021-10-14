@@ -9,13 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fullcalendar/daygrid": "^5.10.0",
-    "@fullcalendar/react": "^5.10.0",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "daypilot-pro-react": "https://npm.daypilot.org/daypilot-pro-react/trial/2021.2.5000.tar.gz",
     "formik": "^2.2.9",
-    "fullcalendar": "^5.0.0-beta.2",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
     "next": "^11.1.2",

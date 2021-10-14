@@ -4,15 +4,9 @@ import { toast, ToastContainer } from "react-toastify";
 import jwtDecode from "jwt-decode";
 import AuthContext from "../context/AuthContext";
 import { setToken, getToken, removeToken } from "../api/token";
-// import { addProductsCart, countProductsCart, getProductsCart, removeProductsCart, removeAllProductsCart } from "../api/cart";
 import "../scss/global.scss";
 import "semantic-ui-css/semantic.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import "@fullcalendar/common/main.css"
-import "@fullcalendar/daygrid/main.css";
-// import '@fullcalendar/common/main.css';
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState(undefined);
