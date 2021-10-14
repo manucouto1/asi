@@ -8,6 +8,9 @@ import { setToken, getToken, removeToken } from "../api/token";
 import "../scss/global.scss";
 import "semantic-ui-css/semantic.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import "@fullcalendar/common/main.css"
+import "@fullcalendar/daygrid/main.css";
+// import '@fullcalendar/common/main.css';
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 
