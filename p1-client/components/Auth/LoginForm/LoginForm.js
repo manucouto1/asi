@@ -20,7 +20,7 @@ export default function LoginForm(props) {
       if (response?.jwt) {
         login(response.jwt);
         onCloseModal();
-        toast.success("Bien venido");
+        toast.success("Bienvenido");
       } else {
         toast.error("El email o la contraseña son incorrectors");
       }
