@@ -1,21 +1,123 @@
 import React, { Component } from 'react';
+import { useRouter } from 'next/router';
 
-
-class Scheduler extends Component {
-
-  constructor(props) {
-    super(props);
-
+export default function Scheduler(){
+    const router = useRouter()
     if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
         const {DayPilot} = require('daypilot-pro-react')
+        const{ DayPilotScheduler} = require('daypilot-pro-react')
         const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(1)
-
-        this.state = {
+        
+        const resources = [
+          {
+              "name": "Lunes",
+              "id": "lun",
+              "expanded": false,
+              "children": [
+                {
+                  "name": "Aula 1",
+                  "id": "au1"
+                },
+                {
+                  "name": "Aula 2",
+                  "id": "au2"
+                }
+              ]
+            },
+            {
+              "name": "Martes",
+              "id": "ma2",
+              "expanded": false,
+              "children": [
+                {
+                  "name": "Aula 1",
+                  "id": "au1"
+                },
+                {
+                  "name": "Aula 2",
+                  "id": "au2"
+                }
+              ]
+            },
+            {
+              "name": "Miércoles",
+              "id": "ma3",
+              "expanded": false,
+              "children": [
+                {
+                  "name": "Aula 1",
+                  "id": "au1"
+                },
+                {
+                  "name": "Aula 2",
+                  "id": "au2"
+                }
+              ]
+            },
+            {
+              "name": "Jueves",
+              "id": "tar1",
+              "expanded": false,
+              "children": [
+                {
+                  "name": "Aula 1",
+                  "id": "au1"
+                },
+                {
+                  "name": "Aula 2",
+                  "id": "au2"
+                }
+              ]
+            },
+            {
+              "name": "Viernes",
+              "id": "tar2",
+              "expanded": false,
+              "children": [
+                {
+                  "name": "Aula 1",
+                  "id": "au1"
+                },
+                {
+                  "name": "Aula 2",
+                  "id": "au2"
+                }
+              ]
+            },
+            {
+              "name": "Sábado",
+              "id": "tar3",
+              "expanded": false,
+              "children": [
+                {
+                  "name": "Aula 1",
+                  "id": "au1"
+                },
+                {
+                  "name": "Aula 2",
+                  "id": "au2"
+                }
+              ]
+            }
+        ]
+        const events =  [
+          {
+            "id": 1,
+            "resource": "au1",
+            "start": lunes.addHours(10),
+            "end": lunes.addHours(12),
+            "test": "Frase test",
+            "text": "Event 1"
+          }
+        ]
+        const config = {
+            resources: resources,
+            events: events,
             locale: "es-es",
             timeHeaders: [{"groupBy":"Hour"}, {"groupBy": "Cell", "format": "mm"}],
             scale: "CellDuration",
             cellDuration: 30,
-            businessBeginHour: 6,
+            businessBeginsHour: 8,
             businessEndsHour: 21,
             showNonBusiness: false,
             cellWidthSpec: "Auto",
@@ -50,7 +152,12 @@ class Scheduler extends Component {
             onEventDeleted: (args) => {
                 args.control.message("Event deleted: " + args.e.text());
             },
-            eventClickHandling: "Disabled",
+            eventClickHandling: "Enabled",
+            onEventClicked: (args) => {
+              console.log(args)
+                router.push('/gestion/registro_alumnos?class_id='+args.e.data.id)
+            },
+
             eventHoverHandling: "Bubble",
             bubble: new DayPilot.Bubble({
                 onLoad: (args) => {
@@ -61,143 +168,15 @@ class Scheduler extends Component {
             }),
             treeEnabled: true,
         };
-    }
-}
 
-    componentDidMount() {
-      if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-          const {DayPilot} = require('daypilot-pro-react')
-          const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(1)
-        // load resource and event data
-          this.setState({
-            resources: [
-              {
-                  "name": "Lunes",
-                  "id": "lun",
-                  "expanded": false,
-                  "children": [
-                    {
-                      "name": "Aula 1",
-                      "id": "au1"
-                    },
-                    {
-                      "name": "Aula 2",
-                      "id": "au2"
-                    }
-                  ]
-                },
-                {
-                  "name": "Martes",
-                  "id": "ma2",
-                  "expanded": false,
-                  "children": [
-                    {
-                      "name": "Aula 1",
-                      "id": "au1"
-                    },
-                    {
-                      "name": "Aula 2",
-                      "id": "au2"
-                    }
-                  ]
-                },
-                {
-                  "name": "Miércoles",
-                  "id": "ma3",
-                  "expanded": false,
-                  "children": [
-                    {
-                      "name": "Aula 1",
-                      "id": "au1"
-                    },
-                    {
-                      "name": "Aula 2",
-                      "id": "au2"
-                    }
-                  ]
-                },
-                {
-                  "name": "Jueves",
-                  "id": "tar1",
-                  "expanded": false,
-                  "children": [
-                    {
-                      "name": "Aula 1",
-                      "id": "au1"
-                    },
-                    {
-                      "name": "Aula 2",
-                      "id": "au2"
-                    }
-                  ]
-                },
-                {
-                  "name": "Viernes",
-                  "id": "tar2",
-                  "expanded": false,
-                  "children": [
-                    {
-                      "name": "Aula 1",
-                      "id": "au1"
-                    },
-                    {
-                      "name": "Aula 2",
-                      "id": "au2"
-                    }
-                  ]
-                },
-                {
-                  "name": "Sábado",
-                  "id": "tar3",
-                  "expanded": false,
-                  "children": [
-                    {
-                      "name": "Aula 1",
-                      "id": "au1"
-                    },
-                    {
-                      "name": "Aula 2",
-                      "id": "au2"
-                    }
-                  ]
-                }
-          ],
-          events: [
-            {
-              "id": 1,
-              "resource": "au1",
-              "start": lunes.addHours(10),
-              "end": lunes.addHours(12),
-              "test": "Frase test",
-              "text": "Event 1"
-            }
-          ]
-          });
-      }
-
-    }
-
-    render() {
-        var {...config} = this.state;
-        if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-            const{ DayPilotScheduler} = require('daypilot-pro-react')
-            return (
-                <div>
-                    <DayPilotScheduler
-                    {...config}
-                    ref={component => {
-                        this.scheduler = component && component.control;
-                    }}
-                    />
-                </div>
-                );
-        }
         return (
-        <div>
-        </div>
+          <div>
+              <DayPilotScheduler {...config}/>
+          </div>
         );
-    }   
-    
+    }
+
+    return (<div></div>);
 }
 
-export default Scheduler;
+
