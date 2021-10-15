@@ -7,7 +7,7 @@ export default function Groups(){
     const router = useRouter();
     return (
         <BasicLayout>
-            <Seo title="Courses Scheduler" description="Courses Scheduler"/>
+            <Seo title="Detalles" description="Detalles de un grupo"/>
             <div>
                 <GroupDetails query={router.query} />
             </div>
