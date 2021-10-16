@@ -1,0 +1,84 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "nombre": "Grupo A",
+      "idioma": {
+        "id": 1,
+        "nombre": "Alemán",
+        "siglas": "DE"
+      },
+      "nivel": {
+        "id": 1,
+        "codigo": "A1",
+        "descripcion": "Nivel A1"
+      },
+      "profesor": {
+        "id": 1,
+        "nombre": "Antonio Pérez",
+        "login": "profesor1@udc.es",
+        "role": 1
+      },
+      "aula": {
+        "id": 1,
+        "nombre": "Aula 1"
+      },
+      "alumnos": [
+        {
+          "id": 1,
+          "nombre": "Susanna Baldwin",
+          "faltas": 4
+        },
+        {
+          "id": 2,
+          "nombre": "Úrsula García",
+          "faltas": 3
+        },
+        {
+          "id": 3,
+          "nombre": "Ana María",
+          "faltas": 7
+        }
+      ],
+      "horario" : [
+        {
+          "weekDay": "Martes",
+          "startTime": "10:00",
+          "endTime": "12:00"
+        },
+        {
+          "weekDay": "Miércoles",
+          "startTime": "9:30",
+          "endTime": "10:30"
+        },
+        {
+          "weekDay": "Jueves",
+          "startTime": "11:00",
+          "endTime": "12:00"
+        }
+      ]
+    }
+  ],
+  
+  
+  "users": [
+    {
+      "id": 1,
+      "nombre": "Antonio Pérez",
+      "login": "profesor1@udc.es",
+      "role": 1
+    },
+    {
+      "id": 2,
+      "nombre": "Úrsula García",
+      "login": "profesor2@udc.es",
+      "role": 1
+    },
+    {
+      "id": 3,
+      "nombre": "Ana María",
+      "login": "estudiante1@udc.es",
+      "role": 2
+    }
+  ]
+}
