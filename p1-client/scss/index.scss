@@ -6,6 +6,7 @@
 @import "../pages/index.module.scss";
 @import "../pages/gestion/registro_alumnos.module.scss";
 @import "../pages/account.module.scss";
+@import "../pages/scheduler/courses_schedurler.module.scss";
 
 //Layout
 @import "../layouts/BasicLayout/BasicLayout.module.scss";
@@ -19,3 +20,4 @@
 @import "../components/Account/ChangePasswordForm/ChangePasswordForm.module.scss";
 @import "../components/Account/AddressForm/AddressForm.module.scss";
 @import "../components/Account/ListAddress/ListAddress.module.scss";
+@import "../components/MySchedulerV2/MySchedulerV2.module.scss";

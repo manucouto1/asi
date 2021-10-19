@@ -1,115 +1,37 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { getAllEvents, getAllHorarios } from "../../api/horarios";
+import {groupDetails} from "../../components/GroupDetails/GroupDetails";
+import { getGroup } from "../../api/group";
+import ReactDOMServer from "react-dom/server";
+
+function barBackColor(i) {
+  var colors = ["#a4c2f4", "#b6d7a8", "#ffe599", "#ea9999"];
+  return colors[i % 4];
+}
 
 export default function Scheduler(){
-    const router = useRouter()
+    const router = useRouter();
+    const [resources, setResources] = useState([]);
+    const [events, setEvents] = useState([]);
+    const [reload, setReload] = useState(true);
+
+    useEffect(() => {
+      (async () => {
+        const horarios = await getAllHorarios();
+        setResources(horarios || []);
+        const aventos = await getAllEvents();
+        setEvents(aventos || []);
+        setReload(false);
+      })();
+    }, [reload])
+
     if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
         const {DayPilot} = require('daypilot-pro-react')
         const{ DayPilotScheduler} = require('daypilot-pro-react')
-        const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(1)
-        
-        const resources = [
-          {
-              "name": "Lunes",
-              "id": "lun",
-              "expanded": false,
-              "children": [
-                {
-                  "name": "Aula 1",
-                  "id": "au1"
-                },
-                {
-                  "name": "Aula 2",
-                  "id": "au2"
-                }
-              ]
-            },
-            {
-              "name": "Martes",
-              "id": "ma2",
-              "expanded": false,
-              "children": [
-                {
-                  "name": "Aula 1",
-                  "id": "au1"
-                },
-                {
-                  "name": "Aula 2",
-                  "id": "au2"
-                }
-              ]
-            },
-            {
-              "name": "Miércoles",
-              "id": "ma3",
-              "expanded": false,
-              "children": [
-                {
-                  "name": "Aula 1",
-                  "id": "au1"
-                },
-                {
-                  "name": "Aula 2",
-                  "id": "au2"
-                }
-              ]
-            },
-            {
-              "name": "Jueves",
-              "id": "tar1",
-              "expanded": false,
-              "children": [
-                {
-                  "name": "Aula 1",
-                  "id": "au1"
-                },
-                {
-                  "name": "Aula 2",
-                  "id": "au2"
-                }
-              ]
-            },
-            {
-              "name": "Viernes",
-              "id": "tar2",
-              "expanded": false,
-              "children": [
-                {
-                  "name": "Aula 1",
-                  "id": "au1"
-                },
-                {
-                  "name": "Aula 2",
-                  "id": "au2"
-                }
-              ]
-            },
-            {
-              "name": "Sábado",
-              "id": "tar3",
-              "expanded": false,
-              "children": [
-                {
-                  "name": "Aula 1",
-                  "id": "au1"
-                },
-                {
-                  "name": "Aula 2",
-                  "id": "au2"
-                }
-              ]
-            }
-        ]
-        const events =  [
-          {
-            "id": 1,
-            "resource": "au1",
-            "start": lunes.addHours(10),
-            "end": lunes.addHours(12),
-            "test": "Frase test",
-            "text": "Event 1"
-          }
-        ]
+        const lunes = "1969-12-29T10:00:00"
+
+        console.log(events)
         const config = {
             resources: resources,
             events: events,
@@ -120,26 +42,16 @@ export default function Scheduler(){
             businessBeginsHour: 8,
             businessEndsHour: 21,
             showNonBusiness: false,
-            cellWidthSpec: "Auto",
+            cellWidthSpec: "Auto",            
             // rowMinHeight: 50,
             days: 1,
-            startDate: lunes ,
+            heightSpec: "Max",
+            startDate: lunes,
             // days: DayPilot.Date.today().daysInMonth(),
             // startDate: DayPilot.Date.today().firstDayOfMonth(),
             timeRangeSelectedHandling: "Enabled",
-            onTimeRangeSelected: async (args) => {
-                const dp = args.control;
-                const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
-                dp.clearSelection();
-                if (modal.canceled) { return; }
-                dp.events.add({
-                start: args.start,
-                end: args.end,
-                id: DayPilot.guid(),
-                resource: args.resource,
-                text: modal.result
-                });
-            },
+            treePreventParentUsage: true,
+            onTimeRangeSelected: selectTimeRange,
             eventMoveHandling: "Update",
             onEventMoved: (args) => {
                 args.control.message("Event moved: " + args.e.text());
@@ -155,15 +67,32 @@ export default function Scheduler(){
             eventClickHandling: "Enabled",
             onEventClicked: (args) => {
               console.log(args)
-                router.push('/gestion/registro_alumnos?class_id='+args.e.data.id)
+                router.push('/groups/'+args.e.data.id)
+            },
+
+            onBeforeTimeHeaderRender: (args) => {
+              // args.header['backColor'] = "#e0e0e0"
+              // args.header['style'] = "box-sizing: border-box; border-right: 1px solid #ccc; display: flex; align-items: center; justify-content: center;"
+            },
+
+            onBeforeCellRender: (args) => {
+              const { cell } = args
+              if (cell.isParent) {
+                cell.cssClass = "parent-cell"
+              }
             },
 
             eventHoverHandling: "Bubble",
             bubble: new DayPilot.Bubble({
                 onLoad: (args) => {
-                
-                // TODO se puede hacer una consulta en la base de datos que se asocie a este id
-                args.html = "<h1> profesor menganito id "+args.source.data.id+"</h1>";
+                  args.async = true;
+                  (async () => {
+                    const response = await getGroup(args.source.data.id);
+                    args.html = (response != undefined && response != null) ? printClassInfo(response) : "<h1> Loading... </h1>";
+                    args.loaded();
+                  })();
+                  
+                  // args.html= "<h1> Test </h1>"
                 }
             }),
             treeEnabled: true,
@@ -179,4 +108,52 @@ export default function Scheduler(){
     return (<div></div>);
 }
 
+function printClassInfo(group){
+  return (ReactDOMServer.renderToStaticMarkup(groupDetails(group))).toString()
+
+}
+
+async function selectTimeRange(args) {
+  const {DayPilot} = require('daypilot-pro-react')
+  const dp = args.control;
+ 
+  var idiomas = [
+    {name: "Aleman", id: "DE"}
+  ];
+
+  var niveles = [
+    {name: "A1", id: "a1"},
+    {name: "A2", id: "a2"},
+    {name: "B1", id: "b1"},
+    {name: "B2", id: "b2"},
+    {name: "C1", id: "c1"},
+    {name: "C2", id: "c2"},
+  ];
+
+  var profesores = [
+    {name: "Antonio Pérez", id: "1"}
+  ];
+
+  var form = [
+    {name: "Nombre", id: "nombre"},
+    {name: "idioma", id: "idioma", options: idiomas},
+    {name: "nivel", id: "nivel", options: niveles},
+    {name: "profesor", id: "profesor", options: profesores}
+  ];
+
+  var data = {
+    start: args.start,
+    end: args.end,
+    id: DayPilot.guid(),
+    resource: args.resource,
+  };
+
+  await DayPilot.Modal.form(form, data).then( function(modal) {
+    dp.clearSelection();
+    if (modal.canceled) { return; }
+    data.text = modal.result.nombre
+    dp.events.add(data);
+  });
+  
+}
 

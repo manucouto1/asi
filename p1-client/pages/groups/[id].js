@@ -9,7 +9,7 @@ export default function Groups(){
         <BasicLayout>
             <Seo title="Detalles" description="Detalles de un grupo"/>
             <div>
-                <GroupDetails query={router.query} />
+                <GroupDetails id={router.query.id} />
             </div>
         </BasicLayout>
     )

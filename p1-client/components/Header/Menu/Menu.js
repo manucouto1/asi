@@ -81,6 +81,12 @@ function MenuOptions(props) {
     <Menu>
       {user ? (
         <>
+          <Link href="/scheduler/courses_schedulerV2">
+            <Menu.Item as="a">
+              <Icon name="calendar alternate outline"/>
+              Horarios
+            </Menu.Item>
+          </Link>
           <Link href="/">
             <Menu.Item as="a">
               <Icon name="user outline" />
@@ -104,10 +110,18 @@ function MenuOptions(props) {
           </Menu.Item>
         </>
       ) : (
-        <Menu.Item onClick={onShowModal}>
-          <Icon name="user outline" />
-          Mi cuenta
-        </Menu.Item>
+        <>
+          <Link href="/scheduler/courses_schedulerV2">
+            <Menu.Item as="a">
+              <Icon name="calendar alternate outline"/>
+                Horarios
+              </Menu.Item>
+            </Link>
+          <Menu.Item onClick={onShowModal}>
+            <Icon name="user outline" />
+            Mi cuenta
+          </Menu.Item>
+        </>
       )}
     </Menu>
   );

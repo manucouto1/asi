@@ -57,6 +57,64 @@
           "endTime": "12:00"
         }
       ]
+    },
+    {
+      "id": 2,
+      "nombre": "Grupo B",
+      "idioma": {
+        "id": 1,
+        "nombre": "Alemán",
+        "siglas": "DE"
+      },
+      "nivel": {
+        "id": 1,
+        "codigo": "A1",
+        "descripcion": "Nivel A1"
+      },
+      "profesor": {
+        "id": 1,
+        "nombre": "Antonio Pérez",
+        "login": "profesor1@udc.es",
+        "role": 1
+      },
+      "aula": {
+        "id": 1,
+        "nombre": "Aula 1"
+      },
+      "alumnos": [
+        {
+          "id": 1,
+          "nombre": "Susanna Baldwin",
+          "faltas": 4
+        },
+        {
+          "id": 2,
+          "nombre": "Úrsula García",
+          "faltas": 3
+        },
+        {
+          "id": 3,
+          "nombre": "Ana María",
+          "faltas": 7
+        }
+      ],
+      "horario" : [
+        {
+          "weekDay": "Martes",
+          "startTime": "10:00",
+          "endTime": "12:00"
+        },
+        {
+          "weekDay": "Miércoles",
+          "startTime": "9:30",
+          "endTime": "10:30"
+        },
+        {
+          "weekDay": "Jueves",
+          "startTime": "11:00",
+          "endTime": "12:00"
+        }
+      ]
     }
   ],
   
@@ -79,6 +137,118 @@
       "nombre": "Ana María",
       "login": "estudiante1@udc.es",
       "role": 2
+    }
+  ],
+
+  "horarios": [
+    {
+      "name": "Lunes",
+      "id": "lun",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Aula 1",
+          "id": "lau1"
+        },
+        {
+          "name": "Aula 2",
+          "id": "lau2"
+        }
+      ]
+    },
+    {
+      "name": "Martes",
+      "id": "mar",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Aula 1",
+          "id": "mau1"
+        },
+        {
+          "name": "Aula 2",
+          "id": "mau2"
+        }
+      ]
+    },
+    {
+      "name": "Miércoles",
+      "id": "mie",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Aula 1",
+          "id": "miau1"
+        },
+        {
+          "name": "Aula 2",
+          "id": "miau2"
+        }
+      ]
+    },
+    {
+      "name": "Jueves",
+      "id": "jue",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Aula 1",
+          "id": "jau1"
+        },
+        {
+          "name": "Aula 2",
+          "id": "jau2"
+        }
+      ]
+    },
+    {
+      "name": "Viernes",
+      "id": "vier",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Aula 1",
+          "id": "viau1"
+        },
+        {
+          "name": "Aula 2",
+          "id": "viau2"
+        }
+      ]
+    },
+    {
+      "name": "Sábado",
+      "id": "sab",
+      "expanded": true,
+      "children": [
+        {
+          "name": "Aula 1",
+          "id": "sau1"
+        },
+        {
+          "name": "Aula 2",
+          "id": "sau2"
+        }
+      ]
+    }
+  ],
+
+  "events":[
+    {
+      "id": 1,
+      "resource": "lau1",
+      "start": "1969-12-29T10:00:00",
+      "end": "1969-12-29T12:30:00",
+      "test": "Frase test",
+      "text": "Ingles B1"
+    },
+    {
+      "id": 2,
+      "resource": "mau2",
+      "start": "1969-12-29T12:30:00",
+      "end": "1969-12-29T14:30:00",
+      "test": "Frase test",
+      "text": "Alemán C2"
     }
   ]
 }
