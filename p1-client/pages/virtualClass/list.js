@@ -3,7 +3,7 @@ import BasicLayout from "../../layouts/BasicLayout"
 import {useRouter} from 'next/router'
 import GroupList from "../../components/Groups/GroupList";
 
-export default function Groups(){
+export default function VirtualClasses(){
     const router = useRouter();
     return (
         <BasicLayout>

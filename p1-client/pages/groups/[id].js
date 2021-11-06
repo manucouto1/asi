@@ -5,7 +5,6 @@ import GroupDetails from "../../components/GroupDetails/GroupDetails";
 
 export default function Groups(){
     const router = useRouter();
-    console.log("Cargando: " + router.query.id)
     return (
         <BasicLayout>
             <Seo title="Detalles" description="Detalles de un grupo"/>
