@@ -40,7 +40,7 @@
           "faltas": 7
         }
       ],
-      "horario" : [
+      "horario": [
         {
           "weekDay": "Martes",
           "startTime": "10:00",
@@ -98,7 +98,7 @@
           "faltas": 7
         }
       ],
-      "horario" : [
+      "horario": [
         {
           "weekDay": "Martes",
           "startTime": "10:00",
@@ -117,8 +117,7 @@
       ]
     }
   ],
-  
-  
+
   "users": [
     {
       "id": 1,
@@ -233,7 +232,7 @@
     }
   ],
 
-  "events":[
+  "events": [
     {
       "id": 1,
       "resource": "lau1",
@@ -249,6 +248,31 @@
       "end": "1969-12-29T14:30:00",
       "test": "Frase test",
       "text": "Alemán C2"
+    }
+  ],
+
+  "virtualClassrooms": [
+    {
+      "id": 1,
+      "grupo": {
+        "nombre": "Grupo 1",
+        "nivel": "C1",
+        "idioma": "Inglés"
+      },
+      "avisos": [
+        {
+          "mensaje": "Tema1.pdf hasta la página 12\nEjercicios 12-13-14",
+          "fecha": "2021-10-23T18:25:43.511Z"
+        },
+        {
+          "mensaje": "Tema1.pdf hasta la página 12\nEjercicios 12-13-14",
+          "fecha": "2021-10-24T18:25:43.511Z"
+        },
+        {
+          "mensaje": "Tema1.pdf hasta la página 12\nEjercicios 12-13-14",
+          "fecha": "2021-10-25T18:25:43.511Z"
+        }
+      ]
     }
   ]
 }

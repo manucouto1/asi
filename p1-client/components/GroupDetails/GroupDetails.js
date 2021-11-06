@@ -3,11 +3,10 @@ import { Button } from "semantic-ui-react";
 import { getGroup } from "../../api/group";
 
 const GroupDetails = ({id}) => {
-  const [group, setGroup] = useState(undefined);
+  const [group, setGroup] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(id)
     async function fetchMyAPI() {
       setLoading(true);
       if(id !== undefined) {

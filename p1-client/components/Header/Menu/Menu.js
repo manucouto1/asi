@@ -81,7 +81,7 @@ function MenuOptions(props) {
     <Menu>
       {user ? (
         <>
-          <Link href="/virtualClasses/list">
+          <Link href="/virtualClassrooms/list">
             <Menu.Item as="a">
               <Icon name="student"/>
               Aula virtual

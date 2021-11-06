@@ -1,15 +1,15 @@
 import Seo from "../../components/Seo";
 import BasicLayout from "../../layouts/BasicLayout"
 import {useRouter} from 'next/router'
-import VirtualClassDetails from "../../components/VirtualClasses/VirtualClassDetails";
+import VirtualClassroomDetails from "../../components/VirtualClassrooms/VirtualClassroomDetails";
 
-export default function VirtualClasses(){
+export default function VirtualClassrooms(){
     const router = useRouter();
     return (
         <BasicLayout>
             <Seo title="Aula virtual" description="Detalles de un aula virtual"/>
             <div>
-                <VirtualClassDetails id={router.query.id} />
+                <VirtualClassroomDetails id={router.query.id} />
             </div>
         </BasicLayout>
     )
