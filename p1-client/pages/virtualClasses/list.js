@@ -7,7 +7,7 @@ export default function VirtualClasses(){
     const router = useRouter();
     return (
         <BasicLayout>
-            <Seo title="Detalles" description="Detalles de un grupo"/>
+            <Seo title="Aula virtual" description="Lista de grupos del aula virtual"/>
             <div>
                 <GroupList/>
             </div>

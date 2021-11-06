@@ -7,7 +7,7 @@ export default function Groups(){
     const router = useRouter();
     return (
         <BasicLayout>
-            <Seo title="Detalles" description="Detalles de un grupo"/>
+            <Seo title="Grupo" description="Detalles de un grupo"/>
             <div>
                 <GroupDetails id={router.query.id} />
             </div>

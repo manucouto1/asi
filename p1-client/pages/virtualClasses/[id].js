@@ -7,7 +7,7 @@ export default function VirtualClasses(){
     const router = useRouter();
     return (
         <BasicLayout>
-            <Seo title="Detalles" description="Detalles de un aula virtual"/>
+            <Seo title="Aula virtual" description="Detalles de un aula virtual"/>
             <div>
                 <VirtualClassDetails id={router.query.id} />
             </div>
