@@ -1,16 +1,15 @@
 import Seo from "../../components/Seo";
 import BasicLayout from "../../layouts/BasicLayout"
 import {useRouter} from 'next/router'
-import GroupDetails from "../../components/GroupDetails/GroupDetails";
+import GroupList from "../../components/Groups/GroupList";
 
 export default function Groups(){
     const router = useRouter();
-    console.log("Cargando: " + router.query.id)
     return (
         <BasicLayout>
             <Seo title="Detalles" description="Detalles de un grupo"/>
             <div>
-                <GroupDetails id={router.query.id} />
+                <GroupList/>
             </div>
         </BasicLayout>
     )

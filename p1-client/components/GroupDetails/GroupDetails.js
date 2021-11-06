@@ -2,26 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { getGroup } from "../../api/group";
 
-const GroupDetails = (props) => {
-  const {id} = props
+const GroupDetails = ({id}) => {
   const [group, setGroup] = useState(undefined);
   const [loading, setLoading] = useState(false);
-  const [reload, setReload] = useState(true);
 
   useEffect(() => {
+    console.log(id)
     async function fetchMyAPI() {
       setLoading(true);
-      if (id != undefined){
+      if(id !== undefined) {
         const response = await getGroup(id);
-        console.log(response);
         setGroup(response);
         setLoading(false);
-        setReload(false)
       }
-      
     }
     fetchMyAPI();
-  }, [reload]);
+  }, [id]);
 
   return (
     <div >
