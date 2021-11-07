@@ -101,23 +101,29 @@ function MenuOptions(props) {
           <Dropdown text="Cursos" pointing className="item">
             <Dropdown.Menu>
               <Link href="/courses/crear_curso">
-                <Dropdown.Item as="a">
-                  Crear curso
-                </Dropdown.Item>
+                <Dropdown.Item as="a">Crear curso</Dropdown.Item>
               </Link>
               <Link href="/courses/listar_cursos">
+                <Dropdown.Item as="a">Ver cursos</Dropdown.Item>
+              </Link>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown text="Cursos" pointing className="item">
+            <Dropdown.Menu>
+              <Link href="/students/registro_alumnos">
                 <Dropdown.Item as="a">
-                  Ver cursos
+                  <Icon name="address book" />
+                  Registrar alumnos
+                </Dropdown.Item>
+              </Link>
+              <Link href="/students/listar_alumnos">
+                <Dropdown.Item as="a">
+                  <Icon name="address book" />
+                  Ver alumnos
                 </Dropdown.Item>
               </Link>
             </Dropdown.Menu>
           </Dropdown>
-          <Link href="/gestion/registro_alumnos">
-            <Menu.Item as="a">
-              <Icon name="address book" />
-              Alumnos
-            </Menu.Item>
-          </Link>
           <Menu.Item onClick={logout}>
             <Icon name="power off" />
           </Menu.Item>
