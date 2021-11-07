@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Menu, Grid, Icon, Label } from "semantic-ui-react";
+import { Container, Menu, Grid, Icon, Dropdown } from "semantic-ui-react";
 import Link from "next/link";
 import { map } from "lodash";
 import BasicModal from "../../Modal/BasicModal";
@@ -51,8 +51,7 @@ export default function MenuWeb() {
         size="small"
       >
         {/* <Auth onCloseModal={onCloseModal} setTitleModal={setTitleModal} /> */}
-        <LoginForm  onCloseModal={onCloseModal}/>
-        
+        <LoginForm onCloseModal={onCloseModal} />
       </BasicModal>
     </div>
   );
@@ -75,7 +74,7 @@ function MenuProductTypes(props) {
 
 function MenuOptions(props) {
   const { onShowModal, user, logout } = props;
-  const {productsCart} = useCart();
+  const { productsCart } = useCart();
 
   return (
     <Menu>
@@ -83,13 +82,13 @@ function MenuOptions(props) {
         <>
           <Link href="/virtualClassrooms/list">
             <Menu.Item as="a">
-              <Icon name="student"/>
+              <Icon name="student" />
               Aula virtual
             </Menu.Item>
           </Link>
           <Link href="/scheduler/courses_schedulerV2">
             <Menu.Item as="a">
-              <Icon name="calendar alternate outline"/>
+              <Icon name="calendar alternate outline" />
               Horarios
             </Menu.Item>
           </Link>
@@ -99,14 +98,22 @@ function MenuOptions(props) {
               {user.username}
             </Menu.Item>
           </Link>
-          <Link href="/gestion/crear_curso">
-            <Menu.Item as="a">
-              <Icon name="book" />
-              Cursos
-            </Menu.Item>
-          </Link>
+          <Dropdown text="Cursos" pointing className="item">
+            <Dropdown.Menu>
+              <Link href="/courses/crear_curso">
+                <Dropdown.Item as="a">
+                  Crear curso
+                </Dropdown.Item>
+              </Link>
+              <Link href="/courses/listar_cursos">
+                <Dropdown.Item as="a">
+                  Ver cursos
+                </Dropdown.Item>
+              </Link>
+            </Dropdown.Menu>
+          </Dropdown>
           <Link href="/gestion/registro_alumnos">
-            <Menu.Item as="a" >
+            <Menu.Item as="a">
               <Icon name="address book" />
               Alumnos
             </Menu.Item>
@@ -119,10 +126,10 @@ function MenuOptions(props) {
         <>
           <Link href="/scheduler/courses_schedulerV2">
             <Menu.Item as="a">
-              <Icon name="calendar alternate outline"/>
-                Horarios
-              </Menu.Item>
-            </Link>
+              <Icon name="calendar alternate outline" />
+              Horarios
+            </Menu.Item>
+          </Link>
           <Menu.Item onClick={onShowModal}>
             <Icon name="user outline" />
             Mi cuenta
