@@ -1,4 +1,22 @@
 {
+  "courses": [
+    {
+      "id": 1,
+      "idioma": "Inglés",
+      "nivel": "C1"
+    },
+    {
+      "id": 2,
+      "idioma": "Inglés",
+      "nivel": "B2"
+    },
+    {
+      "id": 3,
+      "idioma": "Alemán",
+      "nivel": "B1"
+    }
+  ],
+
   "groups": [
     {
       "id": 1,
