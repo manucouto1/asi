@@ -154,6 +154,39 @@
       "nombre": "Ana María",
       "login": "estudiante1@udc.es",
       "role": 2
+    },
+    {
+      "id": 4,
+      "nombre": "Juan Gabriel Pérez",
+      "login": "estudiante2@udc.es",
+      "role": 2
+    },
+    {
+      "id": 5,
+      "nombre": "Antonio M.",
+      "login": "estudiante3@udc.es",
+      "role": 2
+    }
+  ],
+
+  "students": [
+    {
+      "id": 3,
+      "nombre": "Ana María",
+      "login": "estudiante1@udc.es",
+      "role": 2
+    },
+    {
+      "id": 4,
+      "nombre": "Juan Gabriel Pérez",
+      "login": "estudiante2@udc.es",
+      "role": 2
+    },
+    {
+      "id": 5,
+      "nombre": "Antonio M.",
+      "login": "estudiante3@udc.es",
+      "role": 2
     }
   ],
 
