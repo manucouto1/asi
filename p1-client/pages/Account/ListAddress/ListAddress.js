@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { map, size } from "lodash";
-import { getAddressesApi, deleteAddressApi } from "../../../api/address";
+//import { getAddressesApi, deleteAddressApi } from "../../../api/address";
 import useAuth from "../../../hooks/useAuth";
 
 export default function ListAddress(props) {

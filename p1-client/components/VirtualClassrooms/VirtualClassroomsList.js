@@ -15,8 +15,9 @@ const VirtualClassroomsList = () => {
   }, []);
 
   return (
-    <div>
-        <p style={{ padding: "10%"}}>
+    <div style={{ padding: "2%" }}>
+      <h3>Lista de aulas virtuales</h3>
+        <p>
         {virtualClassrooms !== undefined &&
             virtualClassrooms.map((x) => {
             return <p style={{ margin: "5%"}}><a href={x.id}>{`${x.grupo.idioma} ${x.grupo.nivel} ${x.grupo.nombre}`}</a></p>;
