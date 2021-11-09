@@ -108,7 +108,7 @@ function MenuOptions(props) {
               </Link>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown text="Cursos" pointing className="item">
+          <Dropdown text="Alumnos" pointing className="item">
             <Dropdown.Menu>
               <Link href="/students/registro_alumnos">
                 <Dropdown.Item as="a">
