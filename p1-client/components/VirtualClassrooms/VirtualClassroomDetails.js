@@ -28,7 +28,7 @@ const VirtualClassroomDetails = ({ id }) => {
         <a>Avisos</a>
       </p>
       <p style={{ marginLeft: "5%" }}>
-        <a>Lista de alumnos</a>
+        <a href="/students/listar_alumnos">Lista de alumnos</a>
       </p>
       <div style={{ marginTop: "5%", marginLeft: "5%" }}>
         {virtualClassroom.avisos.map((x) => {
