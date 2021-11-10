@@ -124,6 +124,22 @@ function MenuOptions(props) {
               </Link>
             </Dropdown.Menu>
           </Dropdown>
+          <Dropdown text="Profesores" pointing className="item">
+            <Dropdown.Menu>
+              <Link href="/teachers/registro_profesores">
+                <Dropdown.Item as="a">
+                  <Icon name="address book" />
+                  Registrar profesores
+                </Dropdown.Item>
+              </Link>
+              <Link href="/teachers/listar_profesores">
+                <Dropdown.Item as="a">
+                  <Icon name="address book" />
+                  Ver profesores
+                </Dropdown.Item>
+              </Link>
+            </Dropdown.Menu>
+          </Dropdown>
           <Menu.Item onClick={logout}>
             <Icon name="power off" />
           </Menu.Item>
