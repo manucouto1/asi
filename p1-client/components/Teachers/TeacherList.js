@@ -29,7 +29,7 @@ const TeacherList = () => {
         ))}
       <div style={{ textAlign: "right" }}>
         <Button class="ui primary button">
-          <a href="/teachers/registrar_profesores">
+          <a href="/teachers/registro_profesores">
             <p>Añadir nuevo profesor</p>
           </a>
         </Button>
