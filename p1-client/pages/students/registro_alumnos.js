@@ -5,7 +5,7 @@ import RegisterForm from "../../components/Auth/RegisterForm";
 export default function Register(){
     return (
         <BasicLayout className="register">
-            <Seo title="Registration Form" description="Formulario de registro de usuarios"/>
+            <Seo title="Registration Form" description="Formulario de registro de alumnos"/>
             <div className="register__block">
                 <RegisterForm/>
             </div>

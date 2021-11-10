@@ -16,7 +16,7 @@ const StudentDetails = ({ id }) => {
 
   return (
     <div style={{ padding: "2%" }}>
-      <h3>Página de detalles de un alumno</h3>
+      <h3>Detalles de un alumno</h3>
       <div>
         <p>Nombre: {student !== undefined && student.nombre}</p>
         <p>Login: {student !== undefined && student.login}</p>

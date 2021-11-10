@@ -190,6 +190,27 @@
     }
   ],
 
+  "teachers": [
+    {
+      "id": 6,
+      "nombre": "María Isabel",
+      "login": "profesor1@udc.es",
+      "role": 1
+    },
+    {
+      "id": 7,
+      "nombre": "Ricardo Pérez",
+      "login": "profesor2@udc.es",
+      "role": 1
+    },
+    {
+      "id": 8,
+      "nombre": "José Manuel Castro",
+      "login": "profesor3@udc.es",
+      "role": 1
+    }
+  ],
+
   "horarios": [
     {
       "name": "Lunes",
