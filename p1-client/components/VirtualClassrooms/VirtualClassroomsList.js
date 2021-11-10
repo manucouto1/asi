@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getVirtualClassrooms } from "../../api/virtualClassroom";
+import { Button } from "semantic-ui-react";
 
 const VirtualClassroomsList = () => {
   const [virtualClassrooms, setVirtualClassrooms] = useState();
@@ -17,12 +18,30 @@ const VirtualClassroomsList = () => {
   return (
     <div style={{ padding: "2%" }}>
       <h3>Lista de aulas virtuales</h3>
-        <p>
+      <p>
         {virtualClassrooms !== undefined &&
-            virtualClassrooms.map((x) => {
-            return <p style={{ margin: "5%"}}><a href={x.id}>{`${x.grupo.idioma} ${x.grupo.nivel} ${x.grupo.nombre}`}</a></p>;
-            })}
-        </p>
+          virtualClassrooms.map((x) => {
+            return (
+              <div style={{ margin: "5%" }}>
+                <a
+                  href={x.id}
+                >{`${x.grupo.idioma} ${x.grupo.nivel} ${x.grupo.nombre}`}</a>
+                <Button
+                  class="ui negative basic button"
+                  style={{ marginLeft: "1em" }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  class="ui negative basic button"
+                  style={{ marginLeft: "1em" }}
+                >
+                  Eliminar
+                </Button>
+              </div>
+            );
+          })}
+      </p>
     </div>
   );
 };
