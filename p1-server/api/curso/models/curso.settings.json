@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "idiomas",
+  "collectionName": "cursos",
   "info": {
-    "name": "Idioma",
+    "name": "Curso",
     "description": ""
   },
   "options": {
@@ -14,13 +14,20 @@
   "attributes": {
     "nombre": {
       "type": "string",
-      "unique": true,
-      "required": true
-    },
-    "siglas": {
-      "type": "string",
       "required": true,
       "unique": true
+    },
+    "idioma": {
+      "model": "idioma"
+    },
+    "nivel": {
+      "model": "nivel"
+    },
+    "minimo": {
+      "type": "integer"
+    },
+    "maximo": {
+      "type": "integer"
     }
   }
 }
