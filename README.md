@@ -70,5 +70,18 @@ Simplemente importamos la imagen del archivo
 ```
 docker load -i <archivo>
 ```
-
+# Conectarse a mongodb
+autenticarse
+```
+mongo
+use admin
+db.auth('user', 'pass')
+```
+visualizar
+```
+show db
+use <targetDB>
+show collection
+db.<targetCollection>.find()
+```
 
