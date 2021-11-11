@@ -56,5 +56,19 @@ cd p1-client
 npm run dev
 
 ```
+# Exportar mongodb
+Para exportar el estado del contenedor mongodb primero se hace un commit del contenedor en ejecución
+```
+docker commit <container-id> <container-name>
+```
+Luego guardamos la imagen en un archivo
+```
+docker save -o <archivo> <image-id>
+```
+# Importar el mongodb
+Simplemente importamos la imagen del archivo
+```
+docker load -i <archivo>
+```
 
 
