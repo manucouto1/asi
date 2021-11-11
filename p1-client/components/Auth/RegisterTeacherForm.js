@@ -1,29 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { map } from "lodash";
 import { Form, Button } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { registerApi } from "../../api/user";
 import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
+import { createTeacher } from "../../api/teacher";
+import { getCourses } from "../../api/course";
 
 export default function RegisterTeacherForm(props) {
   const { showLoginForm } = props;
   const [loading, setLoading] = useState(false);
-  const options = [
-    { key: 'eng', text: 'Ingles B1', value: 'cursoId1' },
-    { key: 'fr', text: 'Frances C1', value: 'cursoId2' },
-    { key: 'pas', text: 'Aleman A2', value: 'cursoId3' },
-  ]
+  const [courses, setCourses] = useState();
+  const {logout} = useAuth();
+
+  useEffect(() => {
+    (async () => {
+      const response = await getCourses();
+      setCourses(response);
+    })();
+  }, [])
+
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formData) => {
       setLoading(true);
-      const response = await registerApi(formData);
+      const response = await createTeacher(formData, logout);
 
-      if (response?.jwt) {
-        showLoginForm();
-        toast.success("Registro completado, ya puede iniciar sesión");
+      if (response?._id) {
+        toast.success("Registro completado, Profesor asignado a curso");
       } else {
         toast.error("Error al registrar el usuario, inténtelo más tarde");
       }
@@ -40,11 +46,11 @@ export default function RegisterTeacherForm(props) {
       <Form.Group>
         <Form.Input
           label="Nombre:"
-          name="name"
+          name="nombre"
           type="text"
           placeholder="Nombre"
           onChange={formik.handleChange}
-          error={formik.errors.name}
+          error={formik.errors.nombre}
           width={8}
         />
         
@@ -100,9 +106,9 @@ export default function RegisterTeacherForm(props) {
       <Form.Group widths='equal'>
         
         <Form.Field label="Cursos:" name="curso" placeholder='Cursos' control='select'  
-          onChange={formik.handleChange} error={formik.errors.role}>
-            {map(options, ({text, value}) => {
-              return <option value={value}>{text}</option>
+          onChange={formik.handleChange} error={formik.errors.curso}>
+            {map(courses, ({id, nombre}) => {
+              return <option value={id}>{nombre}</option>
             })}
         </Form.Field>
     
@@ -130,7 +136,7 @@ function initialValues() {
 
 function validationSchema() {
   return {
-    name: Yup.string().required(true),
+    nombre: Yup.string().required(true),
     apellido1: Yup.string().required(true),
     apellido2: Yup.string().required(true),
     edad: Yup.number().required(true),

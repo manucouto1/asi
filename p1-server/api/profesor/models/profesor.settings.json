@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "profesors",
+  "info": {
+    "name": "profesor"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "apellido1": {
+      "type": "string"
+    },
+    "apellido2": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "edad": {
+      "type": "integer"
+    },
+    "direccion": {
+      "type": "string"
+    },
+    "curso": {
+      "model": "curso"
+    }
+  }
+}

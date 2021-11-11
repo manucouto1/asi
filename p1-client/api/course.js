@@ -25,7 +25,7 @@ export async function createCourse(course, logout) {
     }
     const result = await authFetch(url, params, logout);
     return result ? result : null;
-  } catch (erro) {
+  } catch (error) {
     return null;
   }
 }
