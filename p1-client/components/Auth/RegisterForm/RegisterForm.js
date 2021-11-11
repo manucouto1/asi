@@ -101,7 +101,7 @@ export default function RegisterForm(props) {
       <Form.Group widths='equal'>
         
         <Form.Field label="Cursos:" name="curso" placeholder='Cursos' control='select'  
-          onChange={formik.handleChange} error={formik.errors.role}>
+          onChange={formik.handleChange} error={formik.errors.curso}>
             {map(options, ({text, value}) => {
               return <option value={value}>{text}</option>
             })}

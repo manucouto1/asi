@@ -69,7 +69,6 @@ export default function RegisterTeacherForm(props) {
         
       </Form.Group>
       <Form.Group>
-        
         <Form.Input
           label="Correo electrónico:"
           name="email"

@@ -5,8 +5,8 @@ import jwtDecode from "jwt-decode";
 import AuthContext from "../context/AuthContext";
 import { setToken, getToken, removeToken } from "../api/token";
 import "../scss/global.scss";
-import "semantic-ui-css/semantic.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import "semantic-ui-css/semantic.min.css";
 
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState(undefined);

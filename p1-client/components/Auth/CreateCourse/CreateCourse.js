@@ -1,36 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { map } from "lodash";
 import { Form, Button } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { registerApi } from "../../../api/user";
 import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
+import {getIdiomas} from "../../../api/idiomas";
+import {getNiveles} from "../../../api/niveles";
+import {createCourse} from "../../../api/course";
 
 export default function RegisterForm(props) {
   const { showLoginForm } = props;
   const [loading, setLoading] = useState(false);
-  const options = [
-    { key: 'eng', text: 'Ingles B1', value: 'cursoId1' },
-    { key: 'fr', text: 'Frances C1', value: 'cursoId2' },
-    { key: 'pas', text: 'Aleman A2', value: 'cursoId3' },
-  ]
+  const [idiomas, setIdiomas] = useState({});
+  const [niveles, setNiveles] = useState({});
+  const {logout} = useAuth();
+
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formData) => {
       setLoading(true);
-      const response = await registerApi(formData);
-
-      if (response?.jwt) {
-        showLoginForm();
-        toast.success("Registro completado, ya puede iniciar sesión");
+      const response = await createCourse(formData, logout);
+      if (response) {
+        toast.success("Curso creado correctamente");
       } else {
-        toast.error("Error al registrar el usuario, inténtelo más tarde");
+        toast.error("Ha habido un error, revise los campos del formulario");
       }
 
       setLoading(false);
     },
   });
+
+  function myHandlerChangeIdioma( evento ) {
+    const value = evento.target.value
+    console.log(value)
+    formik.handleChange(evento)
+    formik.setFieldValue("idioma", value)
+  }
+
+  function myHandlerChangeNivel( evento ) {
+    const value = evento.target.value
+    console.log(value)
+    formik.handleChange(evento)
+    formik.setFieldValue("nivel", value)
+  }
+
+
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const response = await getIdiomas();
+      setIdiomas(response);
+      const response2 = await getNiveles();
+      setNiveles(response2);
+    }
+    fetchMyAPI();
+  }, []);
 
   return (
     <Form className="login-form" onSubmit={formik.handleSubmit}>
@@ -48,26 +73,21 @@ export default function RegisterForm(props) {
           width={8}
         />
         
-        <Form.Input
-          label="Idioma:"
-          name="idioma"
-          type="text"
-          placeholder="Idioma"
-          onChange={formik.handleChange}
-          error={formik.errors.idioma}
-          width={4}
-        />
-         <Form.Input
-          label="Nivel:"
-          name="nivel"
-          type="text"
-          placeholder="Nivel"
-          onChange={formik.handleChange}
-          error={formik.errors.nivel}
-          width={4}
-        />
-        
+        <Form.Field label="Idiomas:" name="idioma" placeholder='Idiomas' control='select'  
+          onChange={myHandlerChangeIdioma} error={formik.errors.idioma} width={4}>
+            {map(idiomas, ({nombre, id}) => {
+              return <option key={nombre} value={id}>{nombre}</option>
+            })}
+        </Form.Field>
+
+        <Form.Field label="Nivel:" name="nivel" placeholder='Niveles' control='select'  
+          onChange={myHandlerChangeNivel} error={formik.errors.nivel} width={4}>
+            {map(niveles, ({codigo, id}) => {
+              return <option key={codigo} value={id}>{codigo}</option>
+            })}
+        </Form.Field>
       </Form.Group>
+
       <Form.Group>
         
         <Form.Input
@@ -118,3 +138,4 @@ function validationSchema() {
     maximo: Yup.number().required(true),
   };
 }
+

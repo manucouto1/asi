@@ -6,9 +6,7 @@ export default function Courses(){
     return (
         <BasicLayout className="register">
             <Seo title="Cursos" description="Listado de cursos"/>
-            <div>
-                <CourseList/>
-            </div>
+            <CourseList/>
         </BasicLayout>
     )
 }

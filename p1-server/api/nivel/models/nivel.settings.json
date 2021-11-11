@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "nivels",
   "info": {
-    "name": "nivel"
+    "name": "nivel",
+    "description": ""
   },
   "options": {
     "increments": true,
