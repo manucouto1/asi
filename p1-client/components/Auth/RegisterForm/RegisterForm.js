@@ -1,36 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { map } from "lodash";
 import { Form, Button } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { registerApi } from "../../../api/user";
 import { toast } from "react-toastify";
+import { getCourses } from "../../../api/course";
+import { createStudent } from "../../../api/student";
+import useAuth from "../../../hooks/useAuth";
 
 export default function RegisterForm(props) {
-  const { showLoginForm } = props;
   const [loading, setLoading] = useState(false);
-  const options = [
-    { key: 'eng', text: 'Ingles B1', value: 'cursoId1' },
-    { key: 'fr', text: 'Frances C1', value: 'cursoId2' },
-    { key: 'pas', text: 'Aleman A2', value: 'cursoId3' },
-  ]
+  const [courses, setCourses] = useState();
+  const {logout} = useAuth();
+
+  useEffect(() => {
+    (async () => {
+      const response = await getCourses();
+      setCourses(response);
+    })();
+  }, [])
+
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formData) => {
       setLoading(true);
-      const response = await registerApi(formData);
-
-      if (response?.jwt) {
-        showLoginForm();
-        toast.success("Registro completado, ya puede iniciar sesión");
+      console.log(formData)
+      const response = await createStudent(formData, logout);
+      console.log(response)
+      if (response?._id) {
+        toast.success("Registro completado, El alumno se ha inscrito al curso");
       } else {
-        toast.error("Error al registrar el usuario, inténtelo más tarde");
+        toast.error("Error al registrar el alumno, inténtelo más tarde");
       }
 
       setLoading(false);
     },
   });
+
+  // function myHandlerSetCourse( evento ) {
+  //   const value = evento.target.value
+  //   formik.handleChange(evento)
+  //   formik.setFieldValue('curso', value)
+  // }
 
   return (
     <Form className="login-form" onSubmit={formik.handleSubmit}>
@@ -40,11 +52,11 @@ export default function RegisterForm(props) {
       <Form.Group>
         <Form.Input
           label="Nombre:"
-          name="name"
+          name="nombre"
           type="text"
           placeholder="Nombre"
           onChange={formik.handleChange}
-          error={formik.errors.name}
+          error={formik.errors.nombre}
           width={8}
         />
         
@@ -102,8 +114,8 @@ export default function RegisterForm(props) {
         
         <Form.Field label="Cursos:" name="curso" placeholder='Cursos' control='select'  
           onChange={formik.handleChange} error={formik.errors.curso}>
-            {map(options, ({text, value}) => {
-              return <option value={value}>{text}</option>
+            {map(courses, ({id, nombre}) => {
+              return <option value={id}>{nombre}</option>
             })}
         </Form.Field>
     
@@ -131,7 +143,7 @@ function initialValues() {
 
 function validationSchema() {
   return {
-    name: Yup.string().required(true),
+    nombre: Yup.string().required(true),
     apellido1: Yup.string().required(true),
     apellido2: Yup.string().required(true),
     edad: Yup.number().required(true),

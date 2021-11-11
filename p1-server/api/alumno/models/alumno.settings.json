@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "alumnos",
+  "info": {
+    "name": "Alumno",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "edad": {
+      "type": "integer"
+    },
+    "direccion": {
+      "type": "string"
+    },
+    "curso": {
+      "model": "curso"
+    },
+    "nombre": {
+      "type": "string",
+      "required": true
+    },
+    "apellido1": {
+      "type": "string",
+      "required": true
+    },
+    "apellido2": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

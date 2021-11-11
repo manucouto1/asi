@@ -10,7 +10,6 @@ import {getNiveles} from "../../../api/niveles";
 import {createCourse} from "../../../api/course";
 
 export default function RegisterForm(props) {
-  const { showLoginForm } = props;
   const [loading, setLoading] = useState(false);
   const [idiomas, setIdiomas] = useState({});
   const [niveles, setNiveles] = useState({});
@@ -22,7 +21,7 @@ export default function RegisterForm(props) {
     onSubmit: async (formData) => {
       setLoading(true);
       const response = await createCourse(formData, logout);
-      if (response) {
+      if (response?._id) {
         toast.success("Curso creado correctamente");
       } else {
         toast.error("Ha habido un error, revise los campos del formulario");
@@ -34,14 +33,12 @@ export default function RegisterForm(props) {
 
   function myHandlerChangeIdioma( evento ) {
     const value = evento.target.value
-    console.log(value)
     formik.handleChange(evento)
     formik.setFieldValue("idioma", value)
   }
 
   function myHandlerChangeNivel( evento ) {
     const value = evento.target.value
-    console.log(value)
     formik.handleChange(evento)
     formik.setFieldValue("nivel", value)
   }
