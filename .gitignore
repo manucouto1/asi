@@ -8,3 +8,4 @@
 !.gitignore
 !docker-compose.yaml
 !mongo-init.js
+!asi-backup.tar
