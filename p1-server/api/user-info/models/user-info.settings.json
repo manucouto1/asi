@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_infos",
+  "info": {
+    "name": "UserInfo"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "apellido1": {
+      "type": "string"
+    },
+    "apellido2": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "edad": {
+      "type": "integer"
+    },
+    "direccion": {
+      "type": "string"
+    }
+  }
+}
