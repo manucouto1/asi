@@ -1,23 +1,26 @@
 //Colors
-@import "./colors.scss";
-
+@import './colors.scss';
 
 //Pages
-@import "../pages/index.module.scss";
-@import "../pages/gestion/registro_alumnos.module.scss";
-@import "../pages/account.module.scss";
-@import "../pages/scheduler/courses_schedurler.module.scss";
+@import '../pages/index.module.scss';
+@import '../pages/gestion/registro_alumnos.module.scss';
+@import '../pages/account.module.scss';
+@import '../pages/scheduler/courses_schedurler.module.scss';
+@import '../pages/usuario/secretaria.module.scss';
+@import '../pages/courses/curso.module.scss';
 
 //Layout
-@import "../layouts/BasicLayout/BasicLayout.module.scss";
-@import "../components/Header/Header.module.scss";
-@import "../components/Header/TopBar/TopBar.module.scss";
-@import "../components/Header/Menu/Menu.module.scss";
-@import "../components/Modal/BasicModal/BasicModal.module.scss";
-@import "../components/Auth/LoginForm/LoginForm.module.scss";
-@import "../components/Account/ChangeNameForm/ChangeNameForm.model.scss";
-@import "../components/Account/ChangeEmailForm/ChangeEmailForm.model.scss";
-@import "../components/Account/ChangePasswordForm/ChangePasswordForm.module.scss";
-@import "../components/Account/AddressForm/AddressForm.module.scss";
-@import "../components/Account/ListAddress/ListAddress.module.scss";
-@import "../components/MySchedulerV2/MySchedulerV2.module.scss";
+@import '../layouts/BasicLayout/BasicLayout.module.scss';
+@import '../components/Header/Header.module.scss';
+@import '../components/Header/TopBar/TopBar.module.scss';
+@import '../components/Header/Menu/Menu.module.scss';
+@import '../components/Modal/BasicModal/BasicModal.module.scss';
+@import '../components/Auth/LoginForm/LoginForm.module.scss';
+@import '../components/Account/ChangeNameForm/ChangeNameForm.model.scss';
+@import '../components/Account/ChangeEmailForm/ChangeEmailForm.model.scss';
+@import '../components/Account/ChangePasswordForm/ChangePasswordForm.module.scss';
+@import '../components/Account/AddressForm/AddressForm.module.scss';
+@import '../components/Account/ListAddress/ListAddress.module.scss';
+@import '../components/MySchedulerV2/MySchedulerV2.module.scss';
+@import '../components/profile/profileSection.module.scss';
+@import '../components/secretaria/secretariaPanel.module.scss';

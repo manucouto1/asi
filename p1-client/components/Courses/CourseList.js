@@ -1,54 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { getCourses } from "../../api/course";
-import {map} from "lodash";
-import { Button } from "semantic-ui-react";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect } from 'react'
+import { getCourses } from '../../api/course'
+import { map } from 'lodash'
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  CardActions,
+} from '@mui/material'
 
 export default function CourseList() {
-  const [courses, setCourses] = useState();
+  const [courses, setCourses] = useState()
 
   useEffect(() => {
-    (async () => {
-      const response = await getCourses();
-      setCourses(response);
+    ;(async () => {
+      const response = await getCourses()
+      setCourses(response)
     })()
-  }, []);
+  }, [])
 
   return (
     <div className="courseList">
-      {courses !== undefined && 
+      {courses !== undefined && (
         <div>
           {map(courses, (x) => {
-            return (<Course nombre={x.nombre} idioma={x.idioma.nombre} nivel={x.nivel.nombre} />)
-          })}          
+            console.log(x._id)
+            return <Course key={x._id} curso={x} />
+          })}
         </div>
-      }
-      <Button>
+      )}
+      <Button color="primary">
         <a href="/courses/crear_curso">
           <p>Añadir nuevo curso</p>
         </a>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-function Course(props){
-  const {nombre, idioma, nivel} = props
+function Course(props) {
+  const { curso } = props
+  const { id, nombre, idioma, nivel } = curso
+  const next_url = `/courses/${id}`
+  console.log(next_url)
   return (
-    <Card sx={{display: 'inline-block', margin: '20px'}}>
+    <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {idioma}{bull}{nivel}
+          {idioma.name}
+          {bull}
+          {nivel.name}
         </Typography>
         <Typography variant="h5" component="div">
           {nombre}
         </Typography>
       </CardContent>
+      <CardActions>
+        <Button href={next_url} size="small" color="primary">
+          {' '}
+          Go to course
+        </Button>
+      </CardActions>
     </Card>
-  );
+  )
 }
 
 const bull = (
@@ -58,4 +73,4 @@ const bull = (
   >
     •
   </Box>
-);
+)

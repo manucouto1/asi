@@ -22,9 +22,6 @@
     "direccion": {
       "type": "string"
     },
-    "curso": {
-      "model": "curso"
-    },
     "nombre": {
       "type": "string",
       "required": true
@@ -36,6 +33,10 @@
     "apellido2": {
       "type": "string",
       "required": true
+    },
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user"
     }
   }
 }

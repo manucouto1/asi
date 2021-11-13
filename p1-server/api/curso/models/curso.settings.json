@@ -28,6 +28,12 @@
     },
     "maximo": {
       "type": "integer"
+    },
+    "alumnos": {
+      "collection": "alumno"
+    },
+    "profesor": {
+      "model": "profesor"
     }
   }
 }

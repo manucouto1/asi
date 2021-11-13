@@ -6,6 +6,7 @@ npm install
 cd ..
 cd p1-server
 npm install
+npm run build
 ```
 Seguramente falte alguna dependencia por añadir al package.json, solo tendréis que meter el comando:
 ```

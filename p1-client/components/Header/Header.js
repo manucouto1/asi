@@ -1,8 +1,6 @@
-import Link from "next/link";
-import { logout } from "../../utils/auth";
-import style from "./Header.module.scss";
-import TopBar from "./TopBar";
-import Menu from "./Menu";
+import style from './Header.module.scss'
+import TopBar from './TopBar'
+import Menu from './Menu'
 
 export default function Header() {
   return (
@@ -10,5 +8,5 @@ export default function Header() {
       <TopBar />
       <Menu />
     </div>
-  );
+  )
 }

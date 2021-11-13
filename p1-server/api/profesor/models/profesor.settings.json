@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "profesors",
   "info": {
-    "name": "profesor"
+    "name": "profesor",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -29,8 +30,9 @@
     "direccion": {
       "type": "string"
     },
-    "curso": {
-      "model": "curso"
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user"
     }
   }
 }

@@ -6,20 +6,10 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import { createTeacher } from "../../api/teacher";
-import { getCourses } from "../../api/course";
 
 export default function RegisterTeacherForm(props) {
-  const { showLoginForm } = props;
   const [loading, setLoading] = useState(false);
-  const [courses, setCourses] = useState();
   const {logout} = useAuth();
-
-  useEffect(() => {
-    (async () => {
-      const response = await getCourses();
-      setCourses(response);
-    })();
-  }, [])
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -103,17 +93,7 @@ export default function RegisterTeacherForm(props) {
           width={8}
         />
       </Form.Group>
-      <Form.Group widths='equal'>
-        
-        <Form.Field label="Cursos:" name="curso" placeholder='Cursos' control='select'  
-          onChange={formik.handleChange} error={formik.errors.curso}>
-            {map(courses, ({id, nombre}) => {
-              return <option value={id}>{nombre}</option>
-            })}
-        </Form.Field>
-    
-      </Form.Group>
-      
+
       <div className="actions">
         <Button type="submit" className="submit" loading={loading}>
           Registrar
@@ -130,7 +110,6 @@ function initialValues() {
     apellido1: "",
     apellido2: "",
     email: "",
-    curso: "",
   };
 }
 
@@ -141,7 +120,5 @@ function validationSchema() {
     apellido2: Yup.string().required(true),
     edad: Yup.number().required(true),
     email: Yup.string().email(true).required(true),
-    curso: Yup.string().required(true)
-      
   };
 }

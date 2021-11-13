@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { Image, Item } from 'semantic-ui-react'
 
 export default function TeacherList () {
   const [teachers, setTeachers] = useState();
@@ -19,7 +20,7 @@ export default function TeacherList () {
   }, []);
 
   return (
-    <div style={{ margin: "10%" }}>
+    <div className="teacherList">
       {teachers !== undefined &&
           <div>
             {
@@ -46,7 +47,6 @@ export default function TeacherList () {
     </div>
   );
 };
-
 
 function Teacher(props){
   const {nombre, apellido1, apellido2, email, edad} = props

@@ -8,6 +8,8 @@ import "../scss/global.scss";
 import "react-toastify/dist/ReactToastify.css";
 import "semantic-ui-css/semantic.min.css";
 
+
+
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState(undefined);
   const [totalProductsCart, setTotalProductsCart] = useState(0)
