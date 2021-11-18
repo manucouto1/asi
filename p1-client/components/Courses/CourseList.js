@@ -48,9 +48,9 @@ function Course(props) {
     <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {idioma.name}
+          {idioma !== undefined && idioma.name}
           {bull}
-          {nivel.name}
+          {nivel !== undefined && nivel.name}
         </Typography>
         <Typography variant="h5" component="div">
           {nombre}
