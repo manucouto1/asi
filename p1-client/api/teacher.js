@@ -16,7 +16,7 @@ export async function getTeachers() {
 
 export async function getTeacher(id) {
   try {
-    const url = `${BASE_PATH}/teachers/${id}`;
+    const url = `${BASE_PATH}/profesors/${id}`;
     
     const response = await fetch(url, null);
     const result = await response.json();
