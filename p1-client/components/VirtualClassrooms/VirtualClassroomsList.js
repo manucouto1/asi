@@ -26,18 +26,6 @@ const VirtualClassroomsList = () => {
                 <a
                   href={x.id}
                 >{`${x.grupo.idioma} ${x.grupo.nivel} ${x.grupo.nombre}`}</a>
-                <Button
-                  class="ui negative basic button"
-                  style={{ marginLeft: "1em" }}
-                >
-                  Editar
-                </Button>
-                <Button
-                  class="ui negative basic button"
-                  style={{ marginLeft: "1em" }}
-                >
-                  Eliminar
-                </Button>
               </div>
             );
           })}

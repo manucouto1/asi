@@ -26,7 +26,7 @@ export default function CourseList() {
         <div>
           {map(courses, (x) => {
             console.log(x._id)
-            return <Course key={x._id} curso={x} />
+            return<a href={`/courses/${x.id}`}><Course key={x._id} curso={x} /></a>
           })}
         </div>
       )}
