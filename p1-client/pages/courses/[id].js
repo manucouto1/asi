@@ -101,8 +101,6 @@ export default function Curso() {
       profesor: teacher.value,
     }
 
-    console.log(new_curso)
-
     const response = await updateCourse(new_curso, logout)
 
     if (response?._id) {

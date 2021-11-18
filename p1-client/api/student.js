@@ -28,7 +28,6 @@ export async function getStudent(id) {
 export async function createStudent(student, logout) {
   try {
     const url = `${BASE_PATH}/alumnos`;
-    console.log(student)
     const params = {
       method: "POST",
       headers: {
@@ -36,7 +35,6 @@ export async function createStudent(student, logout) {
       },
       body: JSON.stringify(student)
     }
-    console.log(params)
     const result = await authFetch(url, params, logout);
     return result ? result : null;
   } catch(error) {
