@@ -31,30 +31,34 @@ export default function Curso() {
   const { logout } = useAuth()
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       if (router.query.id) {
         const response = await findCourse(router.query.id)
         if (response) {
           setCourse(response)
-          setTeacher({
-            value: response.profesor._id,
-            label: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
-            nombre: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
-            edad: response.profesor.edad,
-            email: response.profesor.email,
-          })
+          if(response.profesor !== undefined) {
+            setTeacher({
+              value: response.profesor._id,
+              label: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
+              nombre: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
+              edad: response.profesor.edad,
+              email: response.profesor.email,
+            })
+          }
 
-          setActual_students(
-            map(response.alumnos, (x) => {
-              return {
-                value: x._id,
-                label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-                nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-                edad: x.edad,
-                email: x.email,
-              }
-            }),
-          )
+          if(response.alumnos !== undefined) {
+            setActual_students(
+              map(response.alumnos, (x) => {
+                return {
+                  value: x._id,
+                  label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
+                  nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
+                  edad: x.edad,
+                  email: x.email,
+                }
+              }),
+            )
+          }
         }
         const response2 = await getStudents()
         if (response2) {
