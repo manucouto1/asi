@@ -24,13 +24,13 @@ export default function StudentList() {
         <div>
           {map(students, (x) => {
             return (
-              <Student
+              <a href={`/students/${x.id}`}><Student
                 nombre={x.nombre}
                 apellido1={x.apellido1}
                 apellido2={x.apellido2}
                 edad={x.edad}
                 email={x.email}
-              />
+              /></a>
             )
           })}
         </div>
