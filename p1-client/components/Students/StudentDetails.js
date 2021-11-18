@@ -18,8 +18,17 @@ const StudentDetails = ({ id }) => {
     <div style={{ padding: "2%" }}>
       <h3>Detalles de un alumno</h3>
       <div>
-        <p>Nombre: {student !== undefined && student.nombre}</p>
-        <p>Login: {student !== undefined && student.login}</p>
+        <p>
+          Nombre:
+          {student !== undefined &&
+            student !== null &&
+            ` ${student.nombre} ${student.apellido1} ${student.apellido2}`}
+        </p>
+        <p>Edad: {student !== undefined && student !== null && student.edad}</p>
+        <p>
+          Dirección:
+          {student !== undefined && student !== null && student.direccion}
+        </p>
       </div>
     </div>
   );

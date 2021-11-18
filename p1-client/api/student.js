@@ -15,7 +15,7 @@ export async function getStudents() {
 
 export async function getStudent(id) {
   try {
-    const url = `${BASE_PATH_JSON_SERVER}/students/${id}`;
+    const url = `${BASE_PATH}/alumnos/${id}`;
     
     const response = await fetch(url, null);
     const result = await response.json();
