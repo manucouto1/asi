@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "virtual_classrooms",
+  "info": {
+    "name": "VirtualClassroom",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "grupo": {
+      "model": "grupo"
+    },
+    "messages": {
+      "collection": "message"
+    }
+  }
+}
