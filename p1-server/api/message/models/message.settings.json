@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "messages",
   "info": {
-    "name": "Message"
+    "name": "Message",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -11,11 +12,15 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "text": {
+    "texto": {
       "type": "text"
     },
     "profesor": {
       "model": "profesor"
+    },
+    "grupo": {
+      "model": "grupo",
+      "via": "message"
     }
   }
 }
