@@ -20,10 +20,6 @@
     "curso": {
       "model": "curso"
     },
-    "message": {
-      "via": "grupo",
-      "model": "message"
-    },
     "virtual_classroom": {
       "via": "grupo",
       "model": "virtual-classroom"

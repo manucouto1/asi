@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
-import { getGroups } from "../../api/group";
+import { getVirtualClassrooms } from "../../api/virtualClassroom";
 import { createMessage } from "../../api/message";
 import { Select } from "semantic-ui-react";
-import useAuth from '../../hooks/useAuth'
-import { toast } from 'react-toastify'
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const VirtualClassroomCreationForm = () => {
   // States
-  const [selectedGroup, setSelectedGroup] = useState();
-  const [groups, setGroups] = useState();
-  const [message, setMessage] = useState('');
+  const [selectedVirtualClassroom, setSelectedVirtualClassroom] = useState();
+  const [virtualClassrooms, setVirtualClassrooms] = useState();
+  const [message, setMessage] = useState("");
 
   const { logout } = useAuth();
 
   useEffect(() => {
     async function fetchMyAPI() {
-      const response = await getGroups();
+      const response = await getVirtualClassrooms();
       if (response !== undefined && response !== null) {
-        setGroups(
+        setVirtualClassrooms(
           response.map((x) => {
-            return { key: x.id, text: x.nombre, value: x.id };
+            return { key: x.id, text: x.grupo.nombre, value: x.id };
           })
         );
       }
@@ -30,20 +30,21 @@ const VirtualClassroomCreationForm = () => {
 
   async function handleMessageCreation() {
     const teacherId = sessionStorage.getItem("user_id");
-    setSelectedGroup();
-    setMessage('');
     const response = await createMessage(
-      selectedGroup,
+      selectedVirtualClassroom,
       teacherId,
+      sessionStorage.getItem('user_name'),
       message,
       logout
     );
     if (response?._id) {
+      setSelectedVirtualClassroom();
+      setMessage("");
       toast.success("Mensaje registrado correctamente");
     } else {
       toast.error("Error al registrar el mensaje, inténtelo más tarde");
     }
-  };
+  }
 
   return (
     <Form style={{ padding: "2%" }}>
@@ -52,11 +53,15 @@ const VirtualClassroomCreationForm = () => {
         fluid
         style={{ width: "25%", marginBottom: "1em" }}
         label="Clase"
-        options={groups}
-        value={selectedGroup !== undefined ? selectedGroup.value : ""}
+        options={virtualClassrooms}
+        value={
+          selectedVirtualClassroom !== undefined
+            ? selectedVirtualClassroom.value
+            : ""
+        }
         placeholder="Clase..."
         onChange={(e, { value }) => {
-          setSelectedGroup(value);
+          setSelectedVirtualClassroom(value);
         }}
       />
       <Form.TextArea
@@ -69,7 +74,9 @@ const VirtualClassroomCreationForm = () => {
         <Button>{"Cancelar"}</Button>
         <Button
           onClick={handleMessageCreation}
-          disabled={selectedGroup === undefined || message.length === 0}
+          disabled={
+            selectedVirtualClassroom === undefined || message.length === 0
+          }
         >
           {"Crear"}
         </Button>

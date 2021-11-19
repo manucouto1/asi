@@ -10,8 +10,8 @@ export default function VirtualClassrooms(){
         <BasicLayout>
             <Seo title="Aula virtual" description="Lista de grupos del aula virtual"/>
             <div>
-                <VirtualClassroomsList/>
                 <VirtualClassroomCreationForm />
+                <VirtualClassroomsList/>
             </div>
         </BasicLayout>
     )

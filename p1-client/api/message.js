@@ -13,12 +13,13 @@ export async function getVirtualClassroom(virtualClassroomId) {
   }
 }
 
-export async function createMessage(groupId, teacherId, message, logout) {
+export async function createMessage(virtualClassroomId, teacherId, author, message, logout) {
   const url = `${BASE_PATH}/messages`;
   const body = {
     texto: message,
     profesor: teacherId,
-    grupo: groupId 
+    autor: author,
+    virtual_classroom: virtualClassroomId 
   }
   const params = {
     method: "POST",
@@ -27,6 +28,7 @@ export async function createMessage(groupId, teacherId, message, logout) {
     },
     body: JSON.stringify(body)
   }
+  console.log(body)
   const result = await authFetch(url, params, logout);
   return result;
 }
