@@ -31,12 +31,12 @@ export default function Curso() {
   const { logout } = useAuth()
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (router.query.id) {
         const response = await findCourse(router.query.id)
         if (response) {
           setCourse(response)
-          if(response.profesor !== undefined) {
+          if (response.profesor !== undefined) {
             setTeacher({
               value: response.profesor._id,
               label: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
@@ -46,7 +46,7 @@ export default function Curso() {
             })
           }
 
-          if(response.alumnos !== undefined) {
+          if (response.alumnos !== undefined) {
             setActual_students(
               map(response.alumnos, (x) => {
                 return {
@@ -211,7 +211,7 @@ function TablaAlumnos(props) {
   const { alumnos } = props
   return (
     <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-      <Table className="tablaAlumnosCursos" stickyHeader>
+      <Table className="tablaAlumnosCursos">
         <TableHead>
           <TableRow>
             <TableCell>Nombre</TableCell>
