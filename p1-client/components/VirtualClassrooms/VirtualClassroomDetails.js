@@ -12,7 +12,6 @@ const VirtualClassroomDetails = ({ id }) => {
       if (id !== undefined) {
         const response = await getVirtualClassroom(id);
         setVirtualClassroom(response);
-        console.log(response);
         setLoading(false);
       }
     }

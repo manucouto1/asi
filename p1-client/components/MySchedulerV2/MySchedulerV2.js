@@ -31,7 +31,6 @@ export default function Scheduler(){
         const{ DayPilotScheduler} = require('daypilot-pro-react')
         const lunes = "1969-12-29T10:00:00"
 
-        console.log(events)
         const config = {
             resources: resources,
             events: events,
@@ -66,7 +65,6 @@ export default function Scheduler(){
             },
             eventClickHandling: "Enabled",
             onEventClicked: (args) => {
-              console.log(args)
                 router.push('/groups/'+args.e.data.id)
             },
 

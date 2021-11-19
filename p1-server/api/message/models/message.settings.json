@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "messages",
+  "info": {
+    "name": "Message",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "texto": {
+      "type": "text"
+    },
+    "profesor": {
+      "model": "profesor"
+    },
+    "grupo": {
+      "model": "grupo",
+      "via": "message"
+    }
+  }
+}

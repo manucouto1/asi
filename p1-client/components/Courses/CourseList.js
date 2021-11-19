@@ -25,8 +25,7 @@ export default function CourseList() {
       {courses !== undefined && (
         <div>
           {map(courses, (x) => {
-            console.log(x._id)
-            return <Course key={x._id} curso={x} />
+            return<a href={`/courses/${x.id}`}><Course key={x._id} curso={x} /></a>
           })}
         </div>
       )}
@@ -43,7 +42,6 @@ function Course(props) {
   const { curso } = props
   const { id, nombre, idioma, nivel } = curso
   const next_url = `/courses/${id}`
-  console.log(next_url)
   return (
     <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>

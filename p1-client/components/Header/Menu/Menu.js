@@ -74,6 +74,7 @@ function MenuProductTypes(props) {
 function MenuOptions(props) {
   const { onShowModal, user, logout } = props
 
+  sessionStorage.setItem('user_id', user.id);
   return (
     <Menu>
       {user ? (
