@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getAllEvents, getAllHorarios } from "../../api/horarios";
+import { getAllEvents, getAllHorarios, createEvent } from "../../api/horarios";
 import {groupDetails} from "../../components/GroupDetails/GroupDetails";
 import { getGroup } from "../../api/group";
 import ReactDOMServer from "react-dom/server";
@@ -8,6 +8,7 @@ import { getIdiomas } from '../../api/idiomas';
 import { getNiveles } from '../../api/niveles';
 import { getTeachers } from '../../api/teacher';
 import { map } from 'lodash'
+import useAuth from "../../hooks/useAuth";
 
 
 function barBackColor(i) {
@@ -20,12 +21,12 @@ export default function Scheduler(){
     const [resources, setResources] = useState([]);
     const [events, setEvents] = useState([]);
     const [reload, setReload] = useState(true);
+    const { logout } = useAuth();
 
 
     useEffect(() => {
       (async () => {
         const horarios = await getAllHorarios();
-        //setResources(horarios || []);
         setResources(
           map(horarios, (x) => {
             return {
@@ -40,8 +41,18 @@ export default function Scheduler(){
             }
           ),
         )
-        const aventos = await getAllEvents();
-        setEvents(aventos || []);
+        const eventos = await getAllEvents();
+        setEvents(
+          map(eventos, (x) => {
+            return {
+              id: x._id,
+              label: `${x.Nombre}`,
+              name: `${x.Nombre}`,
+              start: x.inicio_evento,
+              end: x.fin_evento
+            }
+          })
+        );
         setReload(false);
       })();
       
@@ -70,25 +81,6 @@ export default function Scheduler(){
             showNonBusiness: false,
             cellWidthSpec: "Auto",            
             // rowMinHeight: 50,
-            days: 1,
-            heightSpec: "Max",
-            startDate: lunes,
-            // days: DayPilot.Date.today().daysInMonth(),
-            timeRangeSelectedHandling: "Enabled",
-            treePreventParentUsage: true,
-            onTimeRangeSelected: selectTimeRange,
-            eventMoveHandling: "Update",
-            onEventMoved: (args) => {
-                args.control.message("Event moved: " + args.e.text());
-            },
-            eventResizeHandling: "Update",
-            onEventResized: (args) => {
-                args.control.message("Event resized: " + args.e.text());
-            },
-            eventDeleteHandling: "Update",
-            onEventDeleted: (args) => {
-                args.control.message("Event deleted: " + args.e.text());
-            },
             eventClickHandling: "Enabled",
             onEventClicked: (args) => {
                 router.push('/groups/'+args.e.data.id)
@@ -137,9 +129,28 @@ function printClassInfo(group){
 
 }
 
+
+async function handleEventCreation( 
+  nombreEvento,
+  inicioEvento,
+  finEvento,
+  descripcionEvento,
+  logout
+) {
+  const teacherId = sessionStorage.getItem("user_id");
+  const response = await createEvent(
+    nombreEvento,
+    inicioEvento,
+    finEvento,
+    descripcionEvento,
+    logout
+  );
+}
+
 async function selectTimeRange(args) {
   const {DayPilot} = require('daypilot-pro-react')
   const dp = args.control;
+
 
   var idiomas = map(await getIdiomas(), (x) => {
     return {
@@ -181,6 +192,8 @@ async function selectTimeRange(args) {
     if (modal.canceled) { return; }
     data.text = modal.result.nombre
     dp.events.add(data);
+    console.log(data);
+    handleEventCreation(data.text, data.start, data.end, "");
   });
   
 }
