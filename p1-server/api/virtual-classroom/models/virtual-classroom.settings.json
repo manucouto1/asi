@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "virtual_classrooms",
   "info": {
-    "name": "VirtualClassroom"
+    "name": "VirtualClassroom",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -16,6 +17,7 @@
       "via": "virtual_classroom"
     },
     "messages": {
+      "via": "virtual_classroom",
       "collection": "message"
     }
   }

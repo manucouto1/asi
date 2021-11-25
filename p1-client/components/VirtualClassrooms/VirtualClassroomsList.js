@@ -24,10 +24,10 @@ const VirtualClassroomsList = () => {
         {virtualClassrooms !== undefined &&
           virtualClassrooms.map((x) => {
             return (
-              <div style={{ margin: "5%" }}>
+              <div style={{ margin: "5%", marginTop: "0" }}>
                 <a
                   href={x.id}
-                >{`${x.grupo.idioma} ${x.grupo.nivel} ${x.grupo.nombre}`}</a>
+                >{`${x.grupo.nombre}`}</a>
               </div>
             );
           })}
