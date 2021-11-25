@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getVirtualClassroom } from "../../api/virtualClassroom";
+import { getMessages } from "../../api/message";
 import VirtualClassroomMessage from "./VirtualClassroomMessage";
 
 const VirtualClassroomDetails = ({ id }) => {
   const [virtualClassroom, setVirtualClassroom] = useState();
+  const [messages, setMessages] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,6 +15,8 @@ const VirtualClassroomDetails = ({ id }) => {
       if (id !== undefined) {
         const response = await getVirtualClassroom(id);
         setVirtualClassroom(response);
+        const messagesResponse = await getMessages(id);
+        setMessages(messagesResponse);
         setLoading(false);
       }
     }
@@ -36,10 +40,10 @@ const VirtualClassroomDetails = ({ id }) => {
       </p>
       <div style={{ marginTop: "5%", marginLeft: "5%" }}>
         <h2>Mensajes</h2>
-        {!loading && virtualClassroom.messages.map((x) => {
+        {!loading && messages.map((x) => {
           return (
             <div style={{ marginBottom: "3%"}}>
-              <VirtualClassroomMessage date={x.createdAt} message={x.texto} author={x.autor} />
+              <VirtualClassroomMessage message={x} />
             </div>
           );
         })}

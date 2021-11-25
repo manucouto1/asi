@@ -1,29 +1,34 @@
-import { useState, useEffect } from 'react'
-import { Container, Menu, Grid, Icon, Dropdown } from 'semantic-ui-react'
-import Link from 'next/link'
-import { map } from 'lodash'
-import BasicModal from '../../Modal/BasicModal'
-import Auth from '../../Auth'
-import LoginForm from '../../Auth/LoginForm'
-import useAuth from '../../../hooks/useAuth'
-import { getMeApi } from '../../../api/user'
+import { useState, useEffect } from "react";
+import { Container, Menu, Grid, Icon, Dropdown } from "semantic-ui-react";
+import Link from "next/link";
+import { map } from "lodash";
+import BasicModal from "../../Modal/BasicModal";
+import Auth from "../../Auth";
+import LoginForm from "../../Auth/LoginForm";
+import useAuth from "../../../hooks/useAuth";
+import { getMeApi } from "../../../api/user";
+import { getRole } from "../../../api/roles";
 
 export default function MenuWeb() {
-  const [productTypes, setProductTypes] = useState([])
-  const [showModal, setShowModal] = useState(false)
-  const [titleModal, setTitleModal] = useState('Iniciar Sesión')
-  const [user, setUser] = useState(undefined)
-  const { auth, logout } = useAuth()
+  const [productTypes, setProductTypes] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState("Iniciar Sesión");
+  const [user, setUser] = useState(undefined);
+  const { auth, logout } = useAuth();
 
   useEffect(() => {
-    ;(async () => {
-      const response = await getMeApi(logout)
-      setUser(response)
-    })()
-  }, [auth])
+    (async () => {
+      const userResponse = await getMeApi(logout);
+      setUser(userResponse);
+      sessionStorage.setItem("user_id", userResponse.id);
+      sessionStorage.setItem("user_name", userResponse.username);
+      const responseRole = await getRole(userResponse.tipo_rol);
+      sessionStorage.setItem("user_role", responseRole.nombre);
+    })();
+  }, [auth]);
 
-  const onShowModal = () => setShowModal(true)
-  const onCloseModal = () => setShowModal(false)
+  const onShowModal = () => setShowModal(true);
+  const onCloseModal = () => setShowModal(false);
 
   return (
     <div className="menu">
@@ -53,11 +58,11 @@ export default function MenuWeb() {
         <LoginForm onCloseModal={onCloseModal} />
       </BasicModal>
     </div>
-  )
+  );
 }
 
 function MenuProductTypes(props) {
-  const { productTypes } = props
+  const { productTypes } = props;
   return (
     <Menu>
       {map(productTypes, (productType) => (
@@ -68,17 +73,12 @@ function MenuProductTypes(props) {
         </Link>
       ))}
     </Menu>
-  )
+  );
 }
 
 function MenuOptions(props) {
-  const { onShowModal, user, logout } = props
+  const { onShowModal, user, logout } = props;
 
-  if(user) {
-    console.log(user)
-    sessionStorage.setItem('user_id', user.id)
-    sessionStorage.setItem('user_name', user.username)
-  }
   return (
     <Menu>
       {user ? (
@@ -120,5 +120,5 @@ function MenuOptions(props) {
         </>
       )}
     </Menu>
-  )
+  );
 }
