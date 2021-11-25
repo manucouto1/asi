@@ -46,9 +46,10 @@ function Course(props) {
     <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {idioma !== undefined && idioma.name}
+          {idioma !== undefined && idioma.nombre}
+          {console.log(nivel)}
           {bull}
-          {nivel !== undefined && nivel.name}
+          {nivel !== undefined && nivel.codigo}
         </Typography>
         <Typography variant="h5" component="div">
           {nombre}
@@ -57,7 +58,7 @@ function Course(props) {
       <CardActions>
         <Button href={next_url} size="small" color="primary">
           {' '}
-          Go to course
+          Ver curso
         </Button>
       </CardActions>
     </Card>

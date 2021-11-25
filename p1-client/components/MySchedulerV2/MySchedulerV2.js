@@ -4,6 +4,11 @@ import { getAllEvents, getAllHorarios } from "../../api/horarios";
 import {groupDetails} from "../../components/GroupDetails/GroupDetails";
 import { getGroup } from "../../api/group";
 import ReactDOMServer from "react-dom/server";
+import { getIdiomas } from '../../api/idiomas';
+import { getNiveles } from '../../api/niveles';
+import { getTeachers } from '../../api/teacher';
+import { map } from 'lodash'
+
 
 function barBackColor(i) {
   var colors = ["#a4c2f4", "#b6d7a8", "#ffe599", "#ea9999"];
@@ -16,20 +21,42 @@ export default function Scheduler(){
     const [events, setEvents] = useState([]);
     const [reload, setReload] = useState(true);
 
+
     useEffect(() => {
       (async () => {
         const horarios = await getAllHorarios();
-        setResources(horarios || []);
+        //setResources(horarios || []);
+        setResources(
+          map(horarios, (x) => {
+            return {
+              value: x._id,
+              label: `${x.DiaSemana}`,
+              name:  `${x.DiaSemana}`,
+              orden: x.Orden
+            }
+          }).sort(
+            (a,b) => {
+              return a.orden - b.orden
+            }
+          ),
+        )
         const aventos = await getAllEvents();
         setEvents(aventos || []);
         setReload(false);
       })();
+      
     }, [reload])
 
     if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
         const {DayPilot} = require('daypilot-pro-react')
         const{ DayPilotScheduler} = require('daypilot-pro-react')
         const lunes = "1969-12-29T10:00:00"
+
+        // Get monday of the current week
+       /*  const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(-1).toString();
+        const sabado = DayPilot.Date.today().addDays(5).toString();
+        console.log(lunes)
+        console.log(sabado) */
 
         const config = {
             resources: resources,
@@ -47,7 +74,6 @@ export default function Scheduler(){
             heightSpec: "Max",
             startDate: lunes,
             // days: DayPilot.Date.today().daysInMonth(),
-            // startDate: DayPilot.Date.today().firstDayOfMonth(),
             timeRangeSelectedHandling: "Enabled",
             treePreventParentUsage: true,
             onTimeRangeSelected: selectTimeRange,
@@ -114,29 +140,33 @@ function printClassInfo(group){
 async function selectTimeRange(args) {
   const {DayPilot} = require('daypilot-pro-react')
   const dp = args.control;
- 
-  var idiomas = [
-    {name: "Aleman", id: "DE"}
-  ];
 
-  var niveles = [
-    {name: "A1", id: "a1"},
-    {name: "A2", id: "a2"},
-    {name: "B1", id: "b1"},
-    {name: "B2", id: "b2"},
-    {name: "C1", id: "c1"},
-    {name: "C2", id: "c2"},
-  ];
+  var idiomas = map(await getIdiomas(), (x) => {
+    return {
+      id: x._id,
+      name: `${x.nombre} (${x.siglas})`,
+    }
+  })
 
-  var profesores = [
-    {name: "Antonio Pérez", id: "1"}
-  ];
+  var niveles = map(await getNiveles(), (x) => {
+    return {
+      id: x._id,
+      name: `${x.codigo}`,
+    }
+  })
+
+  var profesores = map(await getTeachers(), (x) => {
+    return {
+      id: x._id,
+      name: `${x.nombre} ${x.apellido1}`,
+    }
+  })
 
   var form = [
     {name: "Nombre", id: "nombre"},
-    {name: "idioma", id: "idioma", options: idiomas},
-    {name: "nivel", id: "nivel", options: niveles},
-    {name: "profesor", id: "profesor", options: profesores}
+    {name: "Idioma", id: "idioma", options: idiomas},
+    {name: "Nivel", id: "nivel", options: niveles},
+    {name: "Profesor", id: "profesor", options: profesores}
   ];
 
   var data = {
@@ -145,8 +175,8 @@ async function selectTimeRange(args) {
     id: DayPilot.guid(),
     resource: args.resource,
   };
-
-  await DayPilot.Modal.form(form, data).then( function(modal) {
+  
+  await DayPilot.Modal.form(form, data).then(function(modal) {
     dp.clearSelection();
     if (modal.canceled) { return; }
     data.text = modal.result.nombre

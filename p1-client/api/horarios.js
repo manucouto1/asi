@@ -2,7 +2,7 @@ import { BASE_PATH_JSON_SERVER, BASE_PATH } from '../utils/constants'
 
 export async function getAllHorarios() {
   try {
-    const url = `${BASE_PATH_JSON_SERVER}/horarios`
+    const url = `${BASE_PATH}/horarios`
 
     const response = await fetch(url, null)
     const result = await response.json()
@@ -14,7 +14,7 @@ export async function getAllHorarios() {
 
 export async function getAllEvents() {
   try {
-    const url = `${BASE_PATH_JSON_SERVER}/events`
+    const url = `${BASE_PATH}/eventos`
 
     const response = await fetch(url, null)
     const result = await response.json()

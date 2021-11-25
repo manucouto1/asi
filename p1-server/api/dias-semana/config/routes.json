@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/dias-semana",
+      "handler": "dias-semana.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/dias-semana",
+      "handler": "dias-semana.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/dias-semana",
+      "handler": "dias-semana.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
