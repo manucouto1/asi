@@ -1,36 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { Button } from "semantic-ui-react";
 import { deleteMessage, getMessages } from "../../api/message";
+import VirtualClassroomUpdateForm from "./VirtualClassroomUpdateForm";
 
-const VirtualClassroomMessage = ({ message, setMessages, virtualClassroomId }) => {
+const VirtualClassroomMessage = ({
+  message,
+  setMessages,
+  virtualClassroomId,
+}) => {
+  const [updating, setUpdating] = useState(false);
+
   async function handleDeleteMessage(id) {
     await deleteMessage(id);
     const messagesResponse = await getMessages(virtualClassroomId);
     setMessages(messagesResponse);
   }
+
   return (
     <div className="card" style={{ width: "90%" }}>
       <div className="card-body">
-        <div className="d-flex flex-column align-items-center text-center">
-          <div>
-            <p>
-              <strong>Enviado por: {`${message.autor}`}</strong>
-            </p>
-            <strong>
-              Día {moment(message.createdAt).format("DD/MM/yyyy")}
-            </strong>
-            <p style={{ whiteSpace: "pre-wrap" }}>{message.texto}</p>
-            {message.archivo.map((x) => (
-              <a style={{ marginRight: "1em"}} href={`http://localhost:1337${x.url}`}>{x.name}</a>
-            ))}
-            {message.autor === sessionStorage.getItem("user_name") && (
-              <Button onClick={() => handleDeleteMessage(message.id)}>
-                Eliminar
-              </Button>
-            )}
+        {!updating && (
+          <div className="d-flex flex-column align-items-center text-center">
+            <div>
+              <p>
+                <strong>Enviado por: {`${message.autor}`}</strong>
+              </p>
+              <strong>
+                Día {moment(message.createdAt).format("DD/MM/yyyy")}
+              </strong>
+              <p style={{ whiteSpace: "pre-wrap" }}>{message.texto}</p>
+              {message.archivo.map((x) => (
+                <a
+                  style={{ marginRight: "1em" }}
+                  href={`http://localhost:1337${x.url}`}
+                >
+                  {x.name}
+                </a>
+              ))}
+              {message.autor === sessionStorage.getItem("user_name") && (
+                <Button onClick={() => handleDeleteMessage(message.id)}>
+                  Eliminar
+                </Button>
+              )}
+              {message.autor === sessionStorage.getItem("user_name") && (
+                <Button onClick={() => setUpdating(true)}>Editar</Button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+        {updating && (
+          <VirtualClassroomUpdateForm
+            messageData={message}
+            setUpdating={setUpdating}
+          />
+        )}
       </div>
     </div>
   );

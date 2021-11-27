@@ -22,6 +22,28 @@ export async function getMessages(virtualClassroomId) {
   return result;
 }
 
+export async function updateMessage(
+  messageId,
+  selectedVirtualClassroom,
+  message
+) {
+  const url = `${BASE_PATH}/messages/${messageId}`;
+
+  const body = {
+    texto: message,
+    virtual_classroom: selectedVirtualClassroom,
+  }
+
+  await axios
+    .put(url, body)
+    .then((response) => {
+      toast.success("Mensaje actualizado correctamente");
+    })
+    .catch((error) => {
+      toast.error("Error actualizando el mensaje");
+    });
+}
+
 export async function deleteMessage(id) {
   const url = `${BASE_PATH}/messages/${id}`;
 
