@@ -19,10 +19,6 @@
       "via": "messages",
       "model": "virtual-classroom"
     },
-    "profesor": {
-      "via": "messages",
-      "model": "profesor"
-    },
     "autor": {
       "type": "string"
     },
@@ -37,6 +33,11 @@
       "plugin": "upload",
       "required": false,
       "pluginOptions": {}
+    },
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "message"
     }
   }
 }

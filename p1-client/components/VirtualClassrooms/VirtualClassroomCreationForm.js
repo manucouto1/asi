@@ -40,6 +40,7 @@ const VirtualClassroomCreationForm = () => {
       () => {
         setSelectedVirtualClassroom();
         setMessage("");
+        setFiles();
       }
     );
   }

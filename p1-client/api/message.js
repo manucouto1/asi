@@ -22,6 +22,19 @@ export async function getMessages(virtualClassroomId) {
   return result;
 }
 
+export async function deleteMessage(id) {
+  const url = `${BASE_PATH}/messages/${id}`;
+
+  await axios
+    .delete(url)
+    .then((response) => {
+      toast.success("Mensaje eliminado correctamente");
+    })
+    .catch((error) => {
+      toast.error("Error eliminando el mensaje");
+    });
+}
+
 export async function createMessage(
   virtualClassroomId,
   teacherId,
@@ -30,6 +43,7 @@ export async function createMessage(
   message,
   onSuccess
 ) {
+  console.log(teacherId);
   const url = `${BASE_PATH}/messages`;
 
   if (files) {
@@ -45,7 +59,7 @@ export async function createMessage(
 
         const body = {
           texto: message,
-          profesor: teacherId,
+          users_permissions_user: teacherId,
           autor: author,
           virtual_classroom: virtualClassroomId,
           archivo: fileId,
@@ -67,7 +81,7 @@ export async function createMessage(
   } else {
     const body = {
       texto: message,
-      profesor: teacherId,
+      users_permissions_user: teacherId,
       autor: author,
       virtual_classroom: virtualClassroomId,
     };

@@ -76,6 +76,10 @@
     },
     "cursos": {
       "collection": "curso"
+    },
+    "message": {
+      "via": "users_permissions_user",
+      "model": "message"
     }
   }
 }

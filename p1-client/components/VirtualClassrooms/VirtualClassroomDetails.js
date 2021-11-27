@@ -11,7 +11,6 @@ const VirtualClassroomDetails = ({ id }) => {
   useEffect(() => {
     async function fetchMyAPI() {
       setLoading(true);
-      console.log(id)
       if (id !== undefined) {
         const response = await getVirtualClassroom(id);
         setVirtualClassroom(response);
@@ -22,10 +21,6 @@ const VirtualClassroomDetails = ({ id }) => {
     }
     fetchMyAPI();
   }, [id]);
-
-  useEffect(() => {
-    console.log(virtualClassroom)
-  }, [virtualClassroom])
 
   return virtualClassroom !== undefined ? (
     <div>
@@ -43,7 +38,7 @@ const VirtualClassroomDetails = ({ id }) => {
         {!loading && messages.map((x) => {
           return (
             <div style={{ marginBottom: "3%"}}>
-              <VirtualClassroomMessage message={x} />
+              <VirtualClassroomMessage message={x} setMessages={setMessages} virtualClassroomId={id} />
             </div>
           );
         })}
