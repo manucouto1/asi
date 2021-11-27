@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clases",
+  "info": {
+    "name": "Clases"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "DiaSemana": {
+      "type": "enumeration",
+      "enum": [
+        "Lunes",
+        "Martes",
+        "Miercoles",
+        "Jueves",
+        "Viernes",
+        "Sabado",
+        "Domingo"
+      ]
+    },
+    "Inicio": {
+      "type": "time"
+    },
+    "fin": {
+      "type": "time"
+    },
+    "asistentes": {
+      "collection": "alumno"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "horarios",
+  "info": {
+    "name": "Horarios",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "DiaSemana": {
+      "type": "enumeration",
+      "enum": [
+        "Lunes",
+        "Martes",
+        "Miercoles",
+        "Jueves",
+        "Viernes",
+        "Sabado",
+        "Domingo"
+      ]
+    },
+    "Orden": {
+      "type": "integer"
+    }
+  }
+}

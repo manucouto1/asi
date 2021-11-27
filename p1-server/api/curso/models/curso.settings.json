@@ -34,6 +34,12 @@
     },
     "profesor": {
       "model": "profesor"
+    },
+    "inicio_curso": {
+      "type": "date"
+    },
+    "fin_curso": {
+      "type": "date"
     }
   }
 }

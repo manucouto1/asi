@@ -1,0 +1,15 @@
+{
+  "kind": "singleType",
+  "collectionName": "dias_semanas",
+  "info": {
+    "name": "diasSemana",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {}
+}

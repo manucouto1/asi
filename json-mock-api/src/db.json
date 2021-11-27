@@ -120,7 +120,7 @@
         {
           "weekDay": "Martes",
           "startTime": "10:00",
-          "endTime": "12:00"
+          "endTimne": "12:00"
         },
         {
           "weekDay": "Miércoles",
@@ -199,7 +199,7 @@
     },
     {
       "id": 7,
-      "nombre": "Ricardo Pérez",
+      "nombre": "Ricardo Pérez", 
       "login": "profesor2@udc.es",
       "role": 1
     },

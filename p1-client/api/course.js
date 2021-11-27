@@ -18,7 +18,7 @@ export async function createCourse(course, logout) {
     const url = `${BASE_PATH}/cursos`
     const params = {
       method: 'POST',
-      headers: {
+      headers: { 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(course),

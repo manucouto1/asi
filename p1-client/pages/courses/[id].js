@@ -20,7 +20,11 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { minHeight } from '@mui/system'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import MyScheduler from "../../components/MySchedulerV2";
 
+ 
 export default function Curso() {
   const router = useRouter()
   const [course, setCourse] = useState()
@@ -203,6 +207,31 @@ export default function Curso() {
           )}
         </div>
       </div>
+
+      <div className="profesor">
+        <div className="main-body">
+          <div className="card">
+            <h3> Programar clases </h3>
+          </div>
+          <div className="main-body">
+          {course && (
+            <form onSubmit={updateCallback}>
+            {console.log (course)}
+           {/*  <DatePicker
+              selected={course.inicio_curso}
+              onChange={handleDateChange}
+              showTimeSelect
+              dateFormat="Pp"
+            /> */}
+          </form>
+          )}
+          </div>
+        </div>
+            <div className="scheduler__block">
+                <MyScheduler/>
+            </div>
+      </div>
+
     </BasicLayout>
   )
 }
@@ -237,3 +266,4 @@ function TablaAlumnos(props) {
     </TableContainer>
   )
 }
+
