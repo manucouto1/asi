@@ -14,6 +14,7 @@
     "@mui/material": "^5.1.0",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
+    "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
     "daypilot-pro-react": "https://npm.daypilot.org/daypilot-pro-react/trial/2021.2.5000.tar.gz",
     "formik": "^2.2.9",

@@ -1,5 +1,6 @@
 import { BASE_PATH } from "../utils/constants";
-import { authFetch } from "../utils/fetch";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export async function getVirtualClassroom(virtualClassroomId) {
   try {
@@ -24,25 +25,43 @@ export async function getMessages(virtualClassroomId) {
 export async function createMessage(
   virtualClassroomId,
   teacherId,
+  files,
   author,
   message,
-  logout
+  onSuccess
 ) {
   const url = `${BASE_PATH}/messages`;
-  const body = {
-    texto: message,
-    profesor: teacherId,
-    autor: author,
-    virtual_classroom: virtualClassroomId,
-  };
-  const params = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  };
 
-  const result = await authFetch(url, params, logout);
-  return result;
+  const formData = new FormData();
+
+  formData.append("files", files[0]);
+
+  await axios
+    .post(`${BASE_PATH}/upload`, formData)
+    .then((response) => {
+      //after success
+      const fileId = response.data[0].id;
+
+      const body = {
+        texto: message,
+        profesor: teacherId,
+        autor: author,
+        virtual_classroom: virtualClassroomId,
+        archivo: fileId,
+      };
+
+      axios
+        .post(url, body)
+        .then((response) => {
+          onSuccess()
+          toast.success("Mensaje registrado correctamente");
+        })
+        .catch((error) => {
+          toast.error("Error registrando el mensaje");
+        });
+      return result;
+    })
+    .catch((error) => {
+      //handle error
+    });
 }

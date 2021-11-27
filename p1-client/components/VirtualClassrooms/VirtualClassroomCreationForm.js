@@ -11,6 +11,7 @@ const VirtualClassroomCreationForm = () => {
   const [selectedVirtualClassroom, setSelectedVirtualClassroom] = useState();
   const [virtualClassrooms, setVirtualClassrooms] = useState();
   const [message, setMessage] = useState("");
+  const [files, setFiles] = useState();
 
   const { logout } = useAuth();
 
@@ -33,17 +34,14 @@ const VirtualClassroomCreationForm = () => {
     const response = await createMessage(
       selectedVirtualClassroom,
       teacherId,
-      sessionStorage.getItem('user_name'),
+      files,
+      sessionStorage.getItem("user_name"),
       message,
-      logout
+      () => {
+        setSelectedVirtualClassroom();
+        setMessage("");
+      }
     );
-    if (response?._id) {
-      setSelectedVirtualClassroom();
-      setMessage("");
-      toast.success("Mensaje registrado correctamente");
-    } else {
-      toast.error("Error al registrar el mensaje, inténtelo más tarde");
-    }
   }
 
   return (
@@ -70,6 +68,7 @@ const VirtualClassroomCreationForm = () => {
         label="Mensaje"
         placeholder="Escribe aquí tu nuevo mensaje..."
       />
+      <input type="file" onChange={(e) => setFiles(e.target.files)} />
       <div style={{ textAlign: "right" }}>
         <Button>{"Cancelar"}</Button>
         <Button

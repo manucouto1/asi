@@ -20,10 +20,12 @@ export default function MenuWeb() {
     (async () => {
       const userResponse = await getMeApi(logout);
       setUser(userResponse);
-      sessionStorage.setItem("user_id", userResponse.id);
-      sessionStorage.setItem("user_name", userResponse.username);
-      const responseRole = await getRole(userResponse.tipo_rol);
-      sessionStorage.setItem("user_role", responseRole.nombre);
+      if (userResponse) {
+        sessionStorage.setItem("user_id", userResponse.id);
+        sessionStorage.setItem("user_name", userResponse.username);
+        const responseRole = await getRole(userResponse.tipo_rol);
+        sessionStorage.setItem("user_role", responseRole.nombre);
+      }
     })();
   }, [auth]);
 
