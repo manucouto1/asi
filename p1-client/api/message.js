@@ -32,36 +32,54 @@ export async function createMessage(
 ) {
   const url = `${BASE_PATH}/messages`;
 
-  const formData = new FormData();
+  if (files) {
+    const formData = new FormData();
 
-  formData.append("files", files[0]);
+    formData.append("files", files[0]);
 
-  await axios
-    .post(`${BASE_PATH}/upload`, formData)
-    .then((response) => {
-      //after success
-      const fileId = response.data[0].id;
+    await axios
+      .post(`${BASE_PATH}/upload`, formData)
+      .then((response) => {
+        //after success
+        const fileId = response.data[0].id;
 
-      const body = {
-        texto: message,
-        profesor: teacherId,
-        autor: author,
-        virtual_classroom: virtualClassroomId,
-        archivo: fileId,
-      };
+        const body = {
+          texto: message,
+          profesor: teacherId,
+          autor: author,
+          virtual_classroom: virtualClassroomId,
+          archivo: fileId,
+        };
 
-      axios
-        .post(url, body)
-        .then((response) => {
-          onSuccess()
-          toast.success("Mensaje registrado correctamente");
-        })
-        .catch((error) => {
-          toast.error("Error registrando el mensaje");
-        });
-      return result;
-    })
-    .catch((error) => {
-      //handle error
-    });
+        axios
+          .post(url, body)
+          .then((response) => {
+            onSuccess();
+            toast.success("Mensaje registrado correctamente");
+          })
+          .catch((error) => {
+            toast.error("Error registrando el mensaje");
+          });
+      })
+      .catch((error) => {
+        //handle error
+      });
+  } else {
+    const body = {
+      texto: message,
+      profesor: teacherId,
+      autor: author,
+      virtual_classroom: virtualClassroomId,
+    };
+
+    axios
+      .post(url, body)
+      .then((response) => {
+        onSuccess();
+        toast.success("Mensaje registrado correctamente");
+      })
+      .catch((error) => {
+        toast.error("Error registrando el mensaje");
+      });
+  }
 }
