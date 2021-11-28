@@ -67,7 +67,7 @@ function Course(props) {
         <Button size="small" color="primary">
           Ver curso
         </Button>
-        {sessionStorage.get("user_role").toLowerCase() === "secretario" && (
+        {sessionStorage.getItem("user_role").toLowerCase() === "secretario" && (
           <Button onClick={handleDeleteCourse} size="small" color="error">
             Eliminar
           </Button>
