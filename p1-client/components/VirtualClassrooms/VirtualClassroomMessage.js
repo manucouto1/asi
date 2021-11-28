@@ -39,7 +39,10 @@ const VirtualClassroomMessage = ({
                 </a>
               ))}
               {message.autor === sessionStorage.getItem("user_name") && (
-                <Button onClick={() => handleDeleteMessage(message.id)}>
+                <Button
+                  onClick={() => handleDeleteMessage(message.id)}
+                  color="error"
+                >
                   Eliminar
                 </Button>
               )}

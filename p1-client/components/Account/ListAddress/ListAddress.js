@@ -69,7 +69,7 @@ function Address(props) {
         >
           Editar
         </Button>
-        <Button onClick={deleteAddress} loading={loadingDelete}>
+        <Button onClick={deleteAddress} loading={loadingDelete} color="error">
           Eliminar
         </Button>
       </div>

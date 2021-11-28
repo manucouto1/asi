@@ -47,7 +47,11 @@ const StudentDetails = ({ id }) => {
           </div>
         </div>
       )}
-      {updating &&  student && <StudentUpdate student={student} setUpdating={setUpdating}/>}
+      {sessionStorage.getItem("user_role").toLowerCase() === "secretario" &&
+        updating &&
+        student && (
+          <StudentUpdate student={student} setUpdating={setUpdating} />
+        )}
     </div>
   );
 };
