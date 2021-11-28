@@ -1,30 +1,33 @@
-import { useState } from 'react'
-import { Form, Button } from 'semantic-ui-react'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { toast } from 'react-toastify'
-import { createStudent } from '../../../api/student'
-import useAuth from '../../../hooks/useAuth'
+import { useState } from "react";
+import { Form, Button } from "semantic-ui-react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { createStudent } from "../../../api/student";
+import useAuth from "../../../hooks/useAuth";
 
 export default function RegisterForm(props) {
-  const [loading, setLoading] = useState(false)
-  const { logout } = useAuth()
+  const [loading, setLoading] = useState(false);
+  const { logout } = useAuth();
+
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     onSubmit: async (formData) => {
-      setLoading(true)
-      const response = await createStudent(formData, logout)
+      setLoading(true);
+      const response = await createStudent(formData, logout);
       if (response?._id) {
-        toast.success('Registro completado, El alumno se ha inscrito al curso')
+        toast.success("Registro completado");
+        history.push(`/students/${response._id}`);
+        
       } else {
-        toast.error('Error al registrar el alumno, inténtelo más tarde')
+        toast.error("Error al registrar al alumno, inténtelo más tarde");
       }
 
-      setLoading(false)
+      setLoading(false);
     },
-  })
+  });
 
   return (
     <Form className="login-form" onSubmit={formik.handleSubmit}>
@@ -32,6 +35,15 @@ export default function RegisterForm(props) {
       <p>Introduzca los datos del nuevo alumno</p>
       <hr></hr>
       <Form.Group>
+        <Form.Input
+          label="DNI:"
+          name="dni"
+          type="text"
+          placeholder="DNI"
+          onChange={formik.handleChange}
+          error={formik.errors.dni}
+          width={8}
+        />
         <Form.Input
           label="Nombre:"
           name="nombre"
@@ -62,6 +74,15 @@ export default function RegisterForm(props) {
         />
       </Form.Group>
       <Form.Group>
+        <Form.Input
+          label="Teléfono:"
+          name="telefono"
+          type="text"
+          placeholder="Teléfono"
+          onChange={formik.handleChange}
+          error={formik.errors.telefono}
+          width={8}
+        />
         <Form.Input
           label="Correo electrónico:"
           name="email"
@@ -97,17 +118,17 @@ export default function RegisterForm(props) {
         </Button>
       </div>
     </Form>
-  )
+  );
 }
 
 function initialValues() {
   return {
-    nombre: '',
+    nombre: "",
     edad: undefined,
-    apellido1: '',
-    apellido2: '',
-    email: '',
-  }
+    apellido1: "",
+    apellido2: "",
+    email: "",
+  };
 }
 
 function validationSchema() {
@@ -117,5 +138,5 @@ function validationSchema() {
     apellido2: Yup.string().required(true),
     edad: Yup.number().required(true),
     email: Yup.string().email(true).required(true),
-  }
+  };
 }

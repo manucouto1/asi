@@ -63,7 +63,6 @@ const VirtualClassroomUpdateForm = ({ messageData, setUpdating }) => {
         onChange={(e) => setMessage(e.target.value)}
         label="Mensaje"
       />
-      <input type="file" onChange={(e) => setFiles(e.target.files)} />
       <div style={{ textAlign: "right" }}>
         <Button onClick={() => setUpdating(false)}>{"Cancelar"}</Button>
         <Button

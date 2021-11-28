@@ -80,6 +80,9 @@
     "message": {
       "via": "users_permissions_user",
       "model": "message"
+    },
+    "dni": {
+      "type": "string"
     }
   }
 }

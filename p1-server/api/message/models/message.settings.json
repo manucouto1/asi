@@ -35,9 +35,9 @@
       "pluginOptions": {}
     },
     "users_permissions_user": {
+      "via": "message",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "message"
+      "model": "user"
     }
   }
 }

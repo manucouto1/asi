@@ -37,6 +37,12 @@
     "users_permissions_user": {
       "plugin": "users-permissions",
       "model": "user"
+    },
+    "dni": {
+      "type": "string"
+    },
+    "telefono": {
+      "type": "biginteger"
     }
   }
 }
