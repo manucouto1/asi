@@ -4,10 +4,19 @@ import { createEvent } from '../../api/horarios'
 import { groupDetails } from '../GroupDetails/GroupDetails'
 import ReactDOMServer from 'react-dom/server'
 import useAuth from '../../hooks/useAuth'
-
-function barBackColor(i) {
-  var colors = ['#a4c2f4', '#b6d7a8', '#ffe599', '#ea9999']
-  return colors[i % 4]
+import { Form, Button } from 'semantic-ui-react'
+import SemanticDatepicker from 'react-semantic-ui-datepickers'
+import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
+{
+  /* <form onSubmit={updateCallback}>
+                {console.log(group)}
+                <DatePicker
+              selected={group.inicio_curso}
+              onChange={handleDateChange}
+              showTimeSelect
+              dateFormat="Pp"
+            /> 
+              </form> */
 }
 
 export default function Scheduler(props) {
@@ -112,6 +121,15 @@ export default function Scheduler(props) {
 
     return (
       <div>
+        <Form>
+          <Form.Group widths="equal">
+            <SemanticDatepicker />
+            <SemanticDatepicker />
+            <Button color="blue" type="submit">
+              Generar
+            </Button>
+          </Form.Group>
+        </Form>
         <DayPilotScheduler {...config} />
       </div>
     )

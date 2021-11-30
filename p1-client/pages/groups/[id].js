@@ -213,21 +213,8 @@ export default function Curso() {
             <h3> Programar clases </h3>
           </div>
           <div className="main-body">
-            {group && (
-              <form onSubmit={updateCallback}>
-                {console.log(group)}
-                {/*  <DatePicker
-              selected={group.inicio_curso}
-              onChange={handleDateChange}
-              showTimeSelect
-              dateFormat="Pp"
-            /> */}
-              </form>
-            )}
+            {group && <MyScheduler id={router.query.id} />}
           </div>
-        </div>
-        <div className="scheduler__block">
-          <MyScheduler id={router.query.id} />
         </div>
       </div>
     </BasicLayout>
