@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { getTeachers } from "../../api/teacher";
-import { Button } from "semantic-ui-react";
-import { map } from "lodash";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import { Image, Item } from "semantic-ui-react";
+import React, { useState, useEffect } from 'react'
+import { getTeachers } from '../../api/teacher'
+import { Button } from 'semantic-ui-react'
+import { map } from 'lodash'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
+import { Image, Item } from 'semantic-ui-react'
 
 export default function TeacherList() {
-  const [teachers, setTeachers] = useState();
+  const [teachers, setTeachers] = useState()
 
   useEffect(() => {
     async function fetchMyAPI() {
-      const response = await getTeachers();
-      setTeachers(response);
+      const response = await getTeachers()
+      setTeachers(response)
     }
-    fetchMyAPI();
-  }, []);
+    fetchMyAPI()
+  }, [])
 
   return (
     <div className="teacherList">
@@ -25,7 +25,7 @@ export default function TeacherList() {
         <div>
           {map(teachers, (x) => {
             return (
-              <a href={`/teachers/${x.id}`}>
+              <a key={x._id} href={`/teachers/${x.id}`}>
                 <Teacher
                   nombre={x.nombre}
                   apellido1={x.apellido1}
@@ -34,25 +34,25 @@ export default function TeacherList() {
                   email={x.email}
                 />
               </a>
-            );
+            )
           })}
         </div>
       )}
       <div>
-        <Button class="ui primary button">
+        <Button className="ui button">
           <a href="/teachers/registro_profesores">
             <p>Añadir nuevo profesor</p>
           </a>
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
 function Teacher(props) {
-  const { nombre, apellido1, apellido2, email, edad } = props;
+  const { nombre, apellido1, apellido2, email, edad } = props
   return (
-    <Card sx={{ display: "inline-block", margin: "20px" }}>
+    <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {email}
@@ -62,14 +62,14 @@ function Teacher(props) {
         </Typography>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 const bull = (
   <Box
     component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
   >
     •
   </Box>
-);
+)

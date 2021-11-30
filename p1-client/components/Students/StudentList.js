@@ -19,24 +19,26 @@ export default function StudentList() {
   }, [])
 
   return (
-    <div class="alumnosList">
+    <div className="alumnosList">
       {students !== undefined && (
         <div>
           {map(students, (x) => {
             return (
-              <a href={`/students/${x.id}`}><Student
-                nombre={x.nombre}
-                apellido1={x.apellido1}
-                apellido2={x.apellido2}
-                edad={x.edad}
-                email={x.email}
-              /></a>
+              <a key={x._id} href={`/students/${x.id}`}>
+                <Student
+                  nombre={x.nombre}
+                  apellido1={x.apellido1}
+                  apellido2={x.apellido2}
+                  edad={x.edad}
+                  email={x.email}
+                />
+              </a>
             )
           })}
         </div>
       )}
       <div>
-        <Button class="ui primary button">
+        <Button className="ui button">
           <a href="/students/registro_alumnos">
             <p>Añadir nuevo alumno</p>
           </a>

@@ -1,25 +1,61 @@
-import { BASE_PATH_JSON_SERVER, BASE_PATH } from "../utils/constants";
+import { BASE_PATH_JSON_SERVER, BASE_PATH } from '../utils/constants'
 
-export async function getGroup(groupId) {
+export async function createGroup(group, logout) {
   try {
-    const url = `${BASE_PATH}/groups/${groupId}`;
-    
-    const response = await fetch(url, null);
-    const result = await response.json();
-    return result;
+    const url = `${BASE_PATH}/grupos`
+    const params = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(group),
+    }
+
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result ? result : null
   } catch (error) {
-    return null;
+    return null
+  }
+}
+
+export async function findGroup(groupId) {
+  try {
+    const url = `${BASE_PATH}/grupos/${groupId}`
+
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    return null
+  }
+}
+
+export async function updateGroup(grupo, logout) {
+  try {
+    const url = `${BASE_PATH}/grupos/${grupo._id}`
+    const params = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(grupo),
+    }
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result ? result : null
+  } catch (error) {
+    return null
   }
 }
 
 export async function getGroups() {
   try {
-    const url = `${BASE_PATH}/grupos`;
-    
-    const response = await fetch(url, null);
-    const result = await response.json();
-    return result;
+    const url = `${BASE_PATH}/grupos`
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result
   } catch (error) {
-    return null;
+    return null
   }
 }

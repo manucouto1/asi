@@ -17,12 +17,15 @@
       "required": true,
       "unique": true
     },
-    "curso": {
-      "model": "curso"
-    },
     "virtual_classroom": {
       "via": "grupo",
       "model": "virtual-classroom"
+    },
+    "alumnos": {
+      "collection": "alumno"
+    },
+    "profesor": {
+      "model": "profesor"
     }
   }
 }

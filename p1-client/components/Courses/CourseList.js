@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { deleteCourse, getCourses } from "../../api/course";
-import { map } from "lodash";
+import React, { useState, useEffect } from 'react'
+import { deleteCourse, getCourses } from '../../api/course'
+import { map } from 'lodash'
+import Link from 'next/link'
 import {
   Box,
   Card,
@@ -8,24 +9,24 @@ import {
   Typography,
   Button,
   CardActions,
-} from "@mui/material";
+} from '@mui/material'
 
 export default function CourseList() {
-  const [courses, setCourses] = useState();
+  const [courses, setCourses] = useState()
 
   useEffect(() => {
-    (async () => {
-      const response = await getCourses();
-      setCourses(response);
-    })();
-  }, []);
+    ;(async () => {
+      const response = await getCourses()
+      setCourses(response)
+    })()
+  }, [])
 
   return (
     <div className="courseList">
       {courses !== undefined && (
         <div>
           {map(courses, (x) => {
-            return <Course key={x._id} curso={x} setCourses={setCourses} />;
+            return <Course key={x._id} curso={x} setCourses={setCourses} />
           })}
         </div>
       )}
@@ -35,24 +36,24 @@ export default function CourseList() {
         </a>
       </Button>
     </div>
-  );
+  )
 }
 
 function Course(props) {
-  const { curso, setCourses } = props;
-  const { id, nombre, idioma, nivel } = curso;
+  const { curso, setCourses } = props
+  const { id, nombre, idioma, nivel } = curso
 
   async function handleDeleteCourse() {
-    const response = await deleteCourse(id);
+    const response = await deleteCourse(id)
 
     if (response.data.id) {
-      const courseResponse = await getCourses();
-      setCourses(courseResponse);
+      const courseResponse = await getCourses()
+      setCourses(courseResponse)
     }
   }
 
   return (
-    <Card sx={{ display: "inline-block", margin: "20px" }}>
+    <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {idioma !== undefined && idioma.nombre}
@@ -64,24 +65,26 @@ function Course(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary">
-          Ver curso
-        </Button>
-        {sessionStorage.getItem("user_role").toLowerCase() === "secretario" && (
+        <Link href={`/courses/${id}`}>
+          <Button size="small" color="primary">
+            Ver curso
+          </Button>
+        </Link>
+        {sessionStorage.getItem('user_role').toLowerCase() === 'secretario' && (
           <Button onClick={handleDeleteCourse} size="small" color="error">
             Eliminar
           </Button>
         )}
       </CardActions>
     </Card>
-  );
+  )
 }
 
 const bull = (
   <Box
     component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
   >
     •
   </Box>
-);
+)
