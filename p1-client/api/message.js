@@ -2,9 +2,9 @@ import { BASE_PATH } from "../utils/constants";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export async function getVirtualClassroom(virtualClassroomId) {
+export async function getGroup(groupId) {
   try {
-    const url = `${BASE_PATH}/virtualClassrooms/${virtualClassroomId}`;
+    const url = `${BASE_PATH}/grupo/${groupId}`;
 
     const response = await fetch(url, null);
     const result = await response.json();
@@ -14,10 +14,11 @@ export async function getVirtualClassroom(virtualClassroomId) {
   }
 }
 
-export async function getMessages(virtualClassroomId) {
-  const url = `${BASE_PATH}/messages?virtual_classroom=${virtualClassroomId}&_sort=createdAt:DESC`;
+export async function getMessages(groupId) {
+  const url = `${BASE_PATH}/messages?grupo._id=${groupId}&_sort=createdAt:DESC`;
 
   const response = await fetch(url, null);
+  console.log(response)
   const result = await response.json();
   return result;
 }
@@ -58,14 +59,13 @@ export async function deleteMessage(id) {
 }
 
 export async function createMessage(
-  virtualClassroomId,
+  groupId,
   teacherId,
   files,
   author,
   message,
   onSuccess
 ) {
-  console.log(teacherId);
   const url = `${BASE_PATH}/messages`;
 
   if (files) {
@@ -83,7 +83,7 @@ export async function createMessage(
           texto: message,
           users_permissions_user: teacherId,
           autor: author,
-          virtual_classroom: virtualClassroomId,
+          grupo: groupId,
           archivo: fileId,
         };
 

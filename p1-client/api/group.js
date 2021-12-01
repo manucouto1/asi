@@ -1,4 +1,4 @@
-import { BASE_PATH_JSON_SERVER, BASE_PATH } from '../utils/constants'
+import { BASE_PATH } from '../utils/constants'
 
 export async function createGroup(group, logout) {
   try {
@@ -55,6 +55,31 @@ export async function getGroups() {
     const response = await fetch(url, null)
     const result = await response.json()
     return result
+  } catch (error) {
+    return null
+  }
+}
+
+export async function getMyGroups() {
+  const userId = sessionStorage.getItem("user_id");
+  try {
+    const url = `${BASE_PATH}/alumnos?users_permissions_user=${userId}`
+    const response = await fetch(url, null)
+    const result = await response.json()
+    console.log(result)
+    return result[0].grupos;
+  } catch (error) {
+    return null
+  }
+}
+
+export async function getTeacherGroups() {
+  const userId = sessionStorage.getItem("user_id");
+  try {
+    const url = `${BASE_PATH}/grupos?profesor.users_permissions_user=${userId}`
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result;
   } catch (error) {
     return null
   }

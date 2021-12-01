@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getVirtualClassroom } from "../../api/virtualClassroom";
+import { findGroup } from "../../api/group";
 import { getMessages } from "../../api/message";
 import VirtualClassroomMessage from "./VirtualClassroomMessage";
 
@@ -12,8 +12,9 @@ const VirtualClassroomDetails = ({ id }) => {
     async function fetchMyAPI() {
       setLoading(true);
       if (id !== undefined) {
-        const response = await getVirtualClassroom(id);
+        const response = await findGroup(id);
         setVirtualClassroom(response);
+        console.log(response)
         const messagesResponse = await getMessages(id);
         setMessages(messagesResponse);
         setLoading(false);
@@ -26,7 +27,7 @@ const VirtualClassroomDetails = ({ id }) => {
     <div>
       <h1
         style={{ textAlign: "center", margin: "5%" }}
-      >{`${virtualClassroom.grupo.nombre}`}</h1>
+      >{`${virtualClassroom.nombre}`}</h1>
       <p style={{ marginLeft: "5%" }}>
         <a>Avisos</a>
       </p>

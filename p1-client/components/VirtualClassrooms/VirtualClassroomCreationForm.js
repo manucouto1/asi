@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
-import { getVirtualClassrooms } from "../../api/virtualClassroom";
+import { getGroups, getMyGroups, getTeacherGroups } from "../../api/group";
 import { createMessage } from "../../api/message";
 import { Select } from "semantic-ui-react";
 import useAuth from "../../hooks/useAuth";
@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 
 const VirtualClassroomCreationForm = () => {
   // States
-  const [selectedVirtualClassroom, setSelectedVirtualClassroom] = useState();
-  const [virtualClassrooms, setVirtualClassrooms] = useState();
+  const [selectedGroup, setSelectedGroup] = useState();
+  const [groups, setGroups] = useState();
   const [message, setMessage] = useState("");
   const [files, setFiles] = useState();
 
@@ -17,14 +17,18 @@ const VirtualClassroomCreationForm = () => {
 
   useEffect(() => {
     async function fetchMyAPI() {
-      const response = await getVirtualClassrooms();
-      if (response !== undefined && response !== null) {
-        setVirtualClassrooms(
-          response.map((x) => {
-            return { key: x.id, text: x.grupo.nombre, value: x.id };
-          })
-        );
-      }
+      const role = sessionStorage.getItem("user_role").toLowerCase();
+      const response =
+        role === "profesor" ? await getTeacherGroups() : await getMyGroups();
+        if (response !== undefined && response !== null) {
+          console.log(response)
+          setGroups(
+            response.map((x) => {
+              return { key: x.id, text: x.nombre, value: x.id };
+            })
+          );
+        }
+      
     }
     fetchMyAPI();
   }, []);
@@ -32,13 +36,13 @@ const VirtualClassroomCreationForm = () => {
   async function handleMessageCreation() {
     const teacherId = sessionStorage.getItem("user_id");
     const response = await createMessage(
-      selectedVirtualClassroom,
+      selectedGroup,
       teacherId,
       files,
       sessionStorage.getItem("user_name"),
       message,
       () => {
-        setSelectedVirtualClassroom();
+        setSelectedGroup();
         setMessage("");
         setFiles();
       }
@@ -52,15 +56,15 @@ const VirtualClassroomCreationForm = () => {
         fluid
         style={{ width: "25%", marginBottom: "1em" }}
         label="Clase"
-        options={virtualClassrooms}
+        options={groups}
         value={
-          selectedVirtualClassroom !== undefined
-            ? selectedVirtualClassroom.value
+          selectedGroup !== undefined
+            ? selectedGroup.value
             : ""
         }
         placeholder="Clase..."
         onChange={(e, { value }) => {
-          setSelectedVirtualClassroom(value);
+          setSelectedGroup(value);
         }}
       />
       <Form.TextArea
@@ -75,7 +79,7 @@ const VirtualClassroomCreationForm = () => {
         <Button
           onClick={handleMessageCreation}
           disabled={
-            selectedVirtualClassroom === undefined || message.length === 0
+            selectedGroup === undefined || message.length === 0
           }
         >
           {"Crear"}
