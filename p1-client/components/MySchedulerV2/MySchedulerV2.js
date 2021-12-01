@@ -1,65 +1,112 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { getAllEvents, getAllHorarios, createEvent } from '../../api/horarios'
+import { getAllEvents } from '../../api/horarios'
 import { groupDetails } from '../../components/GroupDetails/GroupDetails'
-import { getGroup } from '../../api/group'
+import { findGroup, getGroups } from '../../api/group'
 import ReactDOMServer from 'react-dom/server'
-import { getIdiomas } from '../../api/idiomas'
-import { getNiveles } from '../../api/niveles'
-import { getTeachers } from '../../api/teacher'
+import { Grid } from 'semantic-ui-react'
 import { map } from 'lodash'
-import useAuth from '../../hooks/useAuth'
-
-function barBackColor(i) {
-  var colors = ['#a4c2f4', '#b6d7a8', '#ffe599', '#ea9999']
-  return colors[i % 4]
-}
 
 export default function Scheduler() {
   const router = useRouter()
   const [resources, setResources] = useState([])
   const [events, setEvents] = useState([])
-  const [reload, setReload] = useState(true)
-  const { logout } = useAuth()
+  const [lunes, setLunes] = useState()
+
+  const setNewLunes = (args) => {
+    console.log(args)
+    const n_lunes = args.start.firstDayOfWeek().addDays(2)
+    setLunes(n_lunes)
+  }
 
   useEffect(() => {
     ;(async () => {
-      const horarios = await getAllHorarios()
-      setResources(
-        map(horarios, (x) => {
-          return {
-            value: x._id,
-            label: `${x.DiaSemana}`,
-            name: `${x.DiaSemana}`,
-            orden: x.Orden,
-          }
-        }).sort((a, b) => {
-          return a.orden - b.orden
-        }),
-      )
+      const { DayPilot } = require('daypilot-pro-react')
+      const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(2)
+      const groups = await getGroups()
+      setLunes(lunes)
+      setResources([
+        {
+          name: 'Lunes',
+          id: 'lun',
+          expanded: true,
+          children: map(groups, (group) => {
+            return {
+              name: group.nombre,
+              id: `lun_${group._id}`,
+            }
+          }),
+        },
+        {
+          name: 'Martes',
+          id: 'mar',
+          expanded: true,
+          children: map(groups, (group) => {
+            return {
+              name: group.nombre,
+              id: `mar_${group._id}`,
+            }
+          }),
+        },
+        {
+          name: 'Miercoles',
+          id: 'mie',
+          expanded: true,
+          children: map(groups, (group) => {
+            return {
+              name: group.nombre,
+              id: `mie_${group._id}`,
+            }
+          }),
+        },
+        {
+          name: 'Jueves',
+          id: 'jue',
+          expanded: true,
+          children: map(groups, (group) => {
+            return {
+              name: group.nombre,
+              id: `jue_${group._id}`,
+            }
+          }),
+        },
+        {
+          name: 'Viernes',
+          id: 'vie',
+          expanded: true,
+          children: map(groups, (group) => {
+            return {
+              name: group.nombre,
+              id: `vie_${group._id}`,
+            }
+          }),
+        },
+        {
+          name: 'Sábado',
+          id: 'sab',
+          expanded: true,
+          children: map(groups, (group) => {
+            return {
+              name: group.nombre,
+              id: `sab_${group._id}`,
+            }
+          }),
+        },
+      ])
       const eventos = await getAllEvents()
-      setEvents(
-        map(eventos, (x) => {
-          return {
-            id: x._id,
-            label: `${x.Nombre}`,
-            name: `${x.Nombre}`,
-            start: x.inicio_evento,
-            end: x.fin_evento,
-          }
-        }),
-      )
-      setReload(false)
+      setEvents(eventos)
     })()
-  }, [reload])
+  }, [])
 
   if (
     typeof window !== 'undefined' &&
     typeof window.navigator !== 'undefined'
   ) {
     const { DayPilot } = require('daypilot-pro-react')
-    const { DayPilotScheduler } = require('daypilot-pro-react')
-    const lunes = '1969-12-29T10:00:00'
+    const {
+      DayPilotScheduler,
+      DayPilotNavigator,
+    } = require('daypilot-pro-react')
 
     // Get monday of the current week
     /*  const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(-1).toString();
@@ -80,6 +127,7 @@ export default function Scheduler() {
       cellWidthSpec: 'Auto',
       // rowMinHeight: 50,
       eventClickHandling: 'Enabled',
+
       onEventClicked: (args) => {
         router.push('/groups/' + args.e.data.id)
       },
@@ -101,7 +149,7 @@ export default function Scheduler() {
         onLoad: (args) => {
           args.async = true
           ;(async () => {
-            const response = await getGroup(args.source.data.id)
+            const response = await findGroup(args.source.data.id)
             args.html =
               response != undefined && response != null
                 ? printClassInfo(response)
@@ -117,7 +165,17 @@ export default function Scheduler() {
 
     return (
       <div>
-        <DayPilotScheduler {...config} />
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={3}>
+              <p> Select day </p>
+              <DayPilotNavigator onTimeRangeSelect={setNewLunes} />
+            </Grid.Column>
+            <Grid.Column width={13}>
+              <DayPilotScheduler startDate={lunes} {...config} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     )
   }
@@ -127,72 +185,4 @@ export default function Scheduler() {
 
 function printClassInfo(group) {
   return ReactDOMServer.renderToStaticMarkup(groupDetails(group)).toString()
-}
-
-async function handleEventCreation(
-  nombreEvento,
-  inicioEvento,
-  finEvento,
-  descripcionEvento,
-  logout,
-) {
-  const teacherId = sessionStorage.getItem('user_id')
-  const response = await createEvent(
-    nombreEvento,
-    inicioEvento,
-    finEvento,
-    descripcionEvento,
-    logout,
-  )
-}
-
-async function selectTimeRange(args) {
-  const { DayPilot } = require('daypilot-pro-react')
-  const dp = args.control
-
-  var idiomas = map(await getIdiomas(), (x) => {
-    return {
-      id: x._id,
-      name: `${x.nombre} (${x.siglas})`,
-    }
-  })
-
-  var niveles = map(await getNiveles(), (x) => {
-    return {
-      id: x._id,
-      name: `${x.codigo}`,
-    }
-  })
-
-  var profesores = map(await getTeachers(), (x) => {
-    return {
-      id: x._id,
-      name: `${x.nombre} ${x.apellido1}`,
-    }
-  })
-
-  var form = [
-    { name: 'Nombre', id: 'nombre' },
-    { name: 'Idioma', id: 'idioma', options: idiomas },
-    { name: 'Nivel', id: 'nivel', options: niveles },
-    { name: 'Profesor', id: 'profesor', options: profesores },
-  ]
-
-  var data = {
-    start: args.start,
-    end: args.end,
-    id: DayPilot.guid(),
-    resource: args.resource,
-  }
-
-  await DayPilot.Modal.form(form, data).then(function (modal) {
-    dp.clearSelection()
-    if (modal.canceled) {
-      return
-    }
-    data.text = modal.result.nombre
-    dp.events.add(data)
-    console.log(data)
-    handleEventCreation(data.text, data.start, data.end, '')
-  })
 }

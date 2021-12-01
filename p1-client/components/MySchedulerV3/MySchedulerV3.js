@@ -87,32 +87,32 @@ export default function Scheduler(props) {
     setResources([
       {
         name: 'Lunes',
-        id: 'lun',
+        id: `lun_${id}`,
         expanded: true,
       },
       {
         name: 'Martes',
-        id: 'mar',
+        id: `mar_${id}`,
         expanded: true,
       },
       {
         name: 'Miercoles',
-        id: 'mier',
+        id: `mie_${id}`,
         expanded: true,
       },
       {
         name: 'Jueves',
-        id: 'jue',
+        id: `jue_${id}`,
         expanded: true,
       },
       {
         name: 'Viernes',
-        id: 'vie',
+        id: `vie_${id}`,
         expanded: true,
       },
       {
         name: 'Sábado',
-        id: 'sab',
+        id: `sab_${id}`,
         expanded: true,
       },
     ])
