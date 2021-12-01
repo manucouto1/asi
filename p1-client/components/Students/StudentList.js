@@ -37,13 +37,13 @@ export default function StudentList() {
           })}
         </div>
       )}
-      <div>
+      {sessionStorage.getItem("user_role") === "secretario" && <div>
         <Button className="ui button">
           <a href="/students/registro_alumnos">
             <p>Añadir nuevo alumno</p>
           </a>
         </Button>
-      </div>
+      </div>}
     </div>
   )
 }
