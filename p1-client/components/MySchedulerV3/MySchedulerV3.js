@@ -1,31 +1,68 @@
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { createEvent } from '../../api/horarios'
-import { groupDetails } from '../GroupDetails/GroupDetails'
-import ReactDOMServer from 'react-dom/server'
-import useAuth from '../../hooks/useAuth'
 import { Form, Button } from 'semantic-ui-react'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
-{
-  /* <form onSubmit={updateCallback}>
-                {console.log(group)}
-                <DatePicker
-              selected={group.inicio_curso}
-              onChange={handleDateChange}
-              showTimeSelect
-              dateFormat="Pp"
-            /> 
-              </form> */
-}
+import { createEvent } from '../../api/evento'
+import { updateGroup } from '../../api/group'
+import { toast } from 'react-toastify'
+import useAuth from '../../hooks/useAuth'
 
 export default function Scheduler(props) {
   const { id } = props
   const [resources, setResources] = useState([])
   const [events, setEvents] = useState([])
+  const [initDate, setInitDate] = useState()
+  const [endDate, setEndDate] = useState()
   const { logout } = useAuth()
 
-  console.log('course id > ', id)
+  const onInitDateChange = (e, data) => {
+    const { DayPilot } = require('daypilot-pro-react')
+    const newDateValue = new Date(data.value)
+    const aux = new DayPilot.Date(newDateValue)
+    setInitDate(aux)
+  }
+  const onEndDateChange = (e, data) => {
+    const { DayPilot } = require('daypilot-pro-react')
+    const newDateValue = new Date(data.value)
+    const aux = new DayPilot.Date(newDateValue)
+    setEndDate(aux)
+  }
+
+  const onCalendarSubmit = async (_) => {
+    var lunes = initDate.firstDayOfWeek().addDays(1)
+    var event_list = []
+
+    while (lunes < endDate) {
+      for (let x of events) {
+        const event = {
+          text: x.text + lunes.weekNumber(),
+          start: lunes.addTime(x.start_houre).toString(),
+          end: lunes.addTime(x.end_houre).toString(),
+          resource: x.resource,
+        }
+        const result = await createEvent(event)
+        console.log(result)
+        if (result?._id) {
+          event_list.push(result)
+        } else {
+          toast.info('El evento ya existe')
+        }
+      }
+      lunes = lunes.addDays(7)
+    }
+    const new_group = {
+      _id: id,
+      eventos: event_list,
+    }
+
+    const response = await updateGroup(new_group)
+
+    if (response?._id) {
+      toast.success('Eventos añadidos al curso')
+    } else {
+      toast.error('Ha ocurrido un error, durante la actualización')
+    }
+  }
 
   useEffect(() => {
     setResources([
@@ -92,27 +129,24 @@ export default function Scheduler(props) {
             dp.clearSelection()
             return
           }
+          const startHour = args.start.getTimePart()
+          const endHour = args.end.getTimePart()
+          const startDate = lunes.addTime(startHour).toString()
+          const endDate = lunes.addTime(endHour).toString()
 
-          const startDate = lunes.addTime(args.start.getTimePart()).toString()
-          const endDate = lunes.addTime(args.end.getTimePart()).toString()
-
-          console.log({
-            id: DayPilot.guid(),
-            text: modal.result,
-            start: startDate,
-            end: endDate,
-            resource: args.resource,
-          })
           const data = {
             id: DayPilot.guid(),
             text: modal.result,
             start: startDate,
             end: endDate,
+            start_houre: startHour,
+            end_houre: endHour,
             resource: args.resource,
           }
 
           dp.clearSelection()
           dp.events.add(data)
+          setEvents(dp.events.list)
         })
       },
 
@@ -121,10 +155,17 @@ export default function Scheduler(props) {
 
     return (
       <div>
-        <Form>
+        <Form onSubmit={onCalendarSubmit}>
           <Form.Group widths="equal">
-            <SemanticDatepicker />
-            <SemanticDatepicker />
+            <SemanticDatepicker
+              format="YYYY-mm-DD"
+              placeholder="Fecha inicio"
+              onChange={onInitDateChange}
+            />
+            <SemanticDatepicker
+              placeholder="Fecha fin"
+              onChange={onEndDateChange}
+            />
             <Button color="blue" type="submit">
               Generar
             </Button>

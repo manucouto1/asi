@@ -26,6 +26,9 @@
     },
     "profesor": {
       "model": "profesor"
+    },
+    "eventos": {
+      "collection": "eventos"
     }
   }
 }
