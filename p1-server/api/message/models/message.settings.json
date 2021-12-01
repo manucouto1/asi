@@ -15,10 +15,6 @@
     "texto": {
       "type": "text"
     },
-    "virtual_classroom": {
-      "via": "messages",
-      "model": "virtual-classroom"
-    },
     "autor": {
       "type": "string"
     },
@@ -38,6 +34,10 @@
       "via": "message",
       "plugin": "users-permissions",
       "model": "user"
+    },
+    "grupo": {
+      "model": "grupo",
+      "via": "message"
     }
   }
 }

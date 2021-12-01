@@ -17,10 +17,6 @@
       "required": true,
       "unique": true
     },
-    "virtual_classroom": {
-      "via": "grupo",
-      "model": "virtual-classroom"
-    },
     "alumnos": {
       "collection": "alumno"
     },
@@ -29,6 +25,17 @@
     },
     "eventos": {
       "collection": "eventos"
+    },
+    "messages": {
+      "collection": "message"
+    },
+    "message": {
+      "via": "grupo",
+      "model": "message"
+    },
+    "alumno": {
+      "via": "grupos",
+      "model": "alumno"
     }
   }
 }

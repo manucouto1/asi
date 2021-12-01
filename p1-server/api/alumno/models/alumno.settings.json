@@ -43,6 +43,10 @@
     },
     "telefono": {
       "type": "biginteger"
+    },
+    "grupos": {
+      "collection": "grupo",
+      "via": "alumno"
     }
   }
 }
