@@ -14,7 +14,7 @@
   "attributes": {
     "text": {
       "type": "string",
-      "unique": true
+      "unique": false
     },
     "start": {
       "type": "string"
@@ -24,6 +24,10 @@
     },
     "resource": {
       "type": "string"
+    },
+    "nombre": {
+      "type": "string",
+      "unique": true
     }
   }
 }

@@ -1,4 +1,5 @@
 import { BASE_PATH } from '../utils/constants'
+import axios from 'axios'
 
 export async function findEvento(id) {
   try {
@@ -9,6 +10,12 @@ export async function findEvento(id) {
   } catch (error) {
     return null
   }
+}
+
+export async function deleteEvento(id) {
+  const url = `${BASE_PATH}/eventos/${id}`
+
+  return await axios.delete(url)
 }
 
 export async function createEvent(event, logout) {

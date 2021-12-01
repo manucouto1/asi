@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
-import { createEvent } from '../../api/evento'
+import { createEvent, deleteEvento, findEvento } from '../../api/evento'
 import { updateGroup } from '../../api/group'
 import { toast } from 'react-toastify'
+import { map } from 'lodash'
 import useAuth from '../../hooks/useAuth'
 
 export default function Scheduler(props) {
-  const { id } = props
+  const { id, old_eventos } = props
   const [resources, setResources] = useState([])
   const [events, setEvents] = useState([])
+  const [aux_events, setAuxEvents] = useState([])
   const [initDate, setInitDate] = useState()
   const [endDate, setEndDate] = useState()
-  const { logout } = useAuth()
 
   const onInitDateChange = (e, data) => {
     const { DayPilot } = require('daypilot-pro-react')
@@ -21,6 +22,7 @@ export default function Scheduler(props) {
     const aux = new DayPilot.Date(newDateValue)
     setInitDate(aux)
   }
+
   const onEndDateChange = (e, data) => {
     const { DayPilot } = require('daypilot-pro-react')
     const newDateValue = new Date(data.value)
@@ -29,38 +31,55 @@ export default function Scheduler(props) {
   }
 
   const onCalendarSubmit = async (_) => {
-    var lunes = initDate.firstDayOfWeek().addDays(1)
-    var event_list = []
+    if (initDate !== undefined && endDate !== undefined) {
+      var lunes = initDate.firstDayOfWeek().addDays(1)
+      var list_ev = []
 
-    while (lunes < endDate) {
-      for (let x of events) {
-        const event = {
-          text: x.text + lunes.weekNumber(),
-          start: lunes.addTime(x.start_houre).toString(),
-          end: lunes.addTime(x.end_houre).toString(),
-          resource: x.resource,
+      aux_events.forEach((ev) => deleteEvento(ev._id))
+
+      const { DayPilot } = require('daypilot-pro-react')
+
+      Promise.all(aux_events).then(async () => {
+        while (lunes < endDate) {
+          for (let x of events) {
+            const start_hour = DayPilot.Date(x.start).getTimePart()
+            const end_hour = DayPilot.Date(x.end).getTimePart()
+
+            const event = {
+              text: x.text,
+              nombre: x.text + lunes.weekNumber(),
+              start: lunes.addTime(start_hour).addHours(1).toString(),
+              end: lunes.addTime(end_hour).addHours(1).toString(),
+              resource: x.resource,
+            }
+            const result = await createEvent(event)
+            if (result?._id) {
+              list_ev.push(result)
+            } else {
+              toast.info('El evento ya existe')
+            }
+          }
+          lunes = lunes.addDays(7)
         }
-        const result = await createEvent(event)
-        console.log(result)
-        if (result?._id) {
-          event_list.push(result)
+
+        const new_group = {
+          _id: id,
+          eventos: map(list_ev, (x) => {
+            return x?._id
+          }),
+        }
+
+        const response = await updateGroup(new_group)
+
+        if (response?._id) {
+          toast.success('Eventos añadidos al curso')
         } else {
-          toast.info('El evento ya existe')
+          toast.error('Ha ocurrido un error, durante la actualización')
         }
-      }
-      lunes = lunes.addDays(7)
-    }
-    const new_group = {
-      _id: id,
-      eventos: event_list,
-    }
-
-    const response = await updateGroup(new_group)
-
-    if (response?._id) {
-      toast.success('Eventos añadidos al curso')
+      })
+      setAuxEvents(list_ev)
     } else {
-      toast.error('Ha ocurrido un error, durante la actualización')
+      toast.error('Asegurate de seleccionar la fecha de inicio y la de fin')
     }
   }
 
@@ -97,6 +116,8 @@ export default function Scheduler(props) {
         expanded: true,
       },
     ])
+    setEvents([...old_eventos])
+    setAuxEvents([...old_eventos])
   }, [])
 
   if (
@@ -105,8 +126,8 @@ export default function Scheduler(props) {
   ) {
     const { DayPilot } = require('daypilot-pro-react')
     const { DayPilotScheduler } = require('daypilot-pro-react')
-    const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(1)
 
+    const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(2)
     const config = {
       startDate: lunes.toString(),
       resources: resources,
@@ -122,6 +143,15 @@ export default function Scheduler(props) {
       // rowMinHeight: 50,
       eventClickHandling: 'Enabled',
 
+      onEventMoved: (args) => {
+        const dp = args.control
+
+        // const startHour = args.newStart.getTimePart()
+        // const endHour = args.newEnd.getTimePart()
+        // args.e.data.start_hour = startHour
+        // args.e.data.end_hour = endHour
+        setEvents(dp.events.list)
+      },
       onTimeRangeSelected: (args) => {
         const dp = args.control
         DayPilot.Modal.prompt('New event name', 'Event').then((modal) => {
@@ -139,8 +169,8 @@ export default function Scheduler(props) {
             text: modal.result,
             start: startDate,
             end: endDate,
-            start_houre: startHour,
-            end_houre: endHour,
+            // start_hour: startHour,
+            // end_hour: endHour,
             resource: args.resource,
           }
 

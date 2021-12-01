@@ -211,7 +211,9 @@ export default function Curso() {
             <h3> Programar clases </h3>
           </div>
           <div className="main-body">
-            {group && <MyScheduler id={router.query.id} />}
+            {group && (
+              <MyScheduler id={router.query.id} old_eventos={group.eventos} />
+            )}
           </div>
         </div>
       </div>
