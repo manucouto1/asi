@@ -14,7 +14,6 @@ export default function Scheduler() {
   const [lunes, setLunes] = useState()
 
   const setNewLunes = (args) => {
-    console.log(args)
     const n_lunes = args.start.firstDayOfWeek().addDays(2)
     setLunes(n_lunes)
   }

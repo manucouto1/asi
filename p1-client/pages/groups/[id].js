@@ -8,7 +8,7 @@ import { getStudents } from '../../api/student'
 import { map } from 'lodash'
 import Select from 'react-select'
 import { Button } from 'semantic-ui-react'
-import { Box, Card, CardContent, Typography, Grid } from '@mui/material'
+import { Box } from '@mui/material'
 import { getTeachers } from '../../api/teacher'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-toastify'
@@ -21,6 +21,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import 'react-datepicker/dist/react-datepicker.css'
 import MyScheduler from '../../components/MySchedulerV3'
+import { Grid } from 'semantic-ui-react'
 
 export default function Curso() {
   const router = useRouter()
@@ -137,72 +138,80 @@ export default function Curso() {
           </div>
         </div>
       )}
-      <div className="profesor">
-        <div className="main-body">
-          <div className="card">
-            <h3> Profesor </h3>
-          </div>
-        </div>
-        <div className="main-body">
-          {all_students !== undefined && actual_students !== undefined && (
-            <form onSubmit={updateCallback}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6} md={10}>
-                    <Select
-                      label="alumnos"
-                      options={all_teachers}
-                      defaultValue={teacher}
-                      onChange={(e) => setTeacher(e)}
-                    />
+      <div className="main-body">
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={6}>
+              <div className="card">
+                <h3> Profesor </h3>
+              </div>
+            </Grid.Column>
+            <Grid.Column width={10}>
+              <div className="card">
+                <h3> Alumnos </h3>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={6}>
+              {all_students !== undefined && actual_students !== undefined && (
+                <form onSubmit={updateCallback}>
+                  <Grid>
+                    <Grid.Row>
+                      <Grid.Column width={11}>
+                        <Select
+                          label="alumnos"
+                          options={all_teachers}
+                          defaultValue={teacher}
+                          onChange={(e) => setTeacher(e)}
+                        />
+                      </Grid.Column>
+                      <Grid.Column className="row_no_ml" width={3}>
+                        <Button color="blue" type="submit">
+                          Submit
+                        </Button>
+                      </Grid.Column>
+                    </Grid.Row>
                   </Grid>
-                  <Grid item xs={6} md={2}>
-                    <Button color="blue" type="submit">
-                      Submit
-                    </Button>
+                </form>
+              )}
+            </Grid.Column>
+            <Grid.Column width={10}>
+              {all_students !== undefined && actual_students !== undefined && (
+                <form onSubmit={updateCallback}>
+                  <Grid>
+                    <Grid.Row>
+                      <Grid.Column width={13}>
+                        <Select
+                          label="alumnos"
+                          isMulti
+                          options={all_students}
+                          defaultValue={actual_students}
+                          onChange={(e) => setActual_students(e)}
+                        />
+                      </Grid.Column>
+                      <Grid.Column className="row_no_ml" width={3}>
+                        <Button color="blue" type="submit">
+                          Submit
+                        </Button>
+                      </Grid.Column>
+                    </Grid.Row>
                   </Grid>
-                </Grid>
-              </Box>
-            </form>
-          )}
-        </div>
-        {teacher && <ProfileSection user={teacher} />}
-      </div>
-      <div className="alumnos">
-        <div className="main-body">
-          <div className="card">
-            <h3> Alumnos </h3>
-          </div>
-          <div className="main-body">
-            {all_students !== undefined && actual_students !== undefined && (
-              <form onSubmit={updateCallback}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6} md={10}>
-                      <Select
-                        label="alumnos"
-                        isMulti
-                        options={all_students}
-                        defaultValue={actual_students}
-                        onChange={(e) => setActual_students(e)}
-                      />
-                    </Grid>
-                    <Grid item xs={6} md={2}>
-                      <Button color="blue" type="submit">
-                        Submit
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </form>
-            )}
-          </div>
-          {actual_students !== undefined && (
-            <div>
-              <TablaAlumnos alumnos={actual_students} />
-            </div>
-          )}
-        </div>
+                </form>
+              )}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={6}>
+              {teacher && <ProfileSection user={teacher} />}
+            </Grid.Column>
+            <Grid.Column width={10}>
+              {actual_students !== undefined && (
+                <TablaAlumnos alumnos={actual_students} />
+              )}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
 
       <div className="profesor">
