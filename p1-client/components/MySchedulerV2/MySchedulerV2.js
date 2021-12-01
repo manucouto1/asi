@@ -168,7 +168,6 @@ export default function Scheduler() {
         <Grid>
           <Grid.Row>
             <Grid.Column width={3}>
-              <p> Select day </p>
               <DayPilotNavigator onTimeRangeSelect={setNewLunes} />
             </Grid.Column>
             <Grid.Column width={13}>
