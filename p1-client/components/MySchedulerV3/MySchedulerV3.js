@@ -142,14 +142,18 @@ export default function Scheduler(props) {
       cellWidthSpec: 'Auto',
       // rowMinHeight: 50,
       eventClickHandling: 'Enabled',
+      eventDeleteHandling: 'Update',
 
+      onEventDelete: (args) => {
+        const dp = args.control
+        setEvents(dp.events.list)
+      },
       onEventMoved: (args) => {
         const dp = args.control
-
-        // const startHour = args.newStart.getTimePart()
-        // const endHour = args.newEnd.getTimePart()
-        // args.e.data.start_hour = startHour
-        // args.e.data.end_hour = endHour
+        setEvents(dp.events.list)
+      },
+      onEventResized: (args) => {
+        const dp = args.control
         setEvents(dp.events.list)
       },
       onTimeRangeSelected: (args) => {
