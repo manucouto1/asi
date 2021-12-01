@@ -63,11 +63,11 @@ export async function getGroups() {
 export async function getMyGroups() {
   const userId = sessionStorage.getItem("user_id");
   try {
-    const url = `${BASE_PATH}/alumnos?users_permissions_user=${userId}`
+    const url = `${BASE_PATH}/grupos?alumnos.users_permissions_user=${userId}`
     const response = await fetch(url, null)
     const result = await response.json()
     console.log(result)
-    return result[0].grupos;
+    return result;
   } catch (error) {
     return null
   }

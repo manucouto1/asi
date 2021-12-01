@@ -14,7 +14,6 @@ const VirtualClassroomDetails = ({ id }) => {
       if (id !== undefined) {
         const response = await findGroup(id);
         setVirtualClassroom(response);
-        console.log(response)
         const messagesResponse = await getMessages(id);
         setMessages(messagesResponse);
         setLoading(false);
