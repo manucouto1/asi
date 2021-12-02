@@ -6,42 +6,39 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-
-export default function StudentList() {
-  const [students, setStudents] = useState()
-
-  useEffect(() => {
-    async function fetchMyAPI() {
-      const response = await getStudents()
-      setStudents(response)
-    }
-    fetchMyAPI()
-  }, [])
+import { SECRETAIO_ROL } from '../../utils/constants'
+import { Link } from '@mui/material'
+export default function StudentList(props) {
+  const { students } = props
 
   return (
-    <div class="alumnosList">
+    <div className="alumnosList">
       {students !== undefined && (
         <div>
           {map(students, (x) => {
             return (
-              <a href={`/students/${x.id}`}><Student
-                nombre={x.nombre}
-                apellido1={x.apellido1}
-                apellido2={x.apellido2}
-                edad={x.edad}
-                email={x.email}
-              /></a>
+              <Link key={x._id} href={`/students/${x.id}`}>
+                <Student
+                  nombre={x.nombre}
+                  apellido1={x.apellido1}
+                  apellido2={x.apellido2}
+                  edad={x.edad}
+                  email={x.email}
+                />
+              </Link>
             )
           })}
         </div>
       )}
-      <div>
-        <Button class="ui primary button">
-          <a href="/students/registro_alumnos">
-            <p>Añadir nuevo alumno</p>
-          </a>
-        </Button>
-      </div>
+      {sessionStorage.getItem('user_role') === SECRETAIO_ROL && (
+        <div>
+          <Button className="ui button">
+            <Link href="/students/registro_alumnos">
+              <p>Añadir nuevo alumno</p>
+            </Link>
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -3,115 +3,64 @@ import BasicLayout from '../../layouts/BasicLayout'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { findCourse, updateCourse } from '../../api/course'
-import ProfileSection from '../../components/profile/profileSection'
-import { getStudents } from '../../api/student'
 import { map } from 'lodash'
-import Select from 'react-select'
-import { Button } from 'semantic-ui-react'
-import { Box, Card, CardContent, Typography, Grid } from '@mui/material'
-import { getTeachers } from '../../api/teacher'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-toastify'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
-import { minHeight } from '@mui/system'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import MyScheduler from "../../components/MySchedulerV2";
+import 'react-datepicker/dist/react-datepicker.css'
+import { createGroup } from '../../api/group'
+import { Form } from 'semantic-ui-react'
 
- 
+import { Link } from '@mui/material'
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  CardActions,
+} from '@mui/material'
+
 export default function Curso() {
   const router = useRouter()
-  const [course, setCourse] = useState()
-  const [all_teachers, setAll_teachers] = useState()
-  const [teacher, setTeacher] = useState()
-  const [all_students, setAll_students] = useState(undefined)
-  const [actual_students, setActual_students] = useState(undefined)
+  const [groupName, setGroupName] = useState('')
+  const [course, setACourse] = useState()
   const { logout } = useAuth()
 
   useEffect(() => {
     ;(async () => {
       if (router.query.id) {
         const response = await findCourse(router.query.id)
-        if (response) {
-          setCourse(response)
-          if (response.profesor !== undefined) {
-            setTeacher({
-              value: response.profesor._id,
-              label: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
-              nombre: `${response.profesor.nombre} ${response.profesor.apellido1} ${response.profesor.apellido2}`,
-              edad: response.profesor.edad,
-              email: response.profesor.email,
-            })
-          }
-
-          if (response.alumnos !== undefined) {
-            setActual_students(
-              map(response.alumnos, (x) => {
-                return {
-                  value: x._id,
-                  label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-                  nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-                  edad: x.edad,
-                  email: x.email,
-                }
-              }),
-            )
-          }
-        }
-        const response2 = await getStudents()
-        if (response2) {
-          setAll_students(
-            map(response2, (x) => {
-              return {
-                value: x._id,
-                label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-                nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-                edad: x.edad,
-                email: x.email,
-              }
-            }),
-          )
-        }
-        const response3 = await getTeachers()
-        setAll_teachers(
-          map(response3, (x) => {
-            return {
-              value: x._id,
-              label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-              nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
-              edad: x.edad,
-              email: x.email,
-            }
-          }),
-        )
+        setACourse(response)
       }
     })()
   }, [router.query.id])
 
-  async function updateCallback(event) {
-    event.preventDefault()
-
-    const new_curso = {
-      _id: course._id,
-      alumnos: map(actual_students, (x) => {
-        return x.value
-      }),
-      profesor: teacher.value,
+  const handleSubmit = async () => {
+    console.log('Creating group')
+    const new_group = {
+      nombre: groupName,
     }
-
-    const response = await updateCourse(new_curso, logout)
-
+    console.log('Traying to create group ', new_group)
+    const response = await createGroup(new_group, logout)
     if (response?._id) {
-      toast.success('Curso actualizado')
+      toast.success('Grupo creado')
+      course.grupos.push(response._id)
+      const new_curso = {
+        _id: course._id,
+        grupos: course.grupos,
+      }
+      const response2 = await updateCourse(new_curso, logout)
+      if (response2?._id) {
+        toast.success('Grupo asignado a curso')
+      } else {
+        toast.error('Error al asignar el grupo al curso')
+      }
     } else {
-      toast.error('Ha ocurrido un error, durante la actualización')
+      toast.error('Ha ocurrido un error al crear el grupo')
     }
+  }
+
+  const handleChange = (e, { name, value }) => {
+    setGroupName(value)
   }
 
   return (
@@ -140,130 +89,67 @@ export default function Curso() {
           </div>
         </div>
       )}
-      <div className="profesor">
-        <div className="main-body">
-          <div className="card">
-            <h3> Profesor </h3>
-          </div>
-        </div>
-        <div className="main-body">
-          {all_students !== undefined && actual_students !== undefined && (
-            <form onSubmit={updateCallback}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6} md={10}>
-                    <Select
-                      label="alumnos"
-                      options={all_teachers}
-                      defaultValue={teacher}
-                      onChange={(e) => setTeacher(e)}
-                    />
-                  </Grid>
-                  <Grid item xs={6} md={2}>
-                    <Button color="blue" type="submit">
-                      Submit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            </form>
-          )}
-        </div>
-        {teacher && <ProfileSection user={teacher} />}
-      </div>
+
       <div className="alumnos">
         <div className="main-body">
           <div className="card">
-            <h3> Alumnos </h3>
+            <h3> Lista de grupos </h3>
           </div>
           <div className="main-body">
-            {all_students !== undefined && actual_students !== undefined && (
-              <form onSubmit={updateCallback}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6} md={10}>
-                      <Select
-                        label="alumnos"
-                        isMulti
-                        options={all_students}
-                        defaultValue={actual_students}
-                        onChange={(e) => setActual_students(e)}
-                      />
-                    </Grid>
-                    <Grid item xs={6} md={2}>
-                      <Button color="blue" type="submit">
-                        Submit
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </form>
-            )}
-          </div>
-          {actual_students !== undefined && (
-            <div>
-              <TablaAlumnos alumnos={actual_students} />
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="profesor">
-        <div className="main-body">
-          <div className="card">
-            <h3> Programar clases </h3>
-          </div>
-          <div className="main-body">
-          {course && (
-            <form onSubmit={updateCallback}>
-            {console.log (course)}
-           {/*  <DatePicker
-              selected={course.inicio_curso}
-              onChange={handleDateChange}
-              showTimeSelect
-              dateFormat="Pp"
-            /> */}
-          </form>
-          )}
+            <Form onSubmit={handleSubmit}>
+              <Form.Group>
+                <Form.Input
+                  placeholder="Group Name"
+                  name="nombre"
+                  onChange={handleChange}
+                  value={groupName}
+                  width={14}
+                />
+                <Button type="submit">Create Group</Button>
+              </Form.Group>
+            </Form>
+            {course != undefined &&
+              course.grupos !== [] &&
+              map(course.grupos, (x) => {
+                return <Group key={x.id} nombre={x.nombre} id={x.id} />
+              })}
           </div>
         </div>
-            <div className="scheduler__block">
-                <MyScheduler/>
-            </div>
       </div>
-
     </BasicLayout>
   )
 }
 
-function TablaAlumnos(props) {
-  const { alumnos } = props
+function Group(props) {
+  const { nombre, id } = props
+
+  async function handleDeleteGroup() {
+    const response = await deleteGroup(id)
+
+    if (response?.data?.id) {
+      // RECARGAR LA PÄINA!!
+    }
+  }
+
   return (
-    <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
-      <Table className="tablaAlumnosCursos">
-        <TableHead>
-          <TableRow>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Edad</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {map(alumnos, (row) => (
-            <TableRow
-              key={row.value}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.label}
-              </TableCell>
-              <TableCell>{row.email}</TableCell>
-              <TableCell>{row.edad}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Card sx={{ display: 'inline-block', margin: '20px' }}>
+      <CardContent>
+        <Typography variant="h5" component="div">
+          {nombre}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Link href={`/groups/${id}`}>
+          <Button size="small" color="primary">
+            Editar grupo
+          </Button>
+        </Link>
+        {sessionStorage.getItem('user_role').toLowerCase() === 'secretario' && (
+          <Button onClick={handleDeleteGroup} size="small" color="error">
+            Eliminar
+          </Button>
+        )}
+      </CardActions>
+    </Card>
   )
 }
-

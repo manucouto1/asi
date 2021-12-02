@@ -17,12 +17,25 @@
       "required": true,
       "unique": true
     },
-    "curso": {
-      "model": "curso"
+    "alumnos": {
+      "collection": "alumno"
     },
-    "virtual_classroom": {
+    "profesor": {
+      "model": "profesor"
+    },
+    "eventos": {
+      "collection": "eventos"
+    },
+    "messages": {
+      "collection": "message"
+    },
+    "message": {
       "via": "grupo",
-      "model": "virtual-classroom"
+      "model": "message"
+    },
+    "alumno": {
+      "via": "grupos",
+      "model": "alumno"
     }
   }
 }

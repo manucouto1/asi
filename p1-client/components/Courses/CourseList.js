@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { getCourses } from '../../api/course'
+import { deleteCourse, getCourses } from '../../api/course'
 import { map } from 'lodash'
+import Link from 'next/link'
 import {
   Box,
   Card,
@@ -10,44 +11,45 @@ import {
   CardActions,
 } from '@mui/material'
 
-export default function CourseList() {
-  const [courses, setCourses] = useState()
-
-  useEffect(() => {
-    ;(async () => {
-      const response = await getCourses()
-      setCourses(response)
-    })()
-  }, [])
+export default function CourseList(props) {
+  const { courses, setCourses } = props
 
   return (
     <div className="courseList">
       {courses !== undefined && (
         <div>
           {map(courses, (x) => {
-            return<a href={`/courses/${x.id}`}><Course key={x._id} curso={x} /></a>
+            return <Course key={x._id} curso={x} setCurso={setCourses} />
           })}
         </div>
       )}
       <Button color="primary">
-        <a href="/courses/crear_curso">
+        <Link href="/courses/crear_curso">
           <p>Añadir nuevo curso</p>
-        </a>
+        </Link>
       </Button>
     </div>
   )
 }
 
 function Course(props) {
-  const { curso } = props
+  const { curso, setCurso } = props
   const { id, nombre, idioma, nivel } = curso
-  const next_url = `/courses/${id}`
+
+  async function handleDeleteCourse() {
+    const response = await deleteCourse(id)
+
+    if (response.data.id) {
+      const courseResponse = await getCourses()
+      setCurso(courseResponse)
+    }
+  }
+
   return (
     <Card sx={{ display: 'inline-block', margin: '20px' }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {idioma !== undefined && idioma.nombre}
-          {console.log(nivel)}
           {bull}
           {nivel !== undefined && nivel.codigo}
         </Typography>
@@ -56,10 +58,16 @@ function Course(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button href={next_url} size="small" color="primary">
-          {' '}
-          Ver curso
-        </Button>
+        <Link href={`/courses/${id}`}>
+          <Button size="small" color="primary">
+            Ver curso
+          </Button>
+        </Link>
+        {sessionStorage.getItem('user_role').toLowerCase() === 'secretario' && (
+          <Button onClick={handleDeleteCourse} size="small" color="error">
+            Eliminar
+          </Button>
+        )}
       </CardActions>
     </Card>
   )

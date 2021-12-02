@@ -5,9 +5,9 @@ import { groupDetails } from '../../components/Group/GroupDetails'
 import { findGroup, getGroups } from '../../api/group'
 import ReactDOMServer from 'react-dom/server'
 import { Grid } from 'semantic-ui-react'
-import { map } from 'lodash'
 
-export default function Scheduler() {
+export default function SchedulerV4(props) {
+  const { id } = props
   const router = useRouter()
   const [resources, setResources] = useState([])
   const [events, setEvents] = useState([])
@@ -22,74 +22,37 @@ export default function Scheduler() {
     ;(async () => {
       const { DayPilot } = require('daypilot-pro-react')
       const lunes = DayPilot.Date.today().firstDayOfWeek().addDays(2)
-      const groups = await getGroups()
       setLunes(lunes)
       setResources([
         {
           name: 'Lunes',
-          id: 'lun',
+          id: `lun_${id}`,
           expanded: true,
-          children: map(groups, (group) => {
-            return {
-              name: group.nombre,
-              id: `lun_${group._id}`,
-            }
-          }),
         },
         {
           name: 'Martes',
-          id: 'mar',
+          id: `mar_${id}`,
           expanded: true,
-          children: map(groups, (group) => {
-            return {
-              name: group.nombre,
-              id: `mar_${group._id}`,
-            }
-          }),
         },
         {
           name: 'Miercoles',
-          id: 'mie',
+          id: `mie_${id}`,
           expanded: true,
-          children: map(groups, (group) => {
-            return {
-              name: group.nombre,
-              id: `mie_${group._id}`,
-            }
-          }),
         },
         {
           name: 'Jueves',
-          id: 'jue',
+          id: `jue_${id}`,
           expanded: true,
-          children: map(groups, (group) => {
-            return {
-              name: group.nombre,
-              id: `jue_${group._id}`,
-            }
-          }),
         },
         {
           name: 'Viernes',
-          id: 'vie',
+          id: `vie_${id}`,
           expanded: true,
-          children: map(groups, (group) => {
-            return {
-              name: group.nombre,
-              id: `vie_${group._id}`,
-            }
-          }),
         },
         {
           name: 'Sábado',
-          id: 'sab',
+          id: `sab_${id}`,
           expanded: true,
-          children: map(groups, (group) => {
-            return {
-              name: group.nombre,
-              id: `sab_${group._id}`,
-            }
-          }),
         },
       ])
       const eventos = await getAllEvents()
@@ -121,7 +84,7 @@ export default function Scheduler() {
       eventClickHandling: 'Enabled',
 
       onEventClicked: (args) => {
-        router.push('/events/' + args.e.data.id)
+        router.push(`/events/${id}/${args.e.data.id}`)
       },
 
       onBeforeCellRender: (args) => {
@@ -152,10 +115,10 @@ export default function Scheduler() {
       <div>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={3}>
+            <Grid.Column width={4}>
               <DayPilotNavigator onTimeRangeSelect={setNewLunes} />
             </Grid.Column>
-            <Grid.Column width={13}>
+            <Grid.Column width={12}>
               <DayPilotScheduler startDate={lunes} {...config} />
             </Grid.Column>
           </Grid.Row>

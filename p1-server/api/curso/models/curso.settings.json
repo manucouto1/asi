@@ -29,17 +29,14 @@
     "maximo": {
       "type": "integer"
     },
-    "alumnos": {
-      "collection": "alumno"
-    },
-    "profesor": {
-      "model": "profesor"
-    },
     "inicio_curso": {
       "type": "date"
     },
     "fin_curso": {
       "type": "date"
+    },
+    "grupos": {
+      "collection": "grupo"
     }
   }
 }

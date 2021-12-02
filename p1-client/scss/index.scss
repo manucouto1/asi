@@ -8,6 +8,7 @@
 @import '../pages/scheduler/courses_schedurler.module.scss';
 @import '../pages/usuario/secretaria.module.scss';
 @import '../pages/courses/curso.module.scss';
+@import '../pages/groups/groups.module.scss';
 
 //Layout
 @import '../layouts/BasicLayout/BasicLayout.module.scss';
@@ -24,3 +25,4 @@
 @import '../components/MySchedulerV2/MySchedulerV2.module.scss';
 @import '../components/profile/profileSection.module.scss';
 @import '../components/secretaria/secretariaPanel.module.scss';
+@import '../components/Teachers/teachersPanel.module.scss';

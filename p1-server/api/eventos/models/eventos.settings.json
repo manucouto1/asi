@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "eventos",
   "info": {
-    "name": "Eventos"
+    "name": "Eventos",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -11,17 +12,25 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "inicio_evento": {
-      "type": "datetime"
+    "text": {
+      "type": "string",
+      "unique": false
     },
-    "fin_evento": {
-      "type": "datetime"
-    },
-    "Nombre": {
+    "start": {
       "type": "string"
     },
-    "Descripcion": {
+    "end": {
       "type": "string"
+    },
+    "resource": {
+      "type": "string"
+    },
+    "nombre": {
+      "type": "string",
+      "unique": true
+    },
+    "grupo": {
+      "model": "grupo"
     }
   }
 }
