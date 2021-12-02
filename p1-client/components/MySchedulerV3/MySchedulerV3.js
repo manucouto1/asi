@@ -19,6 +19,7 @@ export default function Scheduler(props) {
   const [aux_events, setAuxEvents] = useState([])
   const [initDate, setInitDate] = useState()
   const [endDate, setEndDate] = useState()
+  const [insertList, setInsertList] = useState([])
 
   const onInitDateChange = (e, data) => {
     const { DayPilot } = require('daypilot-pro-react')
@@ -35,44 +36,29 @@ export default function Scheduler(props) {
   }
 
   const onCalendarSubmit = async (_) => {
+    const groupId = id
     if (initDate !== undefined && endDate !== undefined) {
       var lunes = initDate.firstDayOfWeek().addDays(1)
       var list_ev = []
 
+      aux_events.forEach((ev) => deleteEvento(ev._id))
+
       const { DayPilot } = require('daypilot-pro-react')
 
-      while (lunes < endDate) {
-        for (let x of events) {
-          const start_hour = DayPilot.Date(x.start).getTimePart()
-          const end_hour = DayPilot.Date(x.end).getTimePart()
+      Promise.all(aux_events).then(async () => {
+        while (lunes < endDate) {
+          for (let x of events) {
+            const start_hour = DayPilot.Date(x.start).getTimePart()
+            const end_hour = DayPilot.Date(x.end).getTimePart()
 
-          if (x?._id) {
             const event = {
-              _id: x._id,
               text: x.text,
-              nombre: `${x.resource}_${lunes.weekNumber()}_${id}`,
+              nombre: x.text + lunes.weekNumber(),
               start: lunes.addTime(start_hour).addHours(1).toString(),
               end: lunes.addTime(end_hour).addHours(1).toString(),
               resource: x.resource,
-              grupo: id,
+              grupo: groupId,
             }
-            const result = await updateEvent(event)
-            if (result?._id) {
-              list_ev.push(result)
-            } else {
-              toast.info('El evento ya existe')
-            }
-          } else {
-            const event = {
-              text: x.text,
-              nombre: `${x.resource}_${lunes.weekNumber()}_${id}`,
-              start: lunes.addTime(start_hour).addHours(1).toString(),
-              end: lunes.addTime(end_hour).addHours(1).toString(),
-              resource: x.resource,
-              grupo: id,
-            }
-            console.log(event)
-
             const result = await createEvent(event)
             if (result?._id) {
               list_ev.push(result)
@@ -80,25 +66,24 @@ export default function Scheduler(props) {
               toast.info('El evento ya existe')
             }
           }
+          lunes = lunes.addDays(7)
         }
-        lunes = lunes.addDays(7)
-      }
 
-      const new_group = {
-        _id: id,
-        eventos: map(list_ev, (x) => {
-          return x?._id
-        }),
-      }
+        const new_group = {
+          _id: id,
+          eventos: map(list_ev, (x) => {
+            return x?._id
+          }),
+        }
 
-      const response = await updateGroup(new_group)
+        const response = await updateGroup(new_group)
 
-      if (response?._id) {
-        toast.success('Eventos añadidos al curso')
-      } else {
-        toast.error('Ha ocurrido un error, durante la actualización')
-      }
-      // })
+        if (response?._id) {
+          toast.success('Eventos añadidos al curso')
+        } else {
+          toast.error('Ha ocurrido un error, durante la actualización')
+        }
+      })
       setAuxEvents(list_ev)
     } else {
       toast.error('Asegurate de seleccionar la fecha de inicio y la de fin')
@@ -171,13 +156,13 @@ export default function Scheduler(props) {
         // if (args.e.data?._id) {
         //   deleteEvento(args.e.data._id)
         // }
-        ;(async () => {
-          const result = await findEventoByResource(args.e.data.resource)
-          result.forEach((x) => {
-            const response = deleteEvento(x._id)
-            console.log(response)
-          })
-        })()
+        // ;(async () => {
+        //   const result = await findEventoByResource(args.e.data.resource)
+        //   result.forEach((x) => {
+        //     const response = deleteEvento(x._id)
+        //     console.log(response)
+        //   })
+        // })()
         setEvents(dp.events.list)
       },
       onEventMoved: (args) => {
