@@ -5,6 +5,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { SECRETAIO_ROL } from '../../utils/constants'
+import Link from 'next/link'
 
 export default function TeacherList(props) {
   const { teachers } = props
@@ -15,7 +16,7 @@ export default function TeacherList(props) {
         <div>
           {map(teachers, (x) => {
             return (
-              <a key={x._id} href={`/teachers/${x.id}`}>
+              <Link key={x._id} href={`/teachers/${x.id}`}>
                 <Teacher
                   nombre={x.nombre}
                   apellido1={x.apellido1}
@@ -23,7 +24,7 @@ export default function TeacherList(props) {
                   edad={x.edad}
                   email={x.email}
                 />
-              </a>
+              </Link>
             )
           })}
         </div>
@@ -31,9 +32,9 @@ export default function TeacherList(props) {
       {sessionStorage.getItem('user_role') === SECRETAIO_ROL && (
         <div>
           <Button className="ui button">
-            <a href="/teachers/registro_profesores">
+            <Link href="/teachers/registro_profesores">
               <p>Añadir nuevo profesor</p>
-            </a>
+            </Link>
           </Button>
         </div>
       )}

@@ -7,7 +7,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { SECRETAIO_ROL } from '../../utils/constants'
-
+import { Link } from '@mui/material'
 export default function StudentList(props) {
   const { students } = props
 
@@ -17,7 +17,7 @@ export default function StudentList(props) {
         <div>
           {map(students, (x) => {
             return (
-              <a key={x._id} href={`/students/${x.id}`}>
+              <Link key={x._id} href={`/students/${x.id}`}>
                 <Student
                   nombre={x.nombre}
                   apellido1={x.apellido1}
@@ -25,7 +25,7 @@ export default function StudentList(props) {
                   edad={x.edad}
                   email={x.email}
                 />
-              </a>
+              </Link>
             )
           })}
         </div>
@@ -33,9 +33,9 @@ export default function StudentList(props) {
       {sessionStorage.getItem('user_role') === SECRETAIO_ROL && (
         <div>
           <Button className="ui button">
-            <a href="/students/registro_alumnos">
+            <Link href="/students/registro_alumnos">
               <p>Añadir nuevo alumno</p>
-            </a>
+            </Link>
           </Button>
         </div>
       )}

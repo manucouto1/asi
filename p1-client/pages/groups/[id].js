@@ -8,7 +8,6 @@ import { getStudents } from '../../api/student'
 import { map } from 'lodash'
 import Select from 'react-select'
 import { Button } from 'semantic-ui-react'
-import { Box } from '@mui/material'
 import { getTeachers } from '../../api/teacher'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-toastify'
@@ -20,8 +19,11 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import 'react-datepicker/dist/react-datepicker.css'
-import MyScheduler from '../../components/MySchedulerV3'
 import { Grid } from 'semantic-ui-react'
+import { getMeApi } from '../../api/user'
+import { getRole } from '../../api/roles'
+import SchedulerV4 from '../../components/MySchedulerV4/MySchedulerV4'
+import MyScheduler from '../../components/MySchedulerV3'
 
 export default function Curso() {
   const router = useRouter()
@@ -31,8 +33,14 @@ export default function Curso() {
   const [all_students, setAll_students] = useState(undefined)
   const [actual_students, setActual_students] = useState(undefined)
   const { logout } = useAuth()
+  const [role, setRole] = useState(false)
 
   useEffect(() => {
+    ;(async () => {
+      const result1 = await getMeApi(logout)
+      const result2 = await getRole(result1.tipo_rol)
+      setRole(result2.nombre)
+    })()
     ;(async () => {
       if (router.query.id) {
         const response = await findGroup(router.query.id)
@@ -140,92 +148,133 @@ export default function Curso() {
       )}
       <div className="main-body">
         <Grid>
-          <Grid.Row>
-            <Grid.Column width={6}>
-              <div className="card">
-                <h3> Profesor </h3>
-              </div>
-            </Grid.Column>
-            <Grid.Column width={10}>
-              <div className="card">
-                <h3> Alumnos </h3>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={6}>
-              {all_students !== undefined && actual_students !== undefined && (
-                <form onSubmit={updateCallback}>
-                  <Grid>
-                    <Grid.Row>
-                      <Grid.Column width={11}>
-                        <Select
-                          label="alumnos"
-                          options={all_teachers}
-                          defaultValue={teacher}
-                          onChange={(e) => setTeacher(e)}
-                        />
-                      </Grid.Column>
-                      <Grid.Column className="row_no_ml" width={3}>
-                        <Button color="blue" type="submit">
-                          Submit
-                        </Button>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </form>
-              )}
-            </Grid.Column>
-            <Grid.Column width={10}>
-              {all_students !== undefined && actual_students !== undefined && (
-                <form onSubmit={updateCallback}>
-                  <Grid>
-                    <Grid.Row>
-                      <Grid.Column width={13}>
-                        <Select
-                          label="alumnos"
-                          isMulti
-                          options={all_students}
-                          defaultValue={actual_students}
-                          onChange={(e) => setActual_students(e)}
-                        />
-                      </Grid.Column>
-                      <Grid.Column className="row_no_ml" width={3}>
-                        <Button color="blue" type="submit">
-                          Submit
-                        </Button>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </form>
-              )}
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={6}>
-              {teacher && <ProfileSection user={teacher} />}
-            </Grid.Column>
-            <Grid.Column width={10}>
-              {actual_students !== undefined && (
-                <TablaAlumnos alumnos={actual_students} />
-              )}
-            </Grid.Column>
-          </Grid.Row>
+          {role === 'Secretario' ? (
+            <Grid.Row>
+              <Grid.Column width={6}>
+                <div className="card">
+                  <h3> Profesor </h3>
+                </div>
+              </Grid.Column>
+              <Grid.Column width={10}>
+                <div className="card">
+                  <h3> Alumnos </h3>
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+          ) : (
+            <Grid.Row>
+              <Grid.Column width={4}>
+                <div className="card">
+                  <h3> Profesor </h3>
+                </div>
+              </Grid.Column>
+              <Grid.Column width={12}>
+                <div className="card">
+                  <h3> Alumnos </h3>
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+          )}
+          {role === 'Secretario' && (
+            <Grid.Row>
+              <Grid.Column width={6}>
+                {all_students !== undefined && actual_students !== undefined && (
+                  <form onSubmit={updateCallback}>
+                    <Grid>
+                      <Grid.Row>
+                        <Grid.Column width={11}>
+                          <Select
+                            label="alumnos"
+                            options={all_teachers}
+                            defaultValue={teacher}
+                            onChange={(e) => setTeacher(e)}
+                          />
+                        </Grid.Column>
+                        <Grid.Column className="row_no_ml" width={3}>
+                          <Button color="blue" type="submit">
+                            Submit
+                          </Button>
+                        </Grid.Column>
+                      </Grid.Row>
+                    </Grid>
+                  </form>
+                )}
+              </Grid.Column>
+              <Grid.Column width={10}>
+                {all_students !== undefined && actual_students !== undefined && (
+                  <form onSubmit={updateCallback}>
+                    <Grid>
+                      <Grid.Row>
+                        <Grid.Column width={13}>
+                          <Select
+                            label="alumnos"
+                            isMulti
+                            options={all_students}
+                            defaultValue={actual_students}
+                            onChange={(e) => setActual_students(e)}
+                          />
+                        </Grid.Column>
+                        <Grid.Column className="row_no_ml" width={3}>
+                          <Button color="blue" type="submit">
+                            Submit
+                          </Button>
+                        </Grid.Column>
+                      </Grid.Row>
+                    </Grid>
+                  </form>
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          )}
+          {role === 'Secretario' ? (
+            <Grid.Row>
+              <Grid.Column width={6}>
+                {teacher && <ProfileSection user={teacher} />}
+              </Grid.Column>
+              <Grid.Column width={10}>
+                {actual_students !== undefined && (
+                  <TablaAlumnos alumnos={actual_students} />
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          ) : (
+            <Grid.Row>
+              <Grid.Column width={4}>
+                {teacher && <ProfileSection user={teacher} />}
+              </Grid.Column>
+              <Grid.Column width={12}>
+                {actual_students !== undefined && (
+                  <TablaAlumnos alumnos={actual_students} />
+                )}
+              </Grid.Column>
+            </Grid.Row>
+          )}
         </Grid>
       </div>
-
-      <div className="profesor">
-        <div className="main-body">
-          <div className="card">
-            <h3> Programar clases </h3>
-          </div>
+      {group && role == 'Secretario' && (
+        <div className="profesor">
           <div className="main-body">
-            {group && (
+            <div className="card">
+              <h3> Programar clases </h3>
+            </div>
+            <div className="main-body">
               <MyScheduler id={router.query.id} old_eventos={group.eventos} />
-            )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {group && role == 'Profesor' && (
+        <div className="profesor">
+          <div className="main-body">
+            <div className="card">
+              <h3> Horarios </h3>
+            </div>
+            <div className="main-body">
+              <SchedulerV4 id={router.query.id} />
+            </div>
+          </div>
+        </div>
+      )}
     </BasicLayout>
   )
 }

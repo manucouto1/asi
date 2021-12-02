@@ -11,7 +11,6 @@ import {
 
 export default function GroupList(props) {
   const { groups } = props
-  console.log(groups)
 
   return (
     <div className="courseList">

@@ -1,24 +1,25 @@
-import React, { useState } from "react";
-import moment from "moment";
-import { Button } from "semantic-ui-react";
-import { deleteMessage, getMessages } from "../../api/message";
-import VirtualClassroomUpdateForm from "./VirtualClassroomUpdateForm";
+import React, { useState } from 'react'
+import moment from 'moment'
+import { Button } from 'semantic-ui-react'
+import { deleteMessage, getMessages } from '../../api/message'
+import VirtualClassroomUpdateForm from './VirtualClassroomUpdateForm'
+import Link from 'next/link'
 
 const VirtualClassroomMessage = ({
   message,
   setMessages,
   virtualClassroomId,
 }) => {
-  const [updating, setUpdating] = useState(false);
+  const [updating, setUpdating] = useState(false)
 
   async function handleDeleteMessage(id) {
-    await deleteMessage(id);
-    const messagesResponse = await getMessages(virtualClassroomId);
-    setMessages(messagesResponse);
+    await deleteMessage(id)
+    const messagesResponse = await getMessages(virtualClassroomId)
+    setMessages(messagesResponse)
   }
 
   return (
-    <div className="card" style={{ width: "90%" }}>
+    <div className="card" style={{ width: '90%' }}>
       <div className="card-body">
         {!updating && (
           <div className="d-flex flex-column align-items-center text-center">
@@ -27,18 +28,19 @@ const VirtualClassroomMessage = ({
                 <strong>Enviado por: {`${message.autor}`}</strong>
               </p>
               <strong>
-                Día {moment(message.createdAt).format("DD/MM/yyyy")}
+                Día {moment(message.createdAt).format('DD/MM/yyyy')}
               </strong>
-              <p style={{ whiteSpace: "pre-wrap" }}>{message.texto}</p>
+              <p style={{ whiteSpace: 'pre-wrap' }}>{message.texto}</p>
               {message.archivo.map((x) => (
-                <a
-                  style={{ marginRight: "1em" }}
+                <Link
+                  key={x._id}
+                  style={{ marginRight: '1em' }}
                   href={`http://localhost:1337${x.url}`}
                 >
                   {x.name}
-                </a>
+                </Link>
               ))}
-              {message.autor === sessionStorage.getItem("user_name") && (
+              {message.autor === sessionStorage.getItem('user_name') && (
                 <Button
                   onClick={() => handleDeleteMessage(message.id)}
                   color="error"
@@ -46,7 +48,7 @@ const VirtualClassroomMessage = ({
                   Eliminar
                 </Button>
               )}
-              {message.autor === sessionStorage.getItem("user_name") && (
+              {message.autor === sessionStorage.getItem('user_name') && (
                 <Button onClick={() => setUpdating(true)}>Editar</Button>
               )}
             </div>
@@ -60,7 +62,7 @@ const VirtualClassroomMessage = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VirtualClassroomMessage;
+export default VirtualClassroomMessage

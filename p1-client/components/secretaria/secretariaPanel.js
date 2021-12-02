@@ -55,6 +55,7 @@ export default function SecretariaPanel() {
   ]
   return (
     <Tab
+      key="secretariaPanel"
       className="secretaria__tab"
       menu={{ secondary: true, pointing: true }}
       panes={panes}

@@ -6,7 +6,6 @@ import { createEvent, deleteEvento, findEvento } from '../../api/evento'
 import { updateGroup } from '../../api/group'
 import { toast } from 'react-toastify'
 import { map } from 'lodash'
-import useAuth from '../../hooks/useAuth'
 
 export default function Scheduler(props) {
   const { id, old_eventos } = props
@@ -15,7 +14,6 @@ export default function Scheduler(props) {
   const [aux_events, setAuxEvents] = useState([])
   const [initDate, setInitDate] = useState()
   const [endDate, setEndDate] = useState()
-
 
   const onInitDateChange = (e, data) => {
     const { DayPilot } = require('daypilot-pro-react')
@@ -32,7 +30,6 @@ export default function Scheduler(props) {
   }
 
   const onCalendarSubmit = async (_) => {
-    const groupId = id;
     if (initDate !== undefined && endDate !== undefined) {
       var lunes = initDate.firstDayOfWeek().addDays(1)
       var list_ev = []
@@ -41,7 +38,7 @@ export default function Scheduler(props) {
 
       const { DayPilot } = require('daypilot-pro-react')
 
-      Promise.all(aux_events).then(async () => {
+      Promise.all(aux_events).then(async (_) => {
         while (lunes < endDate) {
           for (let x of events) {
             const start_hour = DayPilot.Date(x.start).getTimePart()
@@ -49,11 +46,11 @@ export default function Scheduler(props) {
 
             const event = {
               text: x.text,
-              nombre: x.text + lunes.weekNumber(),
+              nombre: `${x.text}_${lunes.weekNumber()}_${id}`,
               start: lunes.addTime(start_hour).addHours(1).toString(),
               end: lunes.addTime(end_hour).addHours(1).toString(),
               resource: x.resource,
-              grupo: groupId
+              grupo: id,
             }
             const result = await createEvent(event)
             if (result?._id) {
