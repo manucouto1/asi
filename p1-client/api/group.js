@@ -19,6 +19,17 @@ export async function createGroup(group, logout) {
   }
 }
 
+export async function getGroupsByUserId(id) {
+  try {
+    const url = `${BASE_PATH}/grupos?profesor._id=${id}`
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    return null
+  }
+}
+
 export async function findGroup(groupId) {
   try {
     const url = `${BASE_PATH}/grupos/${groupId}`
@@ -61,25 +72,25 @@ export async function getGroups() {
 }
 
 export async function getMyGroups() {
-  const userId = sessionStorage.getItem("user_id");
+  const userId = sessionStorage.getItem('user_id')
   try {
     const url = `${BASE_PATH}/grupos?alumnos.users_permissions_user=${userId}`
     const response = await fetch(url, null)
     const result = await response.json()
     console.log(result)
-    return result;
+    return result
   } catch (error) {
     return null
   }
 }
 
 export async function getTeacherGroups() {
-  const userId = sessionStorage.getItem("user_id");
+  const userId = sessionStorage.getItem('user_id')
   try {
     const url = `${BASE_PATH}/grupos?profesor.users_permissions_user=${userId}`
     const response = await fetch(url, null)
     const result = await response.json()
-    return result;
+    return result
   } catch (error) {
     return null
   }

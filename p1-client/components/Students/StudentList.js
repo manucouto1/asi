@@ -6,17 +6,10 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
+import { SECRETAIO_ROL } from '../../utils/constants'
 
-export default function StudentList() {
-  const [students, setStudents] = useState()
-
-  useEffect(() => {
-    async function fetchMyAPI() {
-      const response = await getStudents()
-      setStudents(response)
-    }
-    fetchMyAPI()
-  }, [])
+export default function StudentList(props) {
+  const { students } = props
 
   return (
     <div className="alumnosList">
@@ -37,13 +30,15 @@ export default function StudentList() {
           })}
         </div>
       )}
-      {sessionStorage.getItem("user_role") === "secretario" && <div>
-        <Button className="ui button">
-          <a href="/students/registro_alumnos">
-            <p>Añadir nuevo alumno</p>
-          </a>
-        </Button>
-      </div>}
+      {sessionStorage.getItem('user_role') === SECRETAIO_ROL && (
+        <div>
+          <Button className="ui button">
+            <a href="/students/registro_alumnos">
+              <p>Añadir nuevo alumno</p>
+            </a>
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

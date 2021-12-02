@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { getTeachers } from '../../api/teacher'
 import { Button } from 'semantic-ui-react'
 import { map } from 'lodash'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import { Image, Item } from 'semantic-ui-react'
+import { SECRETAIO_ROL } from '../../utils/constants'
 
-export default function TeacherList() {
-  const [teachers, setTeachers] = useState()
-
-  useEffect(() => {
-    async function fetchMyAPI() {
-      const response = await getTeachers()
-      setTeachers(response)
-    }
-    fetchMyAPI()
-  }, [])
+export default function TeacherList(props) {
+  const { teachers } = props
 
   return (
     <div className="teacherList">
@@ -38,13 +28,15 @@ export default function TeacherList() {
           })}
         </div>
       )}
-      <div>
-        <Button className="ui button">
-          <a href="/teachers/registro_profesores">
-            <p>Añadir nuevo profesor</p>
-          </a>
-        </Button>
-      </div>
+      {sessionStorage.getItem('user_role') === SECRETAIO_ROL && (
+        <div>
+          <Button className="ui button">
+            <a href="/teachers/registro_profesores">
+              <p>Añadir nuevo profesor</p>
+            </a>
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

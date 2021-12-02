@@ -11,22 +11,15 @@ import {
   CardActions,
 } from '@mui/material'
 
-export default function CourseList() {
-  const [courses, setCourses] = useState()
-
-  useEffect(() => {
-    ;(async () => {
-      const response = await getCourses()
-      setCourses(response)
-    })()
-  }, [])
+export default function CourseList(props) {
+  const { courses, setCourses } = props
 
   return (
     <div className="courseList">
       {courses !== undefined && (
         <div>
           {map(courses, (x) => {
-            return <Course key={x._id} curso={x} setCourses={setCourses} />
+            return <Course key={x._id} curso={x} setCurso={setCourses} />
           })}
         </div>
       )}
@@ -40,7 +33,7 @@ export default function CourseList() {
 }
 
 function Course(props) {
-  const { curso, setCourses } = props
+  const { curso, setCurso } = props
   const { id, nombre, idioma, nivel } = curso
 
   async function handleDeleteCourse() {
@@ -48,7 +41,7 @@ function Course(props) {
 
     if (response.data.id) {
       const courseResponse = await getCourses()
-      setCourses(courseResponse)
+      setCurso(courseResponse)
     }
   }
 
