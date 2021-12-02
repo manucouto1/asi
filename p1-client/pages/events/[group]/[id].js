@@ -51,7 +51,7 @@ export default function Event() {
       <Seo title="Clase" description="Detalles de una clase" />
       {students &&
         students.map((x) => (
-          <div>
+          <div key={x._id}>
             <span
               style={{ marginRight: '0.5em' }}
             >{`${x.nombre} ${x.apellido1} ${x.apellido2}`}</span>
