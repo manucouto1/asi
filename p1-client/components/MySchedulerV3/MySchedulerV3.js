@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
-import { createEvent, updateEvent } from '../../api/evento'
+import {
+  createEvent,
+  updateEvent,
+  deleteEvento,
+  findEventoByResource,
+} from '../../api/evento'
 import { updateGroup } from '../../api/group'
 import { toast } from 'react-toastify'
 import { map } from 'lodash'
@@ -163,6 +168,16 @@ export default function Scheduler(props) {
 
       onEventDelete: (args) => {
         const dp = args.control
+        // if (args.e.data?._id) {
+        //   deleteEvento(args.e.data._id)
+        // }
+        ;(async () => {
+          const result = await findEventoByResource(args.e.data.resource)
+          result.forEach((x) => {
+            const response = deleteEvento(x._id)
+            console.log(response)
+          })
+        })()
         setEvents(dp.events.list)
       },
       onEventMoved: (args) => {

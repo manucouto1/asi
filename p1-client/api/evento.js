@@ -12,6 +12,17 @@ export async function findEvento(id) {
   }
 }
 
+export async function findEventoByResource(resource) {
+  try {
+    const url = `${BASE_PATH}/eventos?resource=${resource}`
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result ? result : null
+  } catch (error) {
+    return null
+  }
+}
+
 export async function deleteEvento(id) {
   const url = `${BASE_PATH}/eventos/${id}`
 
