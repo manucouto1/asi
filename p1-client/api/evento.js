@@ -18,6 +18,25 @@ export async function deleteEvento(id) {
   return await axios.delete(url)
 }
 
+export async function updateEvent(event) {
+  try {
+    const url = `${BASE_PATH}/eventos/${event._id}`
+    const params = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(event),
+    }
+    // const result = await authFetch(url, params, logout);
+    const response = await fetch(url, params)
+    const result = await response.json()
+    return result ? result : null
+  } catch (error) {
+    return null
+  }
+}
+
 export async function createEvent(event, logout) {
   try {
     const url = `${BASE_PATH}/eventos`
