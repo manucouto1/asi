@@ -81,6 +81,14 @@ export default function Scheduler(){
             showNonBusiness: false,
             cellWidthSpec: "Auto",            
             // rowMinHeight: 50,
+            days: 1,
+            heightSpec: "Max",
+            startDate: lunes,
+            // days: DayPilot.Date.today().daysInMonth(),
+            timeRangeSelectedHandling: "Enabled",
+            treePreventParentUsage: true,
+            onTimeRangeSelected: selectTimeRange,
+            eventMoveHandling: "Update",
             eventClickHandling: "Enabled",
             onEventClicked: (args) => {
                 router.push('/groups/'+args.e.data.id)
@@ -107,7 +115,7 @@ export default function Scheduler(){
                     args.html = (response != undefined && response != null) ? printClassInfo(response) : "<h1> Loading... </h1>";
                     args.loaded();
                   })();
-                  
+                  debugger
                   // args.html= "<h1> Test </h1>"
                 }
             }),
@@ -122,11 +130,10 @@ export default function Scheduler(){
     }
 
     return (<div></div>);
-}
+  }
 
 function printClassInfo(group){
   return (ReactDOMServer.renderToStaticMarkup(groupDetails(group))).toString()
-
 }
 
 
@@ -137,7 +144,6 @@ async function handleEventCreation(
   descripcionEvento,
   logout
 ) {
-  const teacherId = sessionStorage.getItem("user_id");
   const response = await createEvent(
     nombreEvento,
     inicioEvento,
@@ -150,7 +156,6 @@ async function handleEventCreation(
 async function selectTimeRange(args) {
   const {DayPilot} = require('daypilot-pro-react')
   const dp = args.control;
-
 
   var idiomas = map(await getIdiomas(), (x) => {
     return {
@@ -192,9 +197,7 @@ async function selectTimeRange(args) {
     if (modal.canceled) { return; }
     data.text = modal.result.nombre
     dp.events.add(data);
-    console.log(data);
     handleEventCreation(data.text, data.start, data.end, "");
   });
   
 }
-
