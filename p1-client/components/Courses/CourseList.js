@@ -24,9 +24,9 @@ export default function CourseList(props) {
         </div>
       )}
       <Button color="primary">
-        <a href="/courses/crear_curso">
+        <Link href="/courses/crear_curso">
           <p>Añadir nuevo curso</p>
-        </a>
+        </Link>
       </Button>
     </div>
   )

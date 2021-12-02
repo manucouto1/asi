@@ -1,9 +1,9 @@
 import { Tab } from 'semantic-ui-react'
 import StudentList from '../../components/Students/StudentList'
-import { useState, useEffect } from 'react'
+import GroupList from '../../components/Group/GroupList'
 import { getTeacherByUserId } from '../../api/teacher'
 import { getGroupsByUserId } from '../../api/group'
-import GroupList from '../../components/Group/GroupList'
+import { useState, useEffect } from 'react'
 
 export default function TeachersPanel(props) {
   const { id } = props
@@ -26,10 +26,10 @@ export default function TeachersPanel(props) {
           }
         })
       })
-
       setStudents(alumnos)
     })()
   }, [])
+
   const panes = [
     {
       menuItem: 'Grupos',
@@ -51,6 +51,7 @@ export default function TeachersPanel(props) {
 
   return (
     <Tab
+      key="teachersPanel"
       className="secretaria__tab"
       manu={{ secondary: true, pointing: true }}
       panes={panes}
