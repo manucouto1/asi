@@ -15,6 +15,7 @@ export async function getGroup(groupId) {
 }
 
 export async function getMessages(groupId) {
+  console.log(groupId)
   const url = `${BASE_PATH}/messages?grupo._id=${groupId}&_sort=createdAt:DESC`;
 
   const response = await fetch(url, null);
@@ -32,7 +33,7 @@ export async function updateMessage(
 
   const body = {
     texto: message,
-    virtual_classroom: selectedVirtualClassroom,
+    grupo: selectedVirtualClassroom,
   }
 
   await axios

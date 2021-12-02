@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
-import { getVirtualClassrooms } from "../../api/virtualClassroom";
+import { getGroups } from "../../api/group";
 import { updateMessage } from "../../api/message";
 import { Select } from "semantic-ui-react";
 
 const VirtualClassroomUpdateForm = ({ messageData, setUpdating }) => {
   // States
+  console.log(messageData)
   const [selectedVirtualClassroom, setSelectedVirtualClassroom] = useState(
-    messageData.virtual_classroom.id
+    messageData.grupo.id
   );
   const [virtualClassrooms, setVirtualClassrooms] = useState();
   const [message, setMessage] = useState(messageData.texto);
 
   useEffect(() => {
     async function fetchMyAPI() {
-      const response = await getVirtualClassrooms();
+      const response = await getGroups();
       if (response !== undefined && response !== null) {
         setVirtualClassrooms(
           response.map((x) => {
-            return { key: x.id, text: x.grupo.nombre, value: x.id };
+            return { key: x.id, text: x.nombre, value: x.id };
           })
         );
       }
@@ -50,7 +51,7 @@ const VirtualClassroomUpdateForm = ({ messageData, setUpdating }) => {
         options={virtualClassrooms}
         value={
           selectedVirtualClassroom !== undefined
-            ? selectedVirtualClassroom.value
+            ? selectedVirtualClassroom
             : ""
         }
         placeholder="Clase..."
