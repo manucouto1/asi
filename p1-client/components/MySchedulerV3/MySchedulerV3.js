@@ -53,13 +53,15 @@ export default function Scheduler(props) {
 
             const event = {
               text: x.text,
-              nombre: x.text + lunes.weekNumber(),
+              nombre: x.text + x.resource + lunes.weekNumber(),
               start: lunes.addTime(start_hour).addHours(1).toString(),
               end: lunes.addTime(end_hour).addHours(1).toString(),
               resource: x.resource,
               grupo: groupId,
             }
+
             const result = await createEvent(event)
+
             if (result?._id) {
               list_ev.push(result)
             } else {
