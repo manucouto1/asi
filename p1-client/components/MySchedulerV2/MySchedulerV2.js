@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { getAllEvents } from '../../api/horarios'
-import { groupDetails } from '../../components/GroupDetails/GroupDetails'
+import { groupDetails } from '../../components/Group/GroupDetails'
 import { findGroup, getGroups } from '../../api/group'
 import ReactDOMServer from 'react-dom/server'
 import { Grid } from 'semantic-ui-react'
