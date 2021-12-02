@@ -36,8 +36,8 @@
       "model": "user"
     },
     "grupo": {
-      "model": "grupo",
-      "via": "message"
+      "via": "message",
+      "model": "grupo"
     }
   }
 }

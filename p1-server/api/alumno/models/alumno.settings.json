@@ -45,8 +45,8 @@
       "type": "biginteger"
     },
     "grupos": {
-      "collection": "grupo",
-      "via": "alumno"
+      "via": "alumno",
+      "collection": "grupo"
     }
   }
 }

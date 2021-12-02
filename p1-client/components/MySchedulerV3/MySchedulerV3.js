@@ -16,6 +16,7 @@ export default function Scheduler(props) {
   const [initDate, setInitDate] = useState()
   const [endDate, setEndDate] = useState()
 
+
   const onInitDateChange = (e, data) => {
     const { DayPilot } = require('daypilot-pro-react')
     const newDateValue = new Date(data.value)
@@ -31,6 +32,7 @@ export default function Scheduler(props) {
   }
 
   const onCalendarSubmit = async (_) => {
+    const groupId = id;
     if (initDate !== undefined && endDate !== undefined) {
       var lunes = initDate.firstDayOfWeek().addDays(1)
       var list_ev = []
@@ -51,6 +53,7 @@ export default function Scheduler(props) {
               start: lunes.addTime(start_hour).addHours(1).toString(),
               end: lunes.addTime(end_hour).addHours(1).toString(),
               resource: x.resource,
+              grupo: groupId
             }
             const result = await createEvent(event)
             if (result?._id) {

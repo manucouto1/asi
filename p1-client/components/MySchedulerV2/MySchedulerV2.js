@@ -128,7 +128,7 @@ export default function Scheduler() {
       eventClickHandling: 'Enabled',
 
       onEventClicked: (args) => {
-        router.push('/groups/' + args.e.data.id)
+        router.push('/events/' + args.e.data.id)
       },
 
       onBeforeTimeHeaderRender: (args) => {

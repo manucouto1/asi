@@ -30,7 +30,6 @@ export default function Curso() {
       if (router.query.id) {
         const response = await findCourse(router.query.id)
         setACourse(response)
-        console.log(response)
       }
     })()
   }, [router.query.id])
