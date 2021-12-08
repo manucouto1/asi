@@ -47,6 +47,9 @@
     "grupos": {
       "via": "alumno",
       "collection": "grupo"
+    },
+    "asistencias": {
+      "collection": "eventos"
     }
   }
 }

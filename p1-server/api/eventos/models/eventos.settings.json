@@ -31,6 +31,12 @@
     },
     "grupo": {
       "model": "grupo"
+    },
+    "dayOfWeek": {
+      "type": "string"
+    },
+    "week": {
+      "type": "integer"
     }
   }
 }

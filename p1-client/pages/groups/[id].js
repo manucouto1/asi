@@ -4,8 +4,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { findGroup, updateGroup } from '../../api/group'
 import ProfileSection from '../../components/profile/profileSection'
-import { getStudents } from '../../api/student'
-import { map } from 'lodash'
+import {
+  getStudents,
+  easyUpdateStudent,
+  getStudentByAsistencia,
+} from '../../api/student'
+import { map, filter } from 'lodash'
 import Select from 'react-select'
 import { Button } from 'semantic-ui-react'
 import { getTeachers } from '../../api/teacher'
@@ -19,7 +23,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Tab } from 'semantic-ui-react'
 import { getMeApi } from '../../api/user'
 import { getRole } from '../../api/roles'
 import SchedulerV4 from '../../components/MySchedulerV4/MySchedulerV4'
@@ -34,6 +38,10 @@ export default function Curso() {
   const [actual_students, setActual_students] = useState(undefined)
   const { logout } = useAuth()
   const [role, setRole] = useState(false)
+  const [events, setEvents] = useState([])
+  const [asistentes, setAsistentes] = useState([])
+  const [selectedEvent, setSelectedEvent] = useState(undefined)
+  const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
     ;(async () => {
@@ -65,6 +73,7 @@ export default function Curso() {
                   nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
                   edad: x.edad,
                   email: x.email,
+                  asistencias: x.asistencias,
                 }
               }),
             )
@@ -80,6 +89,7 @@ export default function Curso() {
                 nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
                 edad: x.edad,
                 email: x.email,
+                asistencias: x.asistencias,
               }
             }),
           )
@@ -118,6 +128,37 @@ export default function Curso() {
     } else {
       toast.error('Ha ocurrido un error, durante la actualización')
     }
+  }
+
+  async function updateAsistentesCallback(event) {
+    event.preventDefault()
+    map(asistentes, async (x) => {
+      const new_asistencias = new Set(
+        map(
+          filter(x.asistencias, (xx) => xx?._id),
+          (xxx) => xxx._id,
+        ),
+      )
+
+      if (!new_asistencias.has(selectedEvent)) {
+        new_asistencias.add(selectedEvent)
+        console.log('new_asistencias', new_asistencias)
+        const new_alumno = {
+          _id: x.value,
+          asistencias: filter(Array.from(new_asistencias), (xxx) => xxx),
+        }
+
+        const response = await easyUpdateStudent(x.value, new_alumno)
+        if (response?._id) {
+          x.asistencias = response.asistencias
+          toast.success('Curso actualizado')
+        } else {
+          toast.error('Ha ocurrido un error, durante la actualización')
+        }
+      } else {
+        toast.info('Nothing new to update')
+      }
+    })
   }
 
   return (
@@ -184,7 +225,7 @@ export default function Curso() {
                       <Grid.Row>
                         <Grid.Column width={11}>
                           <Select
-                            label="alumnos"
+                            label="teachers"
                             options={all_teachers}
                             defaultValue={teacher}
                             onChange={(e) => setTeacher(e)}
@@ -270,7 +311,99 @@ export default function Curso() {
               <h3> Horarios </h3>
             </div>
             <div className="main-body">
-              <SchedulerV4 id={router.query.id} />
+              <SchedulerV4
+                id={router.query.id}
+                events={events}
+                setEvents={setEvents}
+                setActiveIndex={setActiveIndex}
+                setSelectedEvent={setSelectedEvent}
+                setAsistentes={setAsistentes}
+              />
+            </div>
+          </div>
+          <div className="main-body">
+            <div className="card">
+              <h3> Asistencia </h3>
+            </div>
+            <div className="main-body">
+              <Tab
+                activeIndex={activeIndex}
+                onTabChange={async (e, data) => {
+                  const eventId = data.panes[data.activeIndex].eventId
+                  const response = await getStudentByAsistencia(eventId)
+
+                  setAsistentes(
+                    map(response, (x) => {
+                      return {
+                        value: x._id,
+                        label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
+                        nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
+                        edad: x.edad,
+                        email: x.email,
+                        asistencias: x.asistencias,
+                      }
+                    }),
+                  )
+                  setActiveIndex(data.activeIndex)
+                  setSelectedEvent(eventId)
+                }}
+                renderActiveOnly={true}
+                menu={{ fluid: true, vertical: true, tabular: true }}
+                panes={map(events, (x) => {
+                  const start = new Date(x.start)
+                  const end = new Date(x.end)
+                  return {
+                    eventId: x._id,
+                    menuItem: `week ${x.week} | ${
+                      x.dayOfWeek
+                    } ${start.getHours()}:${start.getMinutes()} - ${end.getHours()}:${end.getMinutes()}`,
+                    render: () => {
+                      return (
+                        <Tab.Pane key={x._id}>
+                          {all_students !== undefined &&
+                            actual_students !== undefined && (
+                              <form onSubmit={updateAsistentesCallback}>
+                                <Grid>
+                                  <Grid.Row>
+                                    <h1>
+                                      Asistentes clase semana {x.week} horario:{' '}
+                                      {start.getHours()}:{start.getMinutes()}h -{' '}
+                                      {end.getHours()}:{end.getMinutes()}h
+                                    </h1>
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                    <Grid.Column width={13}>
+                                      <Select
+                                        label="alumnos"
+                                        isMulti
+                                        options={all_students}
+                                        defaultValue={asistentes}
+                                        onChange={(e) => {
+                                          setAsistentes(e)
+                                        }}
+                                      />
+                                    </Grid.Column>
+                                    <Grid.Column
+                                      className="row_no_ml"
+                                      width={3}
+                                    >
+                                      <Button color="blue" type="submit">
+                                        Submit
+                                      </Button>
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                    <TablaAlumnos alumnos={asistentes} />
+                                  </Grid.Row>
+                                </Grid>
+                              </form>
+                            )}
+                        </Tab.Pane>
+                      )
+                    },
+                  }
+                })}
+              />
             </div>
           </div>
         </div>

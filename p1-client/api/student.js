@@ -1,60 +1,88 @@
-import { BASE_PATH_JSON_SERVER, BASE_PATH } from "../utils/constants";
-import { authFetch } from "../utils/fetch";
+import { BASE_PATH_JSON_SERVER, BASE_PATH } from '../utils/constants'
+import { authFetch } from '../utils/fetch'
 
 export async function getStudents() {
   try {
-    const url = `${BASE_PATH}/alumnos`;
+    const url = `${BASE_PATH}/alumnos`
 
-    const response = await fetch(url, null);
-    const result = await response.json();
-    return result;
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result
   } catch (error) {
-    return null;
+    return null
   }
 }
 
 export async function getStudent(id) {
   try {
-    const url = `${BASE_PATH}/alumnos/${id}`;
+    const url = `${BASE_PATH}/alumnos/${id}`
 
-    const response = await fetch(url, null);
-    const result = await response.json();
-    return result;
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result
   } catch (error) {
-    return null;
+    return null
+  }
+}
+
+export async function getStudentByAsistencia(event) {
+  try {
+    const url = `${BASE_PATH}/alumnos?asistencias=${event}`
+    const response = await fetch(url, null)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    return null
   }
 }
 
 export async function createStudent(student, logout) {
   try {
-    const url = `${BASE_PATH}/alumnos`;
+    const url = `${BASE_PATH}/alumnos`
     const params = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(student),
-    };
-    const result = await authFetch(url, params, logout);
-    return result ? result : null;
+    }
+    const result = await authFetch(url, params, logout)
+    return result ? result : null
   } catch (error) {
-    return null;
+    return null
   }
 }
 
 export async function updateStudent(studentId, body, logout) {
   try {
-    const url = `${BASE_PATH}/alumnos/${studentId}`;
+    const url = `${BASE_PATH}/alumnos/${studentId}`
     const params = {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    };
-    const result = await authFetch(url, params, logout);
-    return result;
+    }
+    const result = await authFetch(url, params, logout)
+    return result
   } catch (error) {
-    return null;
+    return null
+  }
+}
+
+export async function easyUpdateStudent(studentId, body) {
+  try {
+    const url = `${BASE_PATH}/alumnos/${studentId}`
+    const params = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+    const result = await authFetch(url, params)
+    return result
+  } catch (error) {
+    return null
   }
 }

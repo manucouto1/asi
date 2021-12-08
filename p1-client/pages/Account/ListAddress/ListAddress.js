@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import { Grid, Button } from "semantic-ui-react";
-import { map, size } from "lodash";
+import { useState, useEffect } from 'react'
+import { Grid, Button } from 'semantic-ui-react'
+import { map, size } from 'lodash'
 //import { getAddressesApi, deleteAddressApi } from "../../../api/address";
-import useAuth from "../../../hooks/useAuth";
+import useAuth from '../../../hooks/useAuth'
 
 export default function ListAddress(props) {
-  const { reloadAddresses, setReloadAddresses, openModal } = props;
-  const [addresses, setAddresses] = useState(null);
-  const { auth, logout } = useAuth();
+  const { reloadAddresses, setReloadAddresses, openModal } = props
+  const [addresses, setAddresses] = useState(null)
+  const { auth, logout } = useAuth()
 
   useEffect(() => {
-    (async () => {
-      const response = await getAddressesApi(auth.idUser, logout);
-      setAddresses(response || []);
-      setReloadAddresses(false);
-    })();
-  }, [reloadAddresses]);
+    ;(async () => {
+      const response = await getAddressesApi(auth.idUser, logout)
+      setAddresses(response || [])
+      setReloadAddresses(false)
+    })()
+  }, [reloadAddresses])
 
-  if (!addresses) return null;
+  if (!addresses) return null
 
   return (
     <div className="list-address">
@@ -38,19 +38,19 @@ export default function ListAddress(props) {
         </Grid>
       )}
     </div>
-  );
+  )
 }
 
 function Address(props) {
-  const { address, logout, setReloadAddresses, openModal } = props;
-  const [loadingDelete, setLoadingDelete] = useState(false);
+  const { address, logout, setReloadAddresses, openModal } = props
+  const [loadingDelete, setLoadingDelete] = useState(false)
 
   const deleteAddress = async () => {
-    setLoadingDelete(true);
-    const response = await deleteAddressApi(address._id, logout);
-    if (response) setReloadAddresses(true);
-    setLoadingDelete(false);
-  };
+    setLoadingDelete(true)
+    const response = await deleteAddressApi(address._id, logout)
+    if (response) setReloadAddresses(true)
+    setLoadingDelete(false)
+  }
 
   return (
     <div className="address">
@@ -74,5 +74,5 @@ function Address(props) {
         </Button>
       </div>
     </div>
-  );
+  )
 }

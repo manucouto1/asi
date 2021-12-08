@@ -3,14 +3,22 @@ import { useRouter } from 'next/router'
 import { getAllEvents } from '../../api/horarios'
 import { groupDetails } from '../../components/Group/GroupDetails'
 import { findGroup, getGroups } from '../../api/group'
+import { getStudentByAsistencia } from '../../api/student'
 import ReactDOMServer from 'react-dom/server'
 import { Grid } from 'semantic-ui-react'
+import { map } from 'lodash'
 
 export default function SchedulerV4(props) {
-  const { id } = props
+  const {
+    id,
+    events,
+    setEvents,
+    setActiveIndex,
+    setSelectedEvent,
+    setAsistentes,
+  } = props
   const router = useRouter()
   const [resources, setResources] = useState([])
-  const [events, setEvents] = useState([])
   const [lunes, setLunes] = useState()
 
   const setNewLunes = (args) => {
@@ -56,7 +64,16 @@ export default function SchedulerV4(props) {
         },
       ])
       const eventos = await getAllEvents()
-      setEvents(eventos)
+      var count = 0
+      setEvents(
+        map(eventos, (evento) => {
+          evento['order'] = count
+          count += 1
+          return evento
+        }),
+      )
+      setActiveIndex(1)
+      setSelectedEvent(eventos[1])
     })()
   }, [])
 
@@ -64,7 +81,6 @@ export default function SchedulerV4(props) {
     typeof window !== 'undefined' &&
     typeof window.navigator !== 'undefined'
   ) {
-    const { DayPilot } = require('daypilot-pro-react')
     const {
       DayPilotScheduler,
       DayPilotNavigator,
@@ -83,8 +99,23 @@ export default function SchedulerV4(props) {
       cellWidthSpec: 'Auto',
       eventClickHandling: 'Enabled',
 
-      onEventClicked: (args) => {
-        router.push(`/events/${id}/${args.e.data.id}`)
+      onEventClicked: async (x) => {
+        const response = await getStudentByAsistencia(x.e.data._id)
+
+        setAsistentes(
+          map(response, (x) => {
+            return {
+              value: x._id,
+              label: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
+              nombre: `${x.nombre} ${x.apellido1} ${x.apellido2}`,
+              edad: x.edad,
+              email: x.email,
+              asistencias: x.asistencias,
+            }
+          }),
+        )
+        setActiveIndex(x.e.data.order)
+        setSelectedEvent(x.e.data._id)
       },
 
       onBeforeCellRender: (args) => {
@@ -94,20 +125,6 @@ export default function SchedulerV4(props) {
         }
       },
 
-      eventHoverHandling: 'Bubble',
-      bubble: new DayPilot.Bubble({
-        onLoad: (args) => {
-          args.async = true
-          ;(async () => {
-            const response = await findGroup(args.source.data.id)
-            args.html =
-              response != undefined && response != null
-                ? printClassInfo(response)
-                : '<h1> Loading... </h1>'
-            args.loaded()
-          })()
-        },
-      }),
       treeEnabled: true,
     }
 

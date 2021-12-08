@@ -46,20 +46,25 @@ export default function Scheduler(props) {
       const { DayPilot } = require('daypilot-pro-react')
 
       Promise.all(aux_events).then(async () => {
+        var new_week = 1
         while (lunes < endDate) {
           for (let x of events) {
             const start_hour = DayPilot.Date(x.start).getTimePart()
             const end_hour = DayPilot.Date(x.end).getTimePart()
+            const new_start = lunes.addTime(start_hour).addHours(1).toString()
+            const new_end = lunes.addTime(end_hour).addHours(1).toString()
 
             const event = {
               text: x.text,
-              nombre: x.text + x.resource + lunes.weekNumber(),
-              start: lunes.addTime(start_hour).addHours(1).toString(),
-              end: lunes.addTime(end_hour).addHours(1).toString(),
+              nombre: `${new_start}_${new_end}_${x.resource}`,
+              start: new_start,
+              end: new_end,
+              week: new_week,
+              dayOfWeek: x.dayOfWeek,
               resource: x.resource,
               grupo: groupId,
             }
-
+            console.log(event)
             const result = await createEvent(event)
 
             if (result?._id) {
@@ -69,6 +74,7 @@ export default function Scheduler(props) {
             }
           }
           lunes = lunes.addDays(7)
+          new_week += 1
         }
 
         const new_group = {
@@ -149,22 +155,11 @@ export default function Scheduler(props) {
       businessEndsHour: 21,
       showNonBusiness: false,
       cellWidthSpec: 'Auto',
-      // rowMinHeight: 50,
       eventClickHandling: 'Enabled',
       eventDeleteHandling: 'Update',
 
       onEventDelete: (args) => {
         const dp = args.control
-        // if (args.e.data?._id) {
-        //   deleteEvento(args.e.data._id)
-        // }
-        // ;(async () => {
-        //   const result = await findEventoByResource(args.e.data.resource)
-        //   result.forEach((x) => {
-        //     const response = deleteEvento(x._id)
-        //     console.log(response)
-        //   })
-        // })()
         setEvents(dp.events.list)
       },
       onEventMoved: (args) => {
@@ -192,8 +187,7 @@ export default function Scheduler(props) {
             text: modal.result,
             start: startDate,
             end: endDate,
-            // start_hour: startHour,
-            // end_hour: endHour,
+            dayOfWeek: args.resource.split('_')[0],
             resource: args.resource,
           }
 
