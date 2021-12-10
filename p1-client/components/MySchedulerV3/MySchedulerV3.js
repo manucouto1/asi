@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css'
+import { findGroup } from '../../api/group'
 import {
   createEvent,
   updateEvent,
@@ -16,7 +17,6 @@ export default function Scheduler(props) {
   const { id, old_eventos } = props
   const [resources, setResources] = useState([])
   const [events, setEvents] = useState([])
-  const [aux_events, setAuxEvents] = useState([])
   const [initDate, setInitDate] = useState()
   const [endDate, setEndDate] = useState()
   const [insertList, setInsertList] = useState([])
@@ -41,58 +41,62 @@ export default function Scheduler(props) {
       var lunes = initDate.firstDayOfWeek().addDays(1)
       var list_ev = []
 
-      aux_events.forEach((ev) => deleteEvento(ev._id))
-
       const { DayPilot } = require('daypilot-pro-react')
 
-      Promise.all(aux_events).then(async () => {
-        var new_week = 1
-        while (lunes < endDate) {
-          for (let x of events) {
-            const start_hour = DayPilot.Date(x.start).getTimePart()
-            const end_hour = DayPilot.Date(x.end).getTimePart()
-            const new_start = lunes.addTime(start_hour).addHours(1).toString()
-            const new_end = lunes.addTime(end_hour).addHours(1).toString()
+      const response_group = await findGroup(groupId)
+      if (response_group?.eventos) {
+        response_group.eventos.forEach((ev) => deleteEvento(ev._id))
 
-            const event = {
-              text: x.text,
-              nombre: `${new_start}_${new_end}_${x.resource}`,
-              start: new_start,
-              end: new_end,
-              week: new_week,
-              dayOfWeek: x.dayOfWeek,
-              resource: x.resource,
-              grupo: groupId,
-            }
-            console.log(event)
-            const result = await createEvent(event)
+        Promise.all(response_group.eventos).then(async () => {
+          var new_week = 1
+          while (lunes < endDate) {
+            for (let x of events) {
+              const start_hour = DayPilot.Date(x.start).getTimePart()
+              const end_hour = DayPilot.Date(x.end).getTimePart()
+              const new_start = lunes.addTime(start_hour).addHours(1).toString()
+              const new_end = lunes.addTime(end_hour).addHours(1).toString()
 
-            if (result?._id) {
-              list_ev.push(result)
-            } else {
-              toast.info('El evento ya existe')
+              const event = {
+                text: x.text,
+                nombre: `${new_start}_${new_end}_${x.resource}`,
+                start: new_start,
+                end: new_end,
+                week: new_week,
+                dayOfWeek: x.dayOfWeek,
+                resource: x.resource,
+                grupo: groupId,
+              }
+              console.log(event)
+              const result = await createEvent(event)
+
+              if (result?._id) {
+                list_ev.push(result)
+              } else {
+                toast.info('El evento ya existe')
+              }
             }
+            lunes = lunes.addDays(7)
+            new_week += 1
           }
-          lunes = lunes.addDays(7)
-          new_week += 1
-        }
 
-        const new_group = {
-          _id: id,
-          eventos: map(list_ev, (x) => {
-            return x?._id
-          }),
-        }
+          const new_group = {
+            _id: id,
+            eventos: map(list_ev, (x) => {
+              return x?._id
+            }),
+          }
 
-        const response = await updateGroup(new_group)
+          const response = await updateGroup(new_group)
 
-        if (response?._id) {
-          toast.success('Eventos añadidos al curso')
-        } else {
-          toast.error('Ha ocurrido un error, durante la actualización')
-        }
-      })
-      setAuxEvents(list_ev)
+          if (response?._id) {
+            toast.success('Eventos añadidos al curso')
+          } else {
+            toast.error('Ha ocurrido un error, durante la actualización')
+          }
+        })
+      } else {
+        toast.error('Somthing terrible happend!!')
+      }
     } else {
       toast.error('Asegurate de seleccionar la fecha de inicio y la de fin')
     }
@@ -132,7 +136,6 @@ export default function Scheduler(props) {
       },
     ])
     setEvents([...old_eventos])
-    setAuxEvents([...old_eventos])
   }, [])
 
   if (

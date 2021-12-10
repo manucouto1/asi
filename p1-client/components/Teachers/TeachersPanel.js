@@ -13,20 +13,24 @@ export default function TeachersPanel(props) {
   useEffect(() => {
     ;(async () => {
       const response = await getTeacherByUserId(id)
-      const response2 = await getGroupsByUserId(response[0]._id)
-      setGroups(response2)
-      var al_ids = []
-      var alumnos = []
+      if (response[0]?._id) {
+        const response2 = await getGroupsByUserId(response[0]._id)
+        setGroups(response2)
 
-      response2.forEach((grupo) => {
-        grupo.alumnos.forEach((alumno) => {
-          if (!al_ids.includes(alumno._id)) {
-            alumnos.push(alumno)
-            al_ids.push(alumno._id)
-          }
+        var al_ids = []
+        var alumnos = []
+
+        response2.forEach((grupo) => {
+          grupo.alumnos.forEach((alumno) => {
+            if (!al_ids.includes(alumno._id)) {
+              alumnos.push(alumno)
+              al_ids.push(alumno._id)
+            }
+          })
         })
-      })
-      setStudents(alumnos)
+
+        setStudents(alumnos)
+      }
     })()
   }, [])
 
