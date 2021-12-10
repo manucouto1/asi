@@ -11,9 +11,9 @@ export default function TopBar() {
           <Grid.Column width={8} className="top-bar__left">
             <Logo />
           </Grid.Column>
-          <Grid.Column width={8} className="top-bar__right">
+          {/* <Grid.Column width={8} className="top-bar__right">
             <Search />
-          </Grid.Column>
+          </Grid.Column> */}
         </Grid>
       </Container>
     </div>
