@@ -1,5 +1,11 @@
 # Pasos para tener el entorno funcionando
 
+## Ruta repositorio git
+
+```
+https://github.com/manucouto1/asi.git
+```
+
 ## Instalar dependencias de los proyectos
 
 ```
@@ -123,11 +129,11 @@ db.<targetCollection>.find()
 
 # Estructura
 
-### p1-server
+## p1-server
 
 Es el backend de la aplicación, está implementado en strapi que es un CMS open-source que nos permite prototipar todo el backend de forma rápida. Esto quiere decir que por defecto, el backend no se programa, pero si hubiera que modificar o añadir funcionalidades, se haría en la carpeta /api
 
-### p1-client
+## p1-client
 
 ES el frontend de la aplicación, está implementado en next.js. El proyecto tiene una estructura con unas carpetas importantes:
 
